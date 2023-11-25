@@ -1,11 +1,9 @@
-﻿using ExcelDataReader;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +13,6 @@ namespace User_Module
 {
 	public partial class Form1 : Form
 	{
-		private string filename = string.Empty;
-		private DataTableCollection tableCollection = null;
 		public Form1()
 		{
 			InitializeComponent();
@@ -81,51 +77,6 @@ namespace User_Module
 			btn.Width = 200;
 			btn.Height = 100;
 
-		}
-
-		private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			tabs.Visible = false;
-			try
-			{
-				DialogResult res = openFileDialog1.ShowDialog();
-				if (res == DialogResult.OK)
-				{
-					filename = openFileDialog1.FileName;
-					Text = filename;
-					OpenExcelFile(filename);
-				}
-				else throw new Exception("Файл не выбран");
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
-		private void OpenExcelFile(string path)
-		{
-			FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read);
-			IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream);
-			DataSet db = reader.AsDataSet(new ExcelDataSetConfiguration()
-			{
-				ConfigureDataTable = (x) => new ExcelDataTableConfiguration()
-				{
-					UseHeaderRow = true
-				}
-			});
-			tableCollection = db.Tables;
-			toolStripComboBox1.Items.Clear();
-			foreach (DataTable table in tableCollection)
-			{
-				toolStripComboBox1.Items.Add(table.TableName);
-			}
-			toolStripComboBox1.SelectedIndex = 0;
-		}
-
-		private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			DataTable table = tableCollection[Convert.ToString(toolStripComboBox1.SelectedIndex)];
-			dataGridView1.DataSource = table;
 		}
 	}
 
