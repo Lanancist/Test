@@ -18,13 +18,23 @@ namespace User_Module
 		{
 			InitializeComponent();
 		}
-		TabPage[] tabPages;
-		int n,generateCount;
-		bool password,isNamed,fromEveryTheme;
+		//TabPage[] tabPages;
+		int n, generateCount;
+		bool password, isNamed, fromEveryTheme;
 
 		private void button1_Click(object sender, EventArgs e)
 		{
 			tabs.Visible = true;
+		}
+
+		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void groupBox1_Enter(object sender, EventArgs e)
+		{
+
 		}
 
 		private void Form1_ResizeEnd(object sender, EventArgs e)
@@ -33,14 +43,14 @@ namespace User_Module
 			button1.Left = (this.Width - 200) / 2;
 			button1.Width = 200;
 			button1.Height = 100;
-			tabPages[n].Controls[0].Top = (this.Height - 100) / 2;
-			tabPages[n].Controls[0].Left = (this.Width - 200) / 2;
-			tabPages[n].Controls[0].Width = 200;
-			tabPages[n].Controls[0].Height = 100;
-			for (int i = 0; i < n; i++)
+			if (tabs.TabPages[n + 1].Controls[0] is Button)
 			{
-				
+				tabs.TabPages[n + 1].Controls[0].Top = (this.Height - 100) / 2;
+				tabs.TabPages[n + 1].Controls[0].Left = (this.Width - 200) / 2;
+				tabs.TabPages[n + 1].Controls[0].Width = 200;
+				tabs.TabPages[n + 1].Controls[0].Height = 100;
 			}
+
 		}
 		string path = "input.txt";
 		private void Form1_Load(object sender, EventArgs e)
@@ -50,7 +60,7 @@ namespace User_Module
 			tabs.Dock = DockStyle.Fill;
 			string line;
 			FileInfo filepath = new FileInfo(path);
-			if (!filepath.Exists )
+			if (!filepath.Exists)
 			{
 				MessageBox.Show("Файл с вопросами не найден!", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Close();
@@ -58,7 +68,7 @@ namespace User_Module
 			}
 			StreamReader fin = new StreamReader(path);
 			string lastChanged = File.GetLastWriteTime(path).ToString();
-			lastChanged=lastChanged.Replace(".", "").Replace(" ","").Replace(":","");
+			lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
 			line = fin.ReadLine();
 			password = line[0] == '1';
 			isNamed = line[1] == '1';
@@ -74,66 +84,111 @@ namespace User_Module
 			//////////////////////////
 			if (s != lastChanged)
 			{
-				MessageBox.Show("Похоже, кто-то имзенял файл вопросов после того, как он был загружен преподавателем!", "Замечен обман", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				MessageBox.Show("Похоже, кто-то имзменял файл вопросов! Уведомление преподавателю отправлено!", "Замечен обман", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				Close();
 				return;
 			}
-			n=line.IndexOf('.');
-			s = line.Substring(16,n-16);
+			n = line.IndexOf('.');
+			s = line.Substring(16, n - 16);
 			generateCount = int.Parse(s);
-			s = line.Substring(n+1);
+			s = line.Substring(n + 1);
 			n = int.Parse(s);
 			Text = fin.ReadLine();
 			label1.Text = Text;
-			tabPages = new TabPage[n + 1];
-			line=fin.ReadLine();
-			line=line.Remove(0,1);
-			string[] questm = line.Split(new[] { "\";\"" }, StringSplitOptions.None);
+			TabPage tabPages;
+			string[] questm;
 			for (int i = 0; i < n; i++)
 			{
-				tabPages[i] = new TabPage();
-				tabPages[i].Text = "Вопрос " + (i + 1);
-				tabPages[i].BackColor = Color.White;
-				tabPages[i].AutoScroll = true;
-				tabs.Controls.Add(tabPages[i]);
+				line = fin.ReadLine();
+				line = line.Remove(0, 1);
+				questm = line.Split(new[] { "\";\"" }, StringSplitOptions.None);
+				tabPages = new TabPage();
+				tabPages.Text = "Вопрос " + (i + 1);
+				tabPages.BackColor = Color.White;
+				tabPages.AutoScroll = true;
+				tabs.TabPages.Add(tabPages);
 				SplitContainer splitter = new SplitContainer();
-				tabPages[i].Controls.Add(splitter);
+				tabPages.Controls.Add(splitter);
 				splitter.Parent = this;
 				splitter.Name = "splitter" + i;
 				splitter.Visible = true;
 				splitter.Enabled = true;
 				splitter.Dock = DockStyle.Fill;
 				splitter.Orientation = Orientation.Horizontal;
-				CheckedListBox answers = new CheckedListBox();
-				splitter.Panel2.Controls.Add(answers);
-				splitter.Parent = tabPages[i];
-				answers.Name = "Check" + i;
-				answers.Visible = true;
-				answers.Dock = DockStyle.Bottom;
-				answers.Top = 30;
+				splitter.Parent = tabPages;
 				splitter.SplitterDistance = 236;
-				answers.BeginUpdate();
-				for (int j = 0; j < 6; j++)
-					answers.Items.Add("Вариант" + (j + 1), (j + 1) % 2 == 1);
-				answers.EndUpdate();
-				TextBox quest = new TextBox();
+				Label label1 = new Label();
+				label1.Name = "Label" + i;
+				label1.Text = questm[2] + '\n' + "Вопрос " + (i + 1);
+				label1.Dock = DockStyle.Top;
+				label1.Height = 40;
+
+				label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+				label1.Visible = true;
+				tabPages.Controls.Add(label1);
+				RichTextBox quest = new RichTextBox();
 				splitter.Panel1.Controls.Add(quest);
-				splitter.Name = "Text" + i;
-				splitter.Text = "Text" + i;
+				quest.Name = "Text" + i;
+				quest.Text = questm[2];
+				quest.Top = 100;
 				quest.Dock = DockStyle.Fill;
 				quest.Multiline = true;
 				quest.ReadOnly = true;
-				quest.ScrollBars = ScrollBars.Vertical;
+				quest.BorderStyle = BorderStyle.None;
+				quest.ScrollBars = RichTextBoxScrollBars.Vertical;
+				quest.WordWrap = true;
 				quest.ShortcutsEnabled = false;
 				quest.TabIndex = 0;
+				if (questm[9].Length > 1)
+				{
+					CheckedListBox answers = new CheckedListBox();
+					splitter.Panel2.Controls.Add(answers);
+					answers.BorderStyle= BorderStyle.None;
+					answers.Name = "Check" + i;
+					answers.Visible = true;
+					answers.Dock = DockStyle.Fill;
+					answers.BeginUpdate();
+					for (int j = 0; j < 6; j++)
+					{
+						if (questm[3 + j] != "")
+							answers.Items.Add(questm[3 + j], 0);
+						else
+							j = 6;
+					}
+					answers.EndUpdate();
+				}
+				else
+				{
+					RadioButton radioButton;
+					for (int j = 0; j < 6; j++)
+					{
+						if (questm[3 + j] != "")
+						{
+							radioButton = new RadioButton();
+							radioButton.AutoSize = true;
+							radioButton.Location = new System.Drawing.Point(10, 23*j);
+							radioButton.Name = "radioButton"+i;
+							radioButton.Size = new System.Drawing.Size(85, 17);
+							radioButton.TabIndex = j;
+							radioButton.TabStop = true;
+							radioButton.Text = questm[3 + j];
+							radioButton.UseVisualStyleBackColor = true;
+							splitter.Panel2.Controls.Add(radioButton);
+						}
+						else
+							j = 6;
+					}
+					
+				}
+
 			}
-			tabPages[n] = new TabPage();
-			tabPages[n].BackColor = Color.White;
-			tabPages[n].Text = "Окончить тест";
-			tabPages[n].AutoScroll = true;
-			tabs.Controls.Add(tabPages[n]);
+			tabPages = new TabPage();
+			tabPages.BackColor = Color.White;
+			tabPages.Text = "Окончить тест";
+			tabPages.AutoScroll = true;
+			tabs.TabPages.Add(tabPages);
 			Button btn = new Button();
-			tabPages[n].Controls.Add(btn);
+			tabPages.Controls.Add(btn);
 			btn.Name = "btnEnd";
 			btn.Text = "Завершить тест";
 			btn.Visible = true;
