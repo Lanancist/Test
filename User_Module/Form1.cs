@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 namespace User_Module
 {
 	public partial class Form1 : Form
@@ -45,7 +46,7 @@ namespace User_Module
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			tabs.BringToFront();
-			tabs.Visible = false;
+			tabs.Visible = true;
 			tabs.Dock = DockStyle.Fill;
 			string line;
 			FileInfo filepath = new FileInfo(path);
