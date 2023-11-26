@@ -21,25 +21,6 @@ namespace Admin_Module
 			InitializeComponent();
 		}
 
-		private void button1_Click(object sender, EventArgs e)
-		{
-			button1.Visible = false;
-			try
-			{
-				DialogResult res = openFileDialog1.ShowDialog();
-				if (res == DialogResult.OK)
-				{
-					filename = openFileDialog1.FileName;
-					Text = filename;
-					OpenExcelFile(filename);
-				}
-				else throw new Exception("Файл не выбран");
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
 
 		private void OpenExcelFile(string path)
 		{
@@ -56,9 +37,48 @@ namespace Admin_Module
 			DataTable table = tableCollection[Convert.ToString(tableCollection[0].TableName)];
 			dataGridView1.DataSource = table;
 		}
+		private void toolStripButton1_Click(object sender, EventArgs e)
+		{
+			dataGridView1.Visible = false;
+			toolStripButton3.Enabled = false;
+			toolStripButton2.Enabled = false;
+			try
+			{
+				DialogResult res = openFileDialog1.ShowDialog();
+				if (res == DialogResult.OK)
+				{
+					filename = openFileDialog1.FileName;
+					Text = filename;
+					OpenExcelFile(filename);
+				}
+				else throw new Exception("Файл не выбран");
+				toolStripButton2.Enabled = true;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private void toolStripButton2_Click(object sender, EventArgs e)
+		{
+			dataGridView1.Visible = true;
+			toolStripButton3.Enabled = true;
+			toolStripButton2.Enabled = false;
+		}
+
+		private void toolStripButton3_Click(object sender, EventArgs e)
+		{
+			dataGridView1.Visible = false;
+			toolStripButton3.Enabled = false;
+			toolStripButton2.Enabled = true;
+		}
+
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			button1.BringToFront();
+			dataGridView1.Visible = false;
+			toolStripButton3.Enabled = false;
+			toolStripButton2.Enabled = false;
 		}
 	}
 }
