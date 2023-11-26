@@ -27,15 +27,7 @@ namespace User_Module
 			tabs.Visible = true;
 		}
 
-		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void groupBox1_Enter(object sender, EventArgs e)
-		{
-
-		}
+		
 
 		private void Form1_ResizeEnd(object sender, EventArgs e)
 		{
@@ -70,37 +62,36 @@ namespace User_Module
 			string lastChanged = File.GetLastWriteTime(path).ToString();
 			lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
 			line = fin.ReadLine();
-			password = line[0] == '1';
-			isNamed = line[1] == '1';
-			fromEveryTheme = line[2] == '1';
-			string s = line.Substring(3, 14);
+			string[] questm=line.Split(new[] { '.' }, StringSplitOptions.None); ;
+			password = questm[0] == "1";
+			isNamed = questm[1] == "1";
+			fromEveryTheme = questm[2] == "1";
+			//obligateQuestions = questm[3] == "1";
 			/*
 			 * if (lastChanged.Length<14) lastChanged.Insert(9, "0");
 			 */
 			/////////////////////////////
 			///delete it for time check
 			lastChanged = lastChanged.Substring(0, lastChanged.Length - 6);
-			s = s.Substring(0, s.Length - 6);
+			questm[4] = questm[4].Substring(0, questm[4].Length - 6);
 			//////////////////////////
-			if (s != lastChanged)
+			if (questm[4] != lastChanged)
 			{
-				MessageBox.Show("Похоже, кто-то имзменял файл вопросов! Уведомление преподавателю отправлено!", "Замечен обман", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				MessageBox.Show("Похоже, кто-то имзменял файл вопросов. Попросите преподавателя пересоздать его или взять с другого компьютера.", "Замечен обман", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				Close();
 				return;
 			}
-			n = line.IndexOf('.');
-			s = line.Substring(16, n - 16);
-			generateCount = int.Parse(s);
-			s = line.Substring(n + 1);
-			n = int.Parse(s);
+			generateCount = int.Parse(questm[5]);
+
+			n = int.Parse(questm[6]);
 			Text = fin.ReadLine();
 			label1.Text = Text;
 			TabPage tabPages;
-			string[] questm;
 			for (int i = 0; i < n; i++)
 			{
 				line = fin.ReadLine();
 				line = line.Remove(0, 1);
+				line = line.Remove(line.Length - 1, 1);
 				questm = line.Split(new[] { "\";\"" }, StringSplitOptions.None);
 				tabPages = new TabPage();
 				tabPages.Text = "Вопрос " + (i + 1);
@@ -122,7 +113,6 @@ namespace User_Module
 				label1.Text = questm[2] + '\n' + "Вопрос " + (i + 1);
 				label1.Dock = DockStyle.Top;
 				label1.Height = 40;
-
 				label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 				label1.Visible = true;
 				tabPages.Controls.Add(label1);
@@ -143,7 +133,7 @@ namespace User_Module
 				{
 					CheckedListBox answers = new CheckedListBox();
 					splitter.Panel2.Controls.Add(answers);
-					answers.BorderStyle= BorderStyle.None;
+					answers.BorderStyle = BorderStyle.None;
 					answers.Name = "Check" + i;
 					answers.Visible = true;
 					answers.Dock = DockStyle.Fill;
@@ -166,8 +156,8 @@ namespace User_Module
 						{
 							radioButton = new RadioButton();
 							radioButton.AutoSize = true;
-							radioButton.Location = new System.Drawing.Point(10, 23*j);
-							radioButton.Name = "radioButton"+i;
+							radioButton.Location = new System.Drawing.Point(10, 23 * j);
+							radioButton.Name = "radioButton" + i;
 							radioButton.Size = new System.Drawing.Size(85, 17);
 							radioButton.TabIndex = j;
 							radioButton.TabStop = true;
@@ -178,7 +168,7 @@ namespace User_Module
 						else
 							j = 6;
 					}
-					
+
 				}
 
 			}
