@@ -1,0 +1,17 @@
+D:\Рабочий стол\Admin_Module\bin\Debug\Admin_Module.exe.config
+D:\Рабочий стол\Admin_Module\bin\Debug\Admin_Module.exe
+D:\Рабочий стол\Admin_Module\bin\Debug\Admin_Module.pdb
+D:\Рабочий стол\Admin_Module\bin\Debug\ExcelDataReader.DataSet.dll
+D:\Рабочий стол\Admin_Module\bin\Debug\ExcelDataReader.dll
+D:\Рабочий стол\Admin_Module\bin\Debug\ExcelDataReader.pdb
+D:\Рабочий стол\Admin_Module\bin\Debug\ExcelDataReader.xml
+D:\Рабочий стол\Admin_Module\bin\Debug\ExcelDataReader.DataSet.pdb
+D:\Рабочий стол\Admin_Module\bin\Debug\ExcelDataReader.DataSet.xml
+D:\Рабочий стол\Admin_Module\obj\Debug\Admin_Module.csproj.AssemblyReference.cache
+D:\Рабочий стол\Admin_Module\obj\Debug\Admin_Module.Form1.resources
+D:\Рабочий стол\Admin_Module\obj\Debug\Admin_Module.Properties.Resources.resources
+D:\Рабочий стол\Admin_Module\obj\Debug\Admin_Module.csproj.GenerateResource.cache
+D:\Рабочий стол\Admin_Module\obj\Debug\Admin_Module.csproj.CoreCompileInputs.cache
+D:\Рабочий стол\Admin_Module\obj\Debug\Admin_Module.csproj.CopyComplete
+D:\Рабочий стол\Admin_Module\obj\Debug\Admin_Module.exe
+D:\Рабочий стол\Admin_Module\obj\Debug\Admin_Module.pdb

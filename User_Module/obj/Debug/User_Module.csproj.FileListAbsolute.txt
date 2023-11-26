@@ -1,0 +1,27 @@
+D:\Рабочий стол\User_Module\bin\Debug\User_Module.exe.config
+D:\Рабочий стол\User_Module\bin\Debug\User_Module.exe
+D:\Рабочий стол\User_Module\bin\Debug\User_Module.pdb
+D:\Рабочий стол\User_Module\obj\Debug\User_Module.csproj.AssemblyReference.cache
+D:\Рабочий стол\User_Module\obj\Debug\User_Module.Form1.resources
+D:\Рабочий стол\User_Module\obj\Debug\User_Module.Properties.Resources.resources
+D:\Рабочий стол\User_Module\obj\Debug\User_Module.csproj.GenerateResource.cache
+D:\Рабочий стол\User_Module\obj\Debug\User_Module.csproj.CoreCompileInputs.cache
+D:\Рабочий стол\User_Module\obj\Debug\User_Module.exe
+D:\Рабочий стол\User_Module\obj\Debug\User_Module.pdb
+D:\Рабочий стол\User_Module\bin\Debug\ExcelDataReader.DataSet.dll
+D:\Рабочий стол\User_Module\bin\Debug\ExcelDataReader.dll
+D:\Рабочий стол\User_Module\bin\Debug\ExcelDataReader.pdb
+D:\Рабочий стол\User_Module\bin\Debug\ExcelDataReader.xml
+D:\Рабочий стол\User_Module\bin\Debug\ExcelDataReader.DataSet.pdb
+D:\Рабочий стол\User_Module\bin\Debug\ExcelDataReader.DataSet.xml
+D:\Рабочий стол\User_Module\obj\Debug\User_Module.csproj.CopyComplete
+D:\files\Git\TonyNov\Test\User_Module\bin\Debug\User_Module.exe.config
+D:\files\Git\TonyNov\Test\User_Module\bin\Debug\User_Module.exe
+D:\files\Git\TonyNov\Test\User_Module\bin\Debug\User_Module.pdb
+D:\files\Git\TonyNov\Test\User_Module\obj\Debug\User_Module.csproj.AssemblyReference.cache
+D:\files\Git\TonyNov\Test\User_Module\obj\Debug\User_Module.Form1.resources
+D:\files\Git\TonyNov\Test\User_Module\obj\Debug\User_Module.Properties.Resources.resources
+D:\files\Git\TonyNov\Test\User_Module\obj\Debug\User_Module.csproj.GenerateResource.cache
+D:\files\Git\TonyNov\Test\User_Module\obj\Debug\User_Module.csproj.CoreCompileInputs.cache
+D:\files\Git\TonyNov\Test\User_Module\obj\Debug\User_Module.exe
+D:\files\Git\TonyNov\Test\User_Module\obj\Debug\User_Module.pdb
