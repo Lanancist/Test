@@ -139,7 +139,7 @@ namespace User_Module
 			}
 
 			TabPage tabPages;
-			int questnumb=0;
+			int questnumb = 0;
 			for (int i = 0; i < n; i++)
 			{
 				if (numbers.Contains(i))
@@ -243,9 +243,8 @@ namespace User_Module
 			btn.Left = (this.Width - 200) / 2;
 			btn.Width = 200;
 			btn.Height = 100;
-
+			fin.Close();
 		}
 	}
-
 }
 
