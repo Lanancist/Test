@@ -117,6 +117,8 @@ namespace Admin_Module
 			s += a+".1.";
 			a=radioButton2.Checked? 1: 0;
 			s += a + ".";
+			string lastChanged = DateTime.Now.ToString();
+			lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
 			Text = s;
 			fout.Close();
 		}

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 namespace User_Module
 {
 	public partial class Form1 : Form
@@ -80,9 +81,6 @@ namespace User_Module
 			isNamed = questm[1] == "1";
 			fromEveryTheme = questm[2] == "1";
 			obligateQuestions = questm[3] == "1";
-			/*
-			 * if (lastChanged.Length<14) lastChanged.Insert(9, "0");
-			 */
 			/////////////////////////////
 			///delete it for time check
 			lastChanged = lastChanged.Substring(0, lastChanged.Length - 6);
@@ -139,6 +137,11 @@ namespace User_Module
 			}
 
 			TabPage tabPages;
+			SplitContainer splitter;
+			Label labelLocal;
+			CheckedListBox answers;
+			RichTextBox quest;
+			System.Windows.Forms.RadioButton radioButton;
 			int questnumb = 0;
 			for (int i = 0; i < n; i++)
 			{
@@ -154,7 +157,7 @@ namespace User_Module
 				tabPages.BackColor = Color.White;
 				tabPages.AutoScroll = true;
 				tabs.TabPages.Add(tabPages);
-				SplitContainer splitter = new SplitContainer();
+				splitter = new SplitContainer();
 				tabPages.Controls.Add(splitter);
 				splitter.Parent = this;
 				splitter.Name = "splitter" + questnumb;
@@ -164,15 +167,15 @@ namespace User_Module
 				splitter.Orientation = Orientation.Horizontal;
 				splitter.Parent = tabPages;
 				splitter.SplitterDistance = 236;
-				Label label1 = new Label();
-				label1.Name = "Label" + questnumb;
-				label1.Text = questm[2] + '\n' + "Вопрос " + (questnumb + 1);
-				label1.Dock = DockStyle.Top;
-				label1.Height = 40;
-				label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-				label1.Visible = true;
-				tabPages.Controls.Add(label1);
-				RichTextBox quest = new RichTextBox();
+				labelLocal = new Label();
+				labelLocal.Name = "Label" + questnumb;
+				labelLocal.Text = questm[2] + '\n' + "Вопрос " + (questnumb + 1);
+				labelLocal.Dock = DockStyle.Top;
+				labelLocal.Height = 40;
+				labelLocal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+				labelLocal.Visible = true;
+				tabPages.Controls.Add(labelLocal);
+				quest = new RichTextBox();
 				splitter.Panel1.Controls.Add(quest);
 				quest.Name = "Text" + questnumb;
 				quest.Text = questm[2];
@@ -187,7 +190,7 @@ namespace User_Module
 				quest.TabIndex = 0;
 				if (questm[9].Length > 1)
 				{
-					CheckedListBox answers = new CheckedListBox();
+					answers = new CheckedListBox();
 					splitter.Panel2.Controls.Add(answers);
 					answers.BorderStyle = BorderStyle.None;
 					answers.Name = "Check" + questnumb;
@@ -205,12 +208,11 @@ namespace User_Module
 				}
 				else
 				{
-					RadioButton radioButton;
 					for (int j = 0; j < 6; j++)
 					{
 						if (questm[3 + j] != "")
 						{
-							radioButton = new RadioButton();
+							radioButton = new System.Windows.Forms.RadioButton();
 							radioButton.AutoSize = true;
 							radioButton.Location = new System.Drawing.Point(10, 23 * j);
 							radioButton.Name = "radioButton" + questnumb;
