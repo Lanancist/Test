@@ -22,7 +22,6 @@ namespace User_Module
 		//TabPage[] tabPages;
 		int n, generateCount;
 		bool password, isNamed, fromEveryTheme, obligateQuestions;
-
 		private void button1_Click(object sender, EventArgs e)
 		{
 			tabs.Visible = true;
@@ -39,24 +38,29 @@ namespace User_Module
 				num.Add(c);
 				k++;
 			}
-
 		}
-
-
 		private void Form1_ResizeEnd(object sender, EventArgs e)
 		{
 			button1.Top = (this.Height - 100) / 2;
 			button1.Left = (this.Width - 200) / 2;
 			button1.Width = 200;
 			button1.Height = 100;
-			if (tabs.TabPages[n + 1].Controls[0] is Button)
+			try
 			{
-				tabs.TabPages[n + 1].Controls[0].Top = (this.Height - 100) / 2;
-				tabs.TabPages[n + 1].Controls[0].Left = (this.Width - 200) / 2;
-				tabs.TabPages[n + 1].Controls[0].Width = 200;
-				tabs.TabPages[n + 1].Controls[0].Height = 100;
+				if (tabs.TabPages[n + 1].Controls[0] is Button)
+				{
+					tabs.TabPages[n + 1].Controls[0].Top = (this.Height - 100) / 2;
+					tabs.TabPages[n + 1].Controls[0].Left = (this.Width - 200) / 2;
+					tabs.TabPages[n + 1].Controls[0].Width = 200;
+					tabs.TabPages[n + 1].Controls[0].Height = 100;
+				}
 			}
+			catch (Exception)
+			{
 
+				throw;
+			}
+			
 		}
 		string path = "input.txt";
 		private void Form1_Load(object sender, EventArgs e)
@@ -99,12 +103,17 @@ namespace User_Module
 				if (obligateQuestions)
 				{
 					int k = int.Parse(questm[7]) - 1, a;
+					for (int i = 0; i <= k; i++)
+					{
+						numbers.Add(i);
+					}
 					for (int i = 8; i < questm.Length; i++)
 					{
 						a = int.Parse(questm[i]);
 						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
 						k += a;
 					}
+					
 				}
 				else
 				{
@@ -116,36 +125,34 @@ namespace User_Module
 						k += a;
 					}
 				}
-
 			}
 			else
 			{
 				if (obligateQuestions)
 				{
 					int a = int.Parse(questm[7]) - 1;
+					for (int i = 0; i < a; i++)
+					{
+						numbers.Add(i);
+					}
 					GenerateRandomNumbers(generateCount, a + 1, n, ref numbers);
 				}
 				else
 					GenerateRandomNumbers(generateCount, 0, n, ref numbers);
 			}
-
 			n = int.Parse(questm[6]);
-			if (isNamed)
-			{
-				Text = fin.ReadLine();
-				label1.Text = Text;
-			}
-
+			Text = fin.ReadLine();
+			label1.Text = Text;
 			TabPage tabPages;
 			SplitContainer splitter;
 			Label labelLocal;
 			CheckedListBox answers;
 			RichTextBox quest;
 			System.Windows.Forms.RadioButton radioButton;
-			int questnumb = 0;
+			int questnumb = -1;
 			for (int i = 0; i < n; i++)
 			{
-				if (numbers.Contains(i))
+				if (!numbers.Contains(i))
 					continue;
 				++questnumb;
 				line = fin.ReadLine();
@@ -226,9 +233,7 @@ namespace User_Module
 						else
 							j = 6;
 					}
-
 				}
-
 			}
 			tabPages = new TabPage();
 			tabPages.BackColor = Color.White;
@@ -249,4 +254,3 @@ namespace User_Module
 		}
 	}
 }
-
