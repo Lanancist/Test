@@ -46,7 +46,6 @@ namespace Admin_Module
 			textBox1.Enabled = false;
 			groupBox1.Enabled = false;
 			groupBox2.Enabled = false;
-			label1.Enabled = false;
 			label2.Enabled = false;
 			label2.Text = "Всего вопросов:____";
 			try
@@ -64,7 +63,6 @@ namespace Admin_Module
 				textBox1.Enabled = true;
 				groupBox1.Enabled = true;
 				groupBox2.Enabled = true;
-				label1.Enabled = true;
 				label2.Enabled = true;
 				label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
 			}
@@ -91,7 +89,6 @@ namespace Admin_Module
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			label1.Enabled = false;
 			label2.Enabled = false;
 			dataGridView1.Visible = false;
 			toolStripButton2.Enabled = false;

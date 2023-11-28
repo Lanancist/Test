@@ -152,8 +152,8 @@ namespace User_Module
 			int questnumb = -1;
 			for (int i = 0; i < n; i++)
 			{
-				if (!numbers.Contains(i))
-					continue;
+				//if (!numbers.Contains(i))
+				//	continue;}
 				++questnumb;
 				line = fin.ReadLine();
 				line = line.Remove(0, 1);
@@ -176,7 +176,7 @@ namespace User_Module
 				splitter.SplitterDistance = 236;
 				labelLocal = new Label();
 				labelLocal.Name = "Label" + questnumb;
-				labelLocal.Text = questm[2] + '\n' + "Вопрос " + (questnumb + 1);
+				labelLocal.Text = questm[1];
 				labelLocal.Dock = DockStyle.Top;
 				labelLocal.Height = 40;
 				labelLocal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -200,6 +200,7 @@ namespace User_Module
 					answers = new CheckedListBox();
 					splitter.Panel2.Controls.Add(answers);
 					answers.BorderStyle = BorderStyle.None;
+					answers.CheckOnClick = true;
 					answers.Name = "Check" + questnumb;
 					answers.Visible = true;
 					answers.Dock = DockStyle.Fill;
