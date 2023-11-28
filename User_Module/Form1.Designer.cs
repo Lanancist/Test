@@ -30,19 +30,19 @@
 		{
 			this.tabs = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+			this.button1 = new System.Windows.Forms.Button();
+			this.label1 = new System.Windows.Forms.Label();
 			this.tabs.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabs
 			// 
 			this.tabs.Controls.Add(this.tabPage1);
-			this.tabs.Controls.Add(this.tabPage2);
-			this.tabs.Location = new System.Drawing.Point(517, 194);
+			this.tabs.Location = new System.Drawing.Point(35, 12);
 			this.tabs.Name = "tabs";
 			this.tabs.SelectedIndex = 0;
-			this.tabs.Size = new System.Drawing.Size(200, 100);
+			this.tabs.Size = new System.Drawing.Size(407, 228);
 			this.tabs.TabIndex = 0;
 			// 
 			// tabPage1
@@ -50,37 +50,54 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(192, 74);
+			this.tabPage1.Size = new System.Drawing.Size(399, 202);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "tabPage1";
 			this.tabPage1.UseVisualStyleBackColor = true;
-			// 
-			// tabPage2
-			// 
-			this.tabPage2.Location = new System.Drawing.Point(4, 22);
-			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(192, 74);
-			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "tabPage2";
-			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
 			// openFileDialog1
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			this.openFileDialog1.Filter = "Exctl|*.xls";
 			// 
+			// button1
+			// 
+			this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.button1.Location = new System.Drawing.Point(250, 156);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(254, 130);
+			this.button1.TabIndex = 1;
+			this.button1.Text = "Начать тест";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
+			// label1
+			// 
+			this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.label1.AutoSize = true;
+			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.label1.Location = new System.Drawing.Point(347, 115);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(64, 25);
+			this.label1.TabIndex = 2;
+			this.label1.Text = "label1";
+			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.Controls.Add(this.label1);
+			this.Controls.Add(this.button1);
 			this.Controls.Add(this.tabs);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Form1_Load);
+			this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
 			this.tabs.ResumeLayout(false);
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -88,8 +105,9 @@
 
 		private System.Windows.Forms.TabControl tabs;
 		private System.Windows.Forms.TabPage tabPage1;
-		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Label label1;
 	}
 }
 

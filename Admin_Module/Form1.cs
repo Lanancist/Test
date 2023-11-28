@@ -21,25 +21,6 @@ namespace Admin_Module
 			InitializeComponent();
 		}
 
-		private void button1_Click(object sender, EventArgs e)
-		{
-			button1.Visible = false;
-			try
-			{
-				DialogResult res = openFileDialog1.ShowDialog();
-				if (res == DialogResult.OK)
-				{
-					filename = openFileDialog1.FileName;
-					Text = filename;
-					OpenExcelFile(filename);
-				}
-				else throw new Exception("Файл не выбран");
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
 
 		private void OpenExcelFile(string path)
 		{
@@ -56,9 +37,90 @@ namespace Admin_Module
 			DataTable table = tableCollection[Convert.ToString(tableCollection[0].TableName)];
 			dataGridView1.DataSource = table;
 		}
+		private void toolStripButton1_Click(object sender, EventArgs e)
+		{
+			dataGridView1.Visible = false;
+			toolStripButton3.Enabled = false;
+			toolStripButton2.Enabled = false;
+			button1.Enabled = false;
+			textBox1.Enabled = false;
+			groupBox1.Enabled = false;
+			groupBox2.Enabled = false;
+			label1.Enabled = false;
+			label2.Enabled = false;
+			label2.Text = "Всего вопросов:____";
+			try
+			{
+				DialogResult res = openFileDialog1.ShowDialog();
+				if (res == DialogResult.OK)
+				{
+					filename = openFileDialog1.FileName;
+					Text = filename;
+					OpenExcelFile(filename);
+				}
+				else throw new Exception("Файл не выбран");
+				toolStripButton2.Enabled = true;
+				button1.Enabled = true;
+				textBox1.Enabled = true;
+				groupBox1.Enabled = true;
+				groupBox2.Enabled = true;
+				label1.Enabled = true;
+				label2.Enabled = true;
+				label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private void toolStripButton2_Click(object sender, EventArgs e)
+		{
+			dataGridView1.Visible = true;
+			dataGridView1.BringToFront();
+			toolStripButton3.Enabled = true;
+			toolStripButton2.Enabled = false;
+		}
+
+		private void toolStripButton3_Click(object sender, EventArgs e)
+		{
+			dataGridView1.Visible = false;
+			toolStripButton3.Enabled = false;
+			toolStripButton2.Enabled = true;
+		}
+
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			button1.BringToFront();
+			label1.Enabled = false;
+			label2.Enabled = false;
+			dataGridView1.Visible = false;
+			toolStripButton2.Enabled = false;
+			toolStripButton3.Enabled = false;
+			button1.Enabled = false;
+			textBox1.Enabled = false;
+			groupBox1.Enabled = false;
+			groupBox2.Enabled = false;
+			dataGridView1.Left = 0;
+			dataGridView1.Top = 20;
+			dataGridView1.Width = 800; 
+			dataGridView1.Height = 430;
+			dataGridView1.Anchor=AnchorStyles.Left|AnchorStyles.Right|AnchorStyles.Left|AnchorStyles.Bottom;
+		}
+
+		string path = "input.txt";
+		private void button1_Click(object sender, EventArgs e)
+		{
+			dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
+			StreamWriter fout = new StreamWriter(path, false);
+			string s="";
+			int a = radioButton3.Checked? 1:0;
+			s += a+".1.";
+			a=radioButton2.Checked? 1: 0;
+			s += a + ".";
+			string lastChanged = DateTime.Now.ToString();
+			lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
+			Text = s;
+			fout.Close();
 		}
 	}
 }
