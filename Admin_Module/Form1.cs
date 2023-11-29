@@ -15,7 +15,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Web;
-using Spire.Xls;
 namespace Admin_Module
 {
 	public partial class Form1 : Form
@@ -186,34 +185,6 @@ namespace Admin_Module
 
 		private void toolStripButton4_Click(object sender, EventArgs e)
 		{
-
-		}
-		private void SpireReadExcel(string filename)
-		{
-			Workbook wb = new Workbook();
-			wb.LoadFromFile(filename);
-			Worksheet sheet = wb.Worksheets[0];
-			Spire.Xls.CellRange locatedRange = sheet.AllocatedRange;
-			if (locatedRange.ColumnCount!=10)
-			{
-				MessageBox.Show("В загружаемой таблице не девять столбцов!", "Ошибка считывания", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
-			dataGridView1.Columns.Add("ThemeNum", "Номер темы");
-			dataGridView1.Columns.Add("Theme", "Название темы");
-			dataGridView1.Columns.Add("Quest", "Вопрос");
-			dataGridView1.Columns.Add("Var1", "Вариант 1");
-			dataGridView1.Columns.Add("Var2", "Вариант 2");
-			dataGridView1.Columns.Add("Var3", "Вариант 3");
-			dataGridView1.Columns.Add("Var4", "Вариант 4");
-			dataGridView1.Columns.Add("Var5", "Вариант 5");
-			dataGridView1.Columns.Add("Var6", "Вариант 6");
-			dataGridView1.Columns.Add("Answer", "Ответ");
-			for (int i = 1; i < locatedRange.Rows.Length; i++)
-			{
-
-				dataGridView1.Rows.Add(locatedRange[i+1,1].Value, locatedRange[i + 1, 2].Value,locatedRange[i + 1, 3].Value,locatedRange[i + 1, 4].Value, locatedRange[i + 1, 5].Value, locatedRange[i + 1, 6].Value, locatedRange[i + 1, 7].Value, locatedRange[i + 1, 8].Value, locatedRange[i + 1, 9].Value, locatedRange[i + 1, 10].Value);
-			}
 
 		}
 	}
