@@ -14,6 +14,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
+using System.Web;
 namespace Admin_Module
 {
 	public partial class Form1 : Form
@@ -47,6 +48,7 @@ namespace Admin_Module
 			toolStripButton3.Enabled = false;
 			toolStripButton2.Enabled = false;
 			button1.Enabled = false;
+			button2.Enabled = false;
 			textBox1.Enabled = false;
 			groupBox1.Enabled = false;
 			groupBox2.Enabled = false;
@@ -64,6 +66,7 @@ namespace Admin_Module
 				else throw new Exception("Файл не выбран");
 				toolStripButton2.Enabled = true;
 				button1.Enabled = true;
+				button2.Enabled = true;
 				textBox1.Enabled = true;
 				groupBox1.Enabled = true;
 				groupBox2.Enabled = true;
@@ -96,95 +99,87 @@ namespace Admin_Module
 			toolStripButton2.Enabled = false;
 			toolStripButton3.Enabled = false;
 			button1.Enabled = false;
+			button2.Enabled = false;
 			textBox1.Enabled = false;
 			groupBox1.Enabled = false;
 			groupBox2.Enabled = false;
 			dataGridView1.Left = 0;
 			dataGridView1.Top = 20;
-			dataGridView1.Width = 800; 
+			dataGridView1.Width = 800;
 			dataGridView1.Height = 430;
-			dataGridView1.Anchor=AnchorStyles.Left|AnchorStyles.Right|AnchorStyles.Left|AnchorStyles.Bottom;
+			dataGridView1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Bottom;
 		}
 
 		string path = "input.txt";
-		private void button1_Click(object sender, EventArgs e)
+		private void button2_Click(object sender, EventArgs e)
 		{
-			//dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
-			//StreamWriter fout = new StreamWriter(path, false);
-			//string s="";
-			//int a = radioButton3.Checked? 1:0;
-			//s += a+".1.";
-			//a=radioButton2.Checked? 1: 0;
-			//s += a + ".";
-			//string lastChanged = DateTime.Now.ToString();
-			//lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
-			//Text = s;
-			//fout.Close();
-
-			Cursor.Current = Cursors.WaitCursor;
-			Excel.Application xlApp = new Excel.Application();
-			Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"D:\data.xls");
-			Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
-			Excel.Range xlRange = xlWorksheet.UsedRange;
-
-			xlWorksheet.Cells[1, 1] = Text;
-			xlApp.Visible = false;
-			xlApp.UserControl = false;
-			xlWorkbook.Save();
-
-			//cleanup
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-
-			//release com objects to fully kill excel process from running in the background
-			Marshal.ReleaseComObject(xlRange);
-			Marshal.ReleaseComObject(xlWorksheet);
-
-			//close and release
-			xlWorkbook.Close();
-			Marshal.ReleaseComObject(xlWorkbook);
-
-			//quit and release
-			xlApp.Quit();
-			Marshal.ReleaseComObject(xlApp);
-
-			// Set cursor as default arrow
-			Cursor.Current = Cursors.Default;
-		}
-
-		private void toolStripButton4_Click(object sender, EventArgs e)
-		{
-			Cursor.Current = Cursors.WaitCursor;
-
-			Excel.Application xlApp = new Excel.Application();
-			Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"D:\data.xls");
-			Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
-			Excel.Range xlRange = xlWorksheet.UsedRange;
-
-			if (xlRange.Cells[1, 1] != null && xlRange.Cells[1, 1].Value2 != null)
+			try
 			{
-				Text = "New "+xlRange.Cells[1, 1].Value2.ToString();
+				DialogResult res = saveFileDialog1.ShowDialog();
+				if (res == DialogResult.OK)
+				{
+					string filename = saveFileDialog1.FileName;
+					Text = filename;
+					CreateExcel(filename);
+				}
+				else throw new Exception("Файл не был сохранен!");
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 
-			//cleanup
+		}
+		public void CreateExcel(string filename)
+		{
+
+			Cursor.Current = Cursors.WaitCursor;
+			Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+			if (xlApp == null)
+			{
+				MessageBox.Show("Не удается найти excel!! Установите его или редактируйте таблицу в другом редакторе.");
+				Marshal.ReleaseComObject(xlApp);
+				return;
+			}
+			Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
+			Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
+			object misValue = System.Reflection.Missing.Value;
+
+			xlWorkBook = xlApp.Workbooks.Add(misValue);
+			xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+			for (int i = 1; i < dataGridView1.RowCount - 1; i++)
+			{
+				for (int j = 0; j < dataGridView1.ColumnCount - 1; j++)
+				{
+					xlWorkSheet.Cells[i, j+1] = dataGridView1[j, i].Value.ToString();
+				}
+			}
+			xlWorkBook.SaveAs(filename, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue,
+			misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+			xlWorkBook.Close(0);
+			xlApp.Quit();
+			Marshal.ReleaseComObject(xlWorkSheet);
+			Marshal.ReleaseComObject(xlWorkBook);
+			Marshal.ReleaseComObject(xlApp);
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
-
-			//release com objects to fully kill excel process from running in the background
-			Marshal.ReleaseComObject(xlRange);
-			Marshal.ReleaseComObject(xlWorksheet);
-
-			//close and release
-			xlWorkbook.Close();
-			Marshal.ReleaseComObject(xlWorkbook);
-
-			//quit and release
-			xlApp.Quit();
-			Marshal.ReleaseComObject(xlApp);
-
-			// Set cursor as default arrow
 			Cursor.Current = Cursors.Default;
-
+			MessageBox.Show("Файл таблицы создан по адресу \"" + filename + "\"");
+		}
+		private void button1_Click(object sender, EventArgs e)
+		{
+			dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
+			StreamWriter fout = new StreamWriter(path, false);
+			string s = "";
+			int a = radioButton3.Checked ? 1 : 0;
+			s += a + ".1.";
+			a = radioButton2.Checked ? 1 : 0;
+			s += a + ".";
+			string lastChanged = DateTime.Now.ToString();
+			lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
+			Text = s;
+			fout.Close();
 		}
 	}
 }

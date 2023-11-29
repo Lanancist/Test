@@ -35,6 +35,7 @@
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
 			this.button1 = new System.Windows.Forms.Button();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -48,9 +49,9 @@
 			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.radioButton4 = new System.Windows.Forms.RadioButton();
 			this.radioButton3 = new System.Windows.Forms.RadioButton();
-			this.label5 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
-			this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+			this.button2 = new System.Windows.Forms.Button();
+			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.toolStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
@@ -65,7 +66,7 @@
 			this.dataGridView1.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-			this.dataGridView1.Location = new System.Drawing.Point(375, 30);
+			this.dataGridView1.Location = new System.Drawing.Point(333, 28);
 			this.dataGridView1.Name = "dataGridView1";
 			this.dataGridView1.ReadOnly = true;
 			this.dataGridView1.Size = new System.Drawing.Size(167, 54);
@@ -122,14 +123,23 @@
 			this.toolStripButton3.Text = "Спрятать таблицу";
 			this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
 			// 
+			// toolStripButton4
+			// 
+			this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
+			this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton4.Name = "toolStripButton4";
+			this.toolStripButton4.Size = new System.Drawing.Size(106, 22);
+			this.toolStripButton4.Text = "Добавить вопрос";
+			// 
 			// button1
 			// 
-			this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.button1.Location = new System.Drawing.Point(316, 369);
+			this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.button1.Location = new System.Drawing.Point(316, 381);
 			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(244, 62);
+			this.button1.Size = new System.Drawing.Size(244, 56);
 			this.button1.TabIndex = 3;
-			this.button1.Text = "Сохранить";
+			this.button1.Text = "Сохранить в файл";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
@@ -225,12 +235,11 @@
 			this.groupBox2.Controls.Add(this.textBox2);
 			this.groupBox2.Controls.Add(this.radioButton4);
 			this.groupBox2.Controls.Add(this.radioButton3);
-			this.groupBox2.Controls.Add(this.label5);
 			this.groupBox2.Controls.Add(this.label3);
 			this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.groupBox2.Location = new System.Drawing.Point(316, 123);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(244, 230);
+			this.groupBox2.Size = new System.Drawing.Size(244, 207);
 			this.groupBox2.TabIndex = 8;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Настройки пароля";
@@ -240,7 +249,7 @@
 			this.textBox2.BackColor = System.Drawing.SystemColors.Control;
 			this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.textBox2.Location = new System.Drawing.Point(8, 106);
+			this.textBox2.Location = new System.Drawing.Point(8, 78);
 			this.textBox2.Multiline = true;
 			this.textBox2.Name = "textBox2";
 			this.textBox2.Size = new System.Drawing.Size(228, 123);
@@ -251,7 +260,7 @@
 			// 
 			this.radioButton4.AutoSize = true;
 			this.radioButton4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.radioButton4.Location = new System.Drawing.Point(17, 73);
+			this.radioButton4.Location = new System.Drawing.Point(17, 61);
 			this.radioButton4.Name = "radioButton4";
 			this.radioButton4.Size = new System.Drawing.Size(91, 19);
 			this.radioButton4.TabIndex = 3;
@@ -261,43 +270,40 @@
 			// radioButton3
 			// 
 			this.radioButton3.AutoSize = true;
+			this.radioButton3.BackColor = System.Drawing.Color.Transparent;
 			this.radioButton3.Checked = true;
 			this.radioButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.radioButton3.Location = new System.Drawing.Point(17, 55);
+			this.radioButton3.Location = new System.Drawing.Point(17, 43);
 			this.radioButton3.Name = "radioButton3";
 			this.radioButton3.Size = new System.Drawing.Size(82, 19);
 			this.radioButton3.TabIndex = 2;
 			this.radioButton3.TabStop = true;
 			this.radioButton3.Text = "Включить";
-			this.radioButton3.UseVisualStyleBackColor = true;
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(91, 38);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(88, 17);
-			this.label5.TabIndex = 1;
-			this.label5.Text = "4697137925";
+			this.radioButton3.UseVisualStyleBackColor = false;
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(56, 19);
+			this.label3.Location = new System.Drawing.Point(3, 24);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(137, 17);
 			this.label3.TabIndex = 0;
 			this.label3.Text = "Пароль на сегодня:";
 			// 
-			// toolStripButton4
+			// button2
 			// 
-			this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
-			this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton4.Name = "toolStripButton4";
-			this.toolStripButton4.Size = new System.Drawing.Size(45, 22);
-			this.toolStripButton4.Text = "search";
-			this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
+			this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.button2.Location = new System.Drawing.Point(316, 336);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(244, 39);
+			this.button2.TabIndex = 9;
+			this.button2.Text = "Сохранить изменения";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.button2_Click);
+			// 
+			// saveFileDialog1
+			// 
+			this.saveFileDialog1.Filter = "Excel|*.xls";
 			// 
 			// Form1
 			// 
@@ -305,6 +311,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(584, 449);
+			this.Controls.Add(this.button2);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.groupBox1);
@@ -351,11 +358,12 @@
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.TextBox textBox2;
 		private System.Windows.Forms.RadioButton radioButton4;
 		private System.Windows.Forms.RadioButton radioButton3;
 		private System.Windows.Forms.ToolStripButton toolStripButton4;
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 	}
 }
 
