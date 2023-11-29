@@ -61,8 +61,7 @@ namespace Admin_Module
 				{
 					filename = openFileDialog1.FileName;
 					Text = filename;
-					//OpenExcelFile(filename);
-					SpireReadExcel(filename);
+					OpenExcelFile(filename);
 				}
 				else throw new Exception("Файл не выбран");
 				toolStripButton2.Enabled = true;
