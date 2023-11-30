@@ -15,9 +15,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Web;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
+
 namespace Admin_Module
 {
 	public partial class Form1 : Form
@@ -38,12 +36,29 @@ namespace Admin_Module
 			{
 				ConfigureDataTable = (x) => new ExcelDataTableConfiguration()
 				{
-					UseHeaderRow = true
+					UseHeaderRow = false
 				}
-			});
+			}) ;
 			tableCollection = db.Tables;
 			DataTable table = tableCollection[Convert.ToString(tableCollection[0].TableName)];
 			dataGridView1.DataSource = table;
+			if (dataGridView1.ColumnCount != 10)
+			{
+				throw new Exception("Загружаемая таблица имеет неверный формат!"); ;
+			}
+			dataGridView1.Rows.RemoveAt(0);
+			for (int i = 0; i < 10; i++)
+				dataGridView1.Columns[i].ValueType = typeof(string);
+			dataGridView1.Columns[0].HeaderText = "Номер темы";
+			dataGridView1.Columns[1].HeaderText = "Название темы";
+			dataGridView1.Columns[2].HeaderText = "Вопрос";
+			dataGridView1.Columns[3].HeaderText = "Вариант 1";
+			dataGridView1.Columns[4].HeaderText = "Вариант 2";
+			dataGridView1.Columns[5].HeaderText = "Вариант 3";
+			dataGridView1.Columns[6].HeaderText = "Вариант 4";
+			dataGridView1.Columns[7].HeaderText = "Вариант 5";
+			dataGridView1.Columns[8].HeaderText = "Вариант 6";
+			dataGridView1.Columns[9].HeaderText = "Ответ";
 		}
 		private void toolStripButton1_Click(object sender, EventArgs e)
 		{
@@ -78,7 +93,7 @@ namespace Admin_Module
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 		private void toolStripButton2_Click(object sender, EventArgs e)
@@ -123,7 +138,7 @@ namespace Admin_Module
 				{
 					string filename = saveFileDialog1.FileName;
 					Text = filename;
-					CreateExcel(filename);
+					ExportExcelInterop(filename);
 				}
 				else throw new Exception("Файл не был сохранен!");
 			}
@@ -133,42 +148,69 @@ namespace Admin_Module
 			}
 
 		}
-		public void CreateExcel(string filename)
+		public void ExportExcelInterop(string filename)
 		{
 
 			Cursor.Current = Cursors.WaitCursor;
-			Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+			Microsoft.Office.Interop.Excel.Application xlApp;
+			try
+			{
+				xlApp = new Microsoft.Office.Interop.Excel.Application();
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
 			if (xlApp == null)
 			{
 				MessageBox.Show("Не удается найти excel!! Установите его или редактируйте таблицу в другом редакторе.");
 				Marshal.ReleaseComObject(xlApp);
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+				Cursor.Current = Cursors.Default;
 				return;
 			}
 			Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
 			Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
-			object misValue = System.Reflection.Missing.Value;
-
-			xlWorkBook = xlApp.Workbooks.Add(misValue);
-			xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-			for (int i = 1; i < dataGridView1.RowCount - 1; i++)
+			try
 			{
-				for (int j = 0; j < dataGridView1.ColumnCount - 1; j++)
+				
+				object misValue = System.Reflection.Missing.Value;
+				xlWorkBook = xlApp.Workbooks.Add(misValue);
+				xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+				xlWorkSheet.Cells[1, 1] = "Номер темы";
+				xlWorkSheet.Cells[1, 2] = "Название темы";
+				xlWorkSheet.Cells[1, 3] = "Вопрос";
+				xlWorkSheet.Cells[1, 4] = "Вариант 1";
+				xlWorkSheet.Cells[1, 5] = "Вариант 2";
+				xlWorkSheet.Cells[1, 6] = "Вариант 3";
+				xlWorkSheet.Cells[1, 7] = "Вариант 4";
+				xlWorkSheet.Cells[1, 8] = "Вариант 5";
+				xlWorkSheet.Cells[1, 9] = "Вариант 6";
+				xlWorkSheet.Cells[1, 10] = "Ответ";
+				for (int i = 0; i < dataGridView1.RowCount; i++)
 				{
-					xlWorkSheet.Cells[i, j + 1] = dataGridView1[j, i].Value.ToString();
+					for (int j = 0; j < dataGridView1.ColumnCount - 1; j++)
+					{
+						xlWorkSheet.Cells[i + 2, j + 1] = dataGridView1[j, i].Value.ToString();
+					}
 				}
+				xlWorkBook.SaveAs(filename, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue,
+				misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+				xlWorkBook.Close(0);
+				Marshal.ReleaseComObject(xlWorkSheet);
+				Marshal.ReleaseComObject(xlWorkBook);
 			}
-			xlWorkBook.SaveAs(filename, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue,
-			misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-			xlWorkBook.Close(0);
-			xlApp.Quit();
-			Marshal.ReleaseComObject(xlWorkSheet);
-			Marshal.ReleaseComObject(xlWorkBook);
-			Marshal.ReleaseComObject(xlApp);
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-			Cursor.Current = Cursors.Default;
-			MessageBox.Show("Файл таблицы создан по адресу \"" + filename + "\"");
+			finally
+			{
+				xlApp.Quit();
+				Marshal.ReleaseComObject(xlApp);
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+				Cursor.Current = Cursors.Default;
+			}
+			MessageBox.Show("Файл таблицы создан по адресу \"" + filename + "\"","Сохранение таблицы вопросов",MessageBoxButtons.OK,MessageBoxIcon.Asterisk);
 		}
 		private void button1_Click(object sender, EventArgs e)
 		{
@@ -188,6 +230,24 @@ namespace Admin_Module
 		private void toolStripButton4_Click(object sender, EventArgs e)
 		{
 
+		}
+
+		private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+		{
+
+		}
+
+		private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+		{
+			if (e.Button==MouseButtons.Right)
+			{
+				if (MessageBox.Show("Вы действительно хотите удалить этот вопрос?", "Удаление вопроса", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+				{
+					dataGridView1.Rows.RemoveAt(e.RowIndex);
+					label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
+					MessageBox.Show("Вопрос удален", "Удаление вопроса", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+			}
 		}
 	}
 }

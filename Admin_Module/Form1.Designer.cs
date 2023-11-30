@@ -38,15 +38,15 @@
 			this.button1 = new System.Windows.Forms.Button();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.label4 = new System.Windows.Forms.Label();
 			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+			this.label4 = new System.Windows.Forms.Label();
 			this.radioButton2 = new System.Windows.Forms.RadioButton();
 			this.radioButton1 = new System.Windows.Forms.RadioButton();
 			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
 			this.label2 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.radioButton4 = new System.Windows.Forms.RadioButton();
+			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.radioButton3 = new System.Windows.Forms.RadioButton();
 			this.label3 = new System.Windows.Forms.Label();
 			this.button2 = new System.Windows.Forms.Button();
@@ -154,16 +154,6 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Настройки выбора вопросов";
 			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.label4.Location = new System.Drawing.Point(16, 67);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(120, 13);
-			this.label4.TabIndex = 4;
-			this.label4.Text = "Количество вопросов:";
-			// 
 			// richTextBox1
 			// 
 			this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
@@ -174,6 +164,16 @@
 			this.richTextBox1.Size = new System.Drawing.Size(356, 180);
 			this.richTextBox1.TabIndex = 3;
 			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.label4.Location = new System.Drawing.Point(16, 67);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(120, 13);
+			this.label4.TabIndex = 4;
+			this.label4.Text = "Количество вопросов:";
 			// 
 			// radioButton2
 			// 
@@ -231,6 +231,17 @@
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Настройки пароля";
 			// 
+			// radioButton4
+			// 
+			this.radioButton4.AutoSize = true;
+			this.radioButton4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.radioButton4.Location = new System.Drawing.Point(225, 83);
+			this.radioButton4.Name = "radioButton4";
+			this.radioButton4.Size = new System.Drawing.Size(91, 19);
+			this.radioButton4.TabIndex = 3;
+			this.radioButton4.Text = "Выключить";
+			this.radioButton4.UseVisualStyleBackColor = true;
+			// 
 			// textBox2
 			// 
 			this.textBox2.BackColor = System.Drawing.SystemColors.Control;
@@ -242,17 +253,6 @@
 			this.textBox2.Size = new System.Drawing.Size(333, 123);
 			this.textBox2.TabIndex = 4;
 			this.textBox2.Text = resources.GetString("textBox2.Text");
-			// 
-			// radioButton4
-			// 
-			this.radioButton4.AutoSize = true;
-			this.radioButton4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.radioButton4.Location = new System.Drawing.Point(225, 83);
-			this.radioButton4.Name = "radioButton4";
-			this.radioButton4.Size = new System.Drawing.Size(91, 19);
-			this.radioButton4.TabIndex = 3;
-			this.radioButton4.Text = "Выключить";
-			this.radioButton4.UseVisualStyleBackColor = true;
 			// 
 			// radioButton3
 			// 
@@ -291,6 +291,7 @@
 			// saveFileDialog1
 			// 
 			this.saveFileDialog1.Filter = "Excel|*.xls";
+			this.saveFileDialog1.OverwritePrompt = false;
 			// 
 			// dataGridView1
 			// 
@@ -302,10 +303,11 @@
 			this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
 			this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
 			this.dataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-			this.dataGridView1.Location = new System.Drawing.Point(562, 29);
+			this.dataGridView1.Location = new System.Drawing.Point(312, 29);
 			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.Size = new System.Drawing.Size(197, 95);
+			this.dataGridView1.Size = new System.Drawing.Size(447, 282);
 			this.dataGridView1.TabIndex = 10;
+			this.dataGridView1.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_RowHeaderMouseClick);
 			// 
 			// Form1
 			// 
