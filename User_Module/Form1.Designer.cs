@@ -29,31 +29,19 @@
 		private void InitializeComponent()
 		{
 			this.tabs = new System.Windows.Forms.TabControl();
-			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.button1 = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
-			this.tabs.SuspendLayout();
+			this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
 			this.SuspendLayout();
 			// 
 			// tabs
 			// 
-			this.tabs.Controls.Add(this.tabPage1);
 			this.tabs.Location = new System.Drawing.Point(35, 12);
 			this.tabs.Name = "tabs";
 			this.tabs.SelectedIndex = 0;
 			this.tabs.Size = new System.Drawing.Size(407, 228);
 			this.tabs.TabIndex = 0;
-			// 
-			// tabPage1
-			// 
-			this.tabPage1.Location = new System.Drawing.Point(4, 22);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(399, 202);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "tabPage1";
-			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
 			// openFileDialog1
 			// 
@@ -83,11 +71,20 @@
 			this.label1.Text = "label1";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
+			// checkedListBox1
+			// 
+			this.checkedListBox1.FormattingEnabled = true;
+			this.checkedListBox1.Location = new System.Drawing.Point(580, 173);
+			this.checkedListBox1.Name = "checkedListBox1";
+			this.checkedListBox1.Size = new System.Drawing.Size(120, 94);
+			this.checkedListBox1.TabIndex = 3;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.Controls.Add(this.checkedListBox1);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.tabs);
@@ -95,7 +92,6 @@
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
-			this.tabs.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -104,10 +100,10 @@
 		#endregion
 
 		private System.Windows.Forms.TabControl tabs;
-		private System.Windows.Forms.TabPage tabPage1;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.CheckedListBox checkedListBox1;
 	}
 }
 
