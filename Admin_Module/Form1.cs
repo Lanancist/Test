@@ -307,12 +307,13 @@ namespace Admin_Module
 				return;
 			try
 			{
+				folderBrowserDialog1.SelectedPath = Application.StartupPath;
 				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
 				{
-					string filename = folderBrowserDialog1.SelectedPath+"\\test.data";
+					string filename = folderBrowserDialog1.SelectedPath + "\\test.data";
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 					StreamWriter fout = new StreamWriter(filename, false);
-					string s = "",current,previous;
+					string s = "", current, previous;
 					if (radioButton3.Checked)
 						s += "1.";
 					else
@@ -324,17 +325,17 @@ namespace Admin_Module
 						s += "0.";
 					List<int> counts = new List<int>();
 					counts.Add(1);
-				previous=dataGridView1.Rows[0].Cells[0].Value.ToString();
+					previous = dataGridView1.Rows[0].Cells[0].Value.ToString();
 					for (int i = 1; i < dataGridView1.RowCount; i++)
 					{
 						current = dataGridView1.Rows[i].Cells[0].Value.ToString();
-						if (current== previous)
-							counts[counts.Count-1]++;
+						if (current == previous)
+							counts[counts.Count - 1]++;
 						else
 							counts.Add(1);
 						previous = current;
 					}
-					if (counts.Count>0&& dataGridView1.Rows[0].Cells[0].Value.ToString()=="0")
+					if (counts.Count > 0 && dataGridView1.Rows[0].Cells[0].Value.ToString() == "0")
 						s += "1.";
 					else
 						s += "0.";
@@ -354,12 +355,9 @@ namespace Admin_Module
 					for (int i = 0; i < dataGridView1.RowCount; i++)
 					{
 						for (int j = 0; j < dataGridView1.ColumnCount; j++)
-						{
-							s+= '\"'+dataGridView1.Rows[i].Cells[j].Value.ToString()+'\"';
-							
-						}
-						s += ';';
-						fout.WriteLine(s);	
+							s += '\"' + dataGridView1.Rows[i].Cells[j].Value.ToString() + "\";";
+						fout.WriteLine(s);
+						s = "";
 					}
 					fout.Close();
 					MessageBox.Show("Файл сохранен", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);

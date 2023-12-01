@@ -45,21 +45,6 @@ namespace User_Module
 			button1.Left = (this.Width - 200) / 2;
 			button1.Width = 200;
 			button1.Height = 100;
-			try
-			{
-				if (tabs.TabPages[n + 1].Controls[0] is Button)
-				{
-					tabs.TabPages[n + 1].Controls[0].Top = (this.Height - 100) / 2;
-					tabs.TabPages[n + 1].Controls[0].Left = (this.Width - 200) / 2;
-					tabs.TabPages[n + 1].Controls[0].Width = 200;
-					tabs.TabPages[n + 1].Controls[0].Height = 100;
-				}
-			}
-			catch (Exception)
-			{
-
-				throw;
-			}
 			
 		}
 		string path = "test.data";
@@ -157,7 +142,7 @@ namespace User_Module
 				++questnumb;
 				line = fin.ReadLine();
 				line = line.Remove(0, 1);
-				line = line.Remove(line.Length - 1, 1);
+				line = line.Remove(line.Length - 2, 2);
 				questm = line.Split(new[] { "\";\"" }, StringSplitOptions.None);
 				tabPages = new TabPage();
 				tabPages.Text = "Вопрос " + (questnumb + 1);
