@@ -99,10 +99,10 @@
 			this.toolStrip1.AllowMerge = false;
 			this.toolStrip1.CanOverflow = false;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-				this.btn_load,
-				this.btn_main,
-				this.btn_editor,
-				this.btn_newquestion});
+            this.btn_load,
+            this.btn_main,
+            this.btn_editor,
+            this.btn_newquestion});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(788, 25);
@@ -422,10 +422,10 @@
 			this.numericUpDown3.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.numericUpDown3.Location = new System.Drawing.Point(-77, 229);
 			this.numericUpDown3.Maximum = new decimal(new int[] {
-				654321,
-				0,
-				0,
-				0});
+            654321,
+            0,
+            0,
+            0});
 			this.numericUpDown3.Name = "numericUpDown3";
 			this.numericUpDown3.Size = new System.Drawing.Size(120, 30);
 			this.numericUpDown3.TabIndex = 23;
@@ -610,10 +610,10 @@
 			this.numericUpDown2.Size = new System.Drawing.Size(120, 30);
 			this.numericUpDown2.TabIndex = 5;
 			this.numericUpDown2.Value = new decimal(new int[] {
-				1,
-				0,
-				0,
-				0});
+            1,
+            0,
+            0,
+            0});
 			this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
 			// 
 			// label6
@@ -684,6 +684,7 @@
 			this.Controls.Add(this.toolStrip1);
 			this.DoubleBuffered = true;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "Form1";
 			this.Text = "Программа тестирования. Мастер";

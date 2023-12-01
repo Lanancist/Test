@@ -119,7 +119,7 @@ namespace Admin_Module
 					OpenExcelFile(filename);
 					Text = "Программа тестирования. Мастер | " + filename;
 				}
-				else throw new Exception("Файл не был сохранен");
+				else throw new Exception("Файл не был загружен");
 				btn_editor.Enabled = true;
 				btn_newquestion.Enabled = true;
 				button1.Enabled = true;
@@ -190,7 +190,7 @@ namespace Admin_Module
 			}
 			catch (Exception)
 			{
-				throw;
+				throw new Exception("Не удается найти Excel! Установите его или редактируйте таблицу в другом редакторе."); 
 			}
 			if (xlApp == null)
 			{
