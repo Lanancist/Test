@@ -45,8 +45,22 @@ namespace User_Module
 			button1.Left = (this.Width - 200) / 2;
 			button1.Width = 200;
 			button1.Height = 100;
-			
+
 		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void tabs_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (tabs.Visible == true && e.KeyCode == Keys.Enter && tabs.SelectedIndex + 1 < tabs.TabPages.Count)
+			{
+				tabs.SelectedIndex++;
+			}
+		}
+
 		string path = "test.data";
 		public static string EncodeDecrypt(string str, int secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
 		{
@@ -63,14 +77,19 @@ namespace User_Module
 		}
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			tabs.BringToFront();
-			tabs.Visible = true;
+			button1.Width = 200;
+			button1.Height = 100;
+			button1.Left = (Width-button1.Width) / 2;
+			button1.Top = (Height - button1.Height) / 2;
+			button1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			tabs.Dock = DockStyle.Fill;
+			tabs.BringToFront();
+			tabs.Visible = false;
 			string line;
 			FileInfo filepath = new FileInfo(path);
 			if (!filepath.Exists)
 			{
-				MessageBox.Show("Файл \""+path+"\" не найден!", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Файл \"" + path + "\" не найден!", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Close();
 				return;
 			}
@@ -106,18 +125,18 @@ namespace User_Module
 					{
 						numbers.Add(i);
 					}
-					for (int i = 8; i < questm.Length-1; i++)
+					for (int i = 8; i < questm.Length - 1; i++)
 					{
 						a = int.Parse(questm[i]);
 						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
 						k += a;
 					}
-					
+
 				}
 				else
 				{
 					int k = 0, a;
-					for (int i = 7; i < questm.Length-1; i++)
+					for (int i = 7; i < questm.Length - 1; i++)
 					{
 						a = int.Parse(questm[i]);
 						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
@@ -142,7 +161,6 @@ namespace User_Module
 			n = int.Parse(questm[6]);
 			int key = int.Parse(questm[questm.Length - 1]);
 			Text = EncodeDecrypt(fin.ReadLine(), key);
-			label1.Text = Text;
 			TabPage tabPages;
 			SplitContainer splitter;
 			Label labelLocal;
@@ -152,10 +170,10 @@ namespace User_Module
 			int questnumb = -1;
 			for (int i = 0; i < n; i++)
 			{
-				//if (!numbers.Contains(i))
-				//	continue;}
+				line = EncodeDecrypt(fin.ReadLine(), key); 
+				if (!numbers.Contains(i))
+					continue;
 				++questnumb;
-				line = EncodeDecrypt(fin.ReadLine(), key);
 				line = line.Remove(0, 1);
 				line = line.Remove(line.Length - 2, 2);
 				questm = line.Split(new[] { "\";\"" }, StringSplitOptions.None);
@@ -194,7 +212,6 @@ namespace User_Module
 				quest.ScrollBars = RichTextBoxScrollBars.Vertical;
 				quest.WordWrap = true;
 				quest.ShortcutsEnabled = false;
-				quest.TabIndex = 0;
 				if (questm[9].Length > 1)
 				{
 					answers = new CheckedListBox();
@@ -225,7 +242,6 @@ namespace User_Module
 							radioButton.Location = new System.Drawing.Point(10, 23 * j);
 							radioButton.Name = "radioButton" + questnumb;
 							radioButton.Size = new System.Drawing.Size(85, 17);
-							radioButton.TabIndex = j;
 							radioButton.TabStop = true;
 							radioButton.Text = questm[3 + j];
 							radioButton.UseVisualStyleBackColor = true;
@@ -236,21 +252,8 @@ namespace User_Module
 					}
 				}
 			}
-			tabPages = new TabPage();
-			tabPages.BackColor = Color.White;
-			tabPages.Text = "Окончить тест";
-			tabPages.AutoScroll = true;
-			tabs.TabPages.Add(tabPages);
-			Button btn = new Button();
-			tabPages.Controls.Add(btn);
-			btn.Name = "btnEnd";
-			btn.Text = "Завершить тест";
-			btn.Visible = true;
-			btn.Enabled = true;
-			btn.Top = (this.Height - 100) / 2;
-			btn.Left = (this.Width - 200) / 2;
-			btn.Width = 200;
-			btn.Height = 100;
+			tabs.TabPages.Remove(tabPage1);
+			tabs.TabPages.Add(tabPage1);
 			fin.Close();
 		}
 	}
