@@ -27,7 +27,7 @@ namespace Admin_Module
 			InitializeComponent();
 		}
 
-        public static string EncodeDecrypt(string str, uint secretKey) // Использовать EncodeDecrypt("Cтрока, (ключ) 0x12345...")
+        public static string EncodeDecrypt(string str, uint secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
         {
             var ch = str.ToArray(); 
             string newStr = "";      
