@@ -85,10 +85,26 @@ namespace Admin_Module
 		bool CheckTable()
 		{
 			string s = "";
+			int b = 0;
 			for (int i = 0; i < dataGridView1.RowCount; i++)
 			{
 				if (string.IsNullOrWhiteSpace(dataGridView1[0, i].Value.ToString()))
 					s += "Вопрос " + (i + 1) + ": Не прописан номер темы!\n";
+				else
+				{
+
+					try
+					{
+						b = int.Parse(dataGridView1[0, i].Value.ToString());
+						if (b < 0)
+							s += "Вопрос " + (i + 1) + ": Не корректно введен номер темы\n";
+					}
+					catch (Exception)
+					{
+						s += "Вопрос " + (i + 1) + ": Не корректно введен номер темы\n";
+
+					}
+				}
 				if (string.IsNullOrWhiteSpace(dataGridView1[1, i].Value.ToString()))
 					s += "Вопрос " + (i + 1) + ": Не прописано название темы!\n";
 				if (string.IsNullOrWhiteSpace(dataGridView1[2, i].Value.ToString()))
@@ -105,6 +121,15 @@ namespace Admin_Module
 					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 5!\n";
 				if (string.IsNullOrWhiteSpace(dataGridView1[9, i].Value.ToString()))
 					s += "Вопрос " + (i + 1) + ": Не прописан правильный ответ!\n";
+				else
+				{
+					b = 0;
+					foreach (var c in dataGridView1[9, i].Value.ToString())
+						if (c < '1' || c > '6')
+							b = 1;
+					if (b == 1)
+						s += "Вопрос " + (i + 1) + ": В ответе содержится некоректный символ\n";
+				}
 			}
 
 			if (s != "")
@@ -117,6 +142,7 @@ namespace Admin_Module
 		private void toolStripButton1_Click(object sender, EventArgs e)
 		{
 			dataGridView1.Visible = false;
+			WindowState = FormWindowState.Normal;
 			btn_editor.Enabled = false;
 			btn_newquestion.Enabled = false;
 			button1.Enabled = false;
@@ -128,8 +154,7 @@ namespace Admin_Module
 			label2.Text = "Всего вопросов:____";
 			try
 			{
-				DialogResult res = openFileDialog1.ShowDialog();
-				if (res == DialogResult.OK)
+				if (openFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					filename = openFileDialog1.FileName;
 					OpenExcelFile(filename);
@@ -164,9 +189,9 @@ namespace Admin_Module
 					button2.Enabled = false;
 					dataGridView1.ReadOnly = true;
 					btn_newquestion.Enabled = false;
-					MessageBox.Show("Найти excel не удалось. Вы все еще можете создать файл вопросов для теста, но редактировать таблицу в данной программе у Вас не получится.","Невозможно сохранить таблицу",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+					MessageBox.Show("Найти excel не удалось. Вы все еще можете создать файл вопросов для теста, но редактировать таблицу в данной программе у Вас не получится.", "Невозможно сохранить таблицу", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				}
-				
+
 
 			}
 			catch (Exception ex)
@@ -200,8 +225,7 @@ namespace Admin_Module
 			try
 			{
 				saveFileDialog1.Filter = "Excel|*.xls";
-				DialogResult res = saveFileDialog1.ShowDialog();
-				if (res == DialogResult.OK)
+				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = saveFileDialog1.FileName;
 
@@ -279,17 +303,16 @@ namespace Admin_Module
 		}
 		private void button1_Click(object sender, EventArgs e)
 		{
+			if (CheckTable())
+				return;
 			try
 			{
-				saveFileDialog1.Filter = "Тест|*.testData";
-				DialogResult res = saveFileDialog1.ShowDialog();
-				if (res == DialogResult.OK)
+				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
 				{
-					string filename = saveFileDialog1.FileName;
+					string filename = folderBrowserDialog1.SelectedPath+"\\test.data";
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
-					//StreamWriter fout = new StreamWriter(path, false);
-					string s = "";
-					int a;
+					StreamWriter fout = new StreamWriter(filename, false);
+					string s = "",current,previous;
 					if (radioButton3.Checked)
 						s += "1.";
 					else
@@ -299,26 +322,47 @@ namespace Admin_Module
 						s += "1.";
 					else
 						s += "0.";
-					a = 0;
-					for (int i = 0; i < dataGridView1.RowCount; i++)
+					List<int> counts = new List<int>();
+					counts.Add(1);
+				previous=dataGridView1.Rows[0].Cells[0].Value.ToString();
+					for (int i = 1; i < dataGridView1.RowCount; i++)
 					{
-						if (dataGridView1.Rows[i].Cells[0].Value.ToString() == "0")
-						{
-							a++;
-						}
-
+						current = dataGridView1.Rows[i].Cells[0].Value.ToString();
+						if (current== previous)
+							counts[counts.Count-1]++;
+						else
+							counts.Add(1);
+						previous = current;
 					}
-					if (a > 0)
+					if (counts.Count>0&& dataGridView1.Rows[0].Cells[0].Value.ToString()=="0")
 						s += "1.";
 					else
 						s += "0.";
 					string lastChanged = DateTime.Now.ToString();
 					lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
+					lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
 					s += lastChanged + ".";
 					s += numericUpDown1.Value.ToString() + ".";
-					s += dataGridView1.RowCount.ToString() + ".";
-					Text = s;
-					//fout.Close();
+					s += dataGridView1.RowCount.ToString();
+					foreach (var item in counts)
+					{
+						s += "." + item;
+					}
+					fout.WriteLine(s);
+					fout.WriteLine(textBox1.Text);
+					s = "";
+					for (int i = 0; i < dataGridView1.RowCount; i++)
+					{
+						for (int j = 0; j < dataGridView1.ColumnCount; j++)
+						{
+							s+= '\"'+dataGridView1.Rows[i].Cells[j].Value.ToString()+'\"';
+							
+						}
+						s += ';';
+						fout.WriteLine(s);	
+					}
+					fout.Close();
+					MessageBox.Show("Файл сохранен", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 				else throw new Exception("Файл не был сохранен!");
 			}
@@ -329,7 +373,7 @@ namespace Admin_Module
 		}
 		private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right&&dataGridView1.ReadOnly==false)
+			if (e.Button == MouseButtons.Right && dataGridView1.ReadOnly == false)
 			{
 				if (MessageBox.Show("Вы действительно хотите удалить этот вопрос?", "Удаление вопроса", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
 				{

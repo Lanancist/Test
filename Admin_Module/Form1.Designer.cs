@@ -79,6 +79,7 @@
 			this.textBox3 = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
+			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
 			this.toolStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -661,6 +662,7 @@
 			// 
 			this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.label1.AutoSize = true;
+			this.label1.BackColor = System.Drawing.SystemColors.Control;
 			this.label1.Location = new System.Drawing.Point(-332, -207);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(84, 25);
@@ -757,6 +759,7 @@
 		private System.Windows.Forms.Label label14;
 		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.TextBox textBox12;
+		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
 	}
 }
 

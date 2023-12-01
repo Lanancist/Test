@@ -62,7 +62,7 @@ namespace User_Module
 			}
 			
 		}
-		string path = "input.txt";
+		string path = "test.data";
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			tabs.BringToFront();
@@ -72,7 +72,7 @@ namespace User_Module
 			FileInfo filepath = new FileInfo(path);
 			if (!filepath.Exists)
 			{
-				MessageBox.Show("Файл с вопросами не найден!", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Файл \""+path+"\" не найден!", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Close();
 				return;
 			}
@@ -88,7 +88,7 @@ namespace User_Module
 			/////////////////////////////
 			///delete it for time check
 			lastChanged = lastChanged.Substring(0, lastChanged.Length - 6);
-			questm[4] = questm[4].Substring(0, questm[4].Length - 6);
+			questm[4] = questm[4].Substring(0, questm[4].Length - 4);
 			//////////////////////////
 			if (questm[4] != lastChanged)
 			{
