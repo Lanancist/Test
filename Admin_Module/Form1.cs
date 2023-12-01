@@ -26,7 +26,23 @@ namespace Admin_Module
 		{
 			InitializeComponent();
 		}
-		private void OpenExcelFile(string path)
+
+        public static string EncodeDecrypt(string str, uint secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
+        {
+            var ch = str.ToArray(); 
+            string newStr = "";      
+            foreach (var c in ch)  
+                newStr += TopSecret(c, secretKey);  
+            return newStr;
+        }
+
+        public static char TopSecret(char character, uint secretKey)
+        {
+            character = (char)(character ^ secretKey); //Производим XOR операцию символа с ключем
+            return character;
+        }
+
+        private void OpenExcelFile(string path)
 		{
 			FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read);
 			IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream);
