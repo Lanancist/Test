@@ -27,22 +27,22 @@ namespace Admin_Module
 			InitializeComponent();
 		}
 
-        public static string EncodeDecrypt(string str, uint secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
-        {
-            var ch = str.ToArray(); 
-            string newStr = "";      
-            foreach (var c in ch)  
-                newStr += TopSecret(c, secretKey);  
-            return newStr;
-        }
+		public static string EncodeDecrypt(string str, uint secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
+		{
+			var ch = str.ToArray();
+			string newStr = "";
+			foreach (var c in ch)
+				newStr += TopSecret(c, secretKey);
+			return newStr;
+		}
 
-        public static char TopSecret(char character, uint secretKey)
-        {
-            character = (char)(character ^ secretKey); //Производим XOR операцию символа с ключем
-            return character;
-        }
+		public static char TopSecret(char character, uint secretKey)
+		{
+			character = (char)(character ^ secretKey); //Производим XOR операцию символа с ключем
+			return character;
+		}
 
-        private void OpenExcelFile(string path)
+		private void OpenExcelFile(string path)
 		{
 			FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read);
 			IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream);
@@ -137,9 +137,7 @@ namespace Admin_Module
 				}
 				else throw new Exception("Файл не был загружен");
 				btn_editor.Enabled = true;
-				btn_newquestion.Enabled = true;
 				button1.Enabled = true;
-				button2.Enabled = true;
 				textBox1.Enabled = true;
 				groupBox1.Enabled = true;
 				groupBox2.Enabled = true;
@@ -149,6 +147,27 @@ namespace Admin_Module
 				numericUpDown2.Maximum = dataGridView1.RowCount;
 				dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 				CheckTable();
+				Microsoft.Office.Interop.Excel.Application xlApp;
+				try
+				{
+					xlApp = new Microsoft.Office.Interop.Excel.Application();
+					xlApp.Quit();
+					Marshal.ReleaseComObject(xlApp);
+					GC.Collect();
+					GC.WaitForPendingFinalizers();
+					btn_newquestion.Enabled = true;
+					button2.Enabled = true;
+					dataGridView1.ReadOnly = false;
+				}
+				catch (Exception)
+				{
+					button2.Enabled = false;
+					dataGridView1.ReadOnly = true;
+					btn_newquestion.Enabled = false;
+					MessageBox.Show("Найти excel не удалось. Вы все еще можете создать файл вопросов для теста, но редактировать таблицу в данной программе у Вас не получится.","Невозможно сохранить таблицу",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+				}
+				
+
 			}
 			catch (Exception ex)
 			{
@@ -206,7 +225,7 @@ namespace Admin_Module
 			}
 			catch (Exception)
 			{
-				throw new Exception("Не удается найти Excel! Установите его или редактируйте таблицу в другом редакторе."); 
+				throw new Exception("Не удается найти Excel!Установите его или редактируйте таблицу в другом редакторе.");
 			}
 			if (xlApp == null)
 			{
@@ -310,7 +329,7 @@ namespace Admin_Module
 		}
 		private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right)
+			if (e.Button == MouseButtons.Right&&dataGridView1.ReadOnly==false)
 			{
 				if (MessageBox.Show("Вы действительно хотите удалить этот вопрос?", "Удаление вопроса", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
 				{
