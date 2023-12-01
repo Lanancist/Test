@@ -27,16 +27,15 @@ namespace Admin_Module
 			InitializeComponent();
 		}
 
-		public static string EncodeDecrypt(string str, uint secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
+		public static string EncodeDecrypt(string str, int secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
 		{
-			var ch = str.ToArray();
 			string newStr = "";
-			foreach (var c in ch)
+			foreach (var c in str)
 				newStr += TopSecret(c, secretKey);
 			return newStr;
 		}
 
-		public static char TopSecret(char character, uint secretKey)
+		public static char TopSecret(char character, int secretKey)
 		{
 			character = (char)(character ^ secretKey); //Производим XOR операцию символа с ключем
 			return character;
@@ -301,6 +300,11 @@ namespace Admin_Module
 			MessageBox.Show("Файл таблицы создан по адресу \"" + filename + "\"", "Сохранение таблицы вопросов", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 			this.BringToFront();
 		}
+		public int genKey()
+		{
+			Random random = new Random();
+			return random.Next(0, 16777216);
+		}
 		private void button1_Click(object sender, EventArgs e)
 		{
 			if (CheckTable())
@@ -344,19 +348,21 @@ namespace Admin_Module
 					lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
 					s += lastChanged + ".";
 					s += numericUpDown1.Value.ToString() + ".";
-					s += dataGridView1.RowCount.ToString();
+					s += dataGridView1.RowCount.ToString()+".";
 					foreach (var item in counts)
 					{
-						s += "." + item;
+						s += item+".";
 					}
-					fout.WriteLine(s);
-					fout.WriteLine(textBox1.Text);
+					int key=genKey();
+					s += key;
+					fout.WriteLine(EncodeDecrypt(s, 0x123456));
+					fout.WriteLine(EncodeDecrypt(textBox1.Text, key));
 					s = "";
 					for (int i = 0; i < dataGridView1.RowCount; i++)
 					{
 						for (int j = 0; j < dataGridView1.ColumnCount; j++)
 							s += '\"' + dataGridView1.Rows[i].Cells[j].Value.ToString() + "\";";
-						fout.WriteLine(s);
+						fout.WriteLine(EncodeDecrypt(s, key));
 						s = "";
 					}
 					fout.Close();
@@ -427,18 +433,56 @@ namespace Admin_Module
 		private void numericUpDown3_ValueChanged(object sender, EventArgs e)
 		{
 			string s = numericUpDown3.Value.ToString();
-			textBox5.BackColor = Color.White;
-			textBox6.BackColor = Color.White;
-			textBox7.BackColor = Color.White;
-			textBox8.BackColor = Color.White;
-			textBox9.BackColor = Color.White;
-			textBox10.BackColor = Color.White;
-			textBox5.ForeColor = Color.Black;
-			textBox6.ForeColor = Color.Black;
-			textBox7.ForeColor = Color.Black;
-			textBox8.ForeColor = Color.Black;
-			textBox9.ForeColor = Color.Black;
-			textBox10.ForeColor = Color.Black;
+			if ((textBox10.BackColor == Color.Red||!string.IsNullOrWhiteSpace(textBox10.Text)) && string.IsNullOrWhiteSpace(textBox9.Text))
+			{
+				textBox9.BackColor = Color.Red;
+				textBox9.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox9.BackColor = Color.White;
+				textBox9.ForeColor = Color.Black;
+			}
+			if ((textBox9.BackColor == Color.Red||!string.IsNullOrWhiteSpace(textBox9.Text)) && string.IsNullOrWhiteSpace(textBox8.Text))
+			{
+				textBox8.BackColor = Color.Red;
+				textBox8.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox8.BackColor = Color.White;
+				textBox8.ForeColor = Color.Black;
+			}
+			if ((textBox8.BackColor == Color.Red||!string.IsNullOrWhiteSpace(textBox8.Text)) && string.IsNullOrWhiteSpace(textBox7.Text))
+			{
+				textBox7.BackColor = Color.Red;
+				textBox7.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox7.BackColor = Color.White;
+				textBox7.ForeColor = Color.Black;
+			}
+			if ((textBox7.BackColor == Color.Red||!string.IsNullOrWhiteSpace(textBox7.Text)) && string.IsNullOrWhiteSpace(textBox6.Text))
+			{
+				textBox6.BackColor = Color.Red;
+				textBox6.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox6.BackColor = Color.White;
+				textBox6.ForeColor = Color.Black;
+			}
+			if (string.IsNullOrWhiteSpace(textBox5.Text))
+			{
+				textBox5.BackColor = Color.Red;
+				textBox5.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox5.BackColor = Color.White;
+				textBox5.ForeColor = Color.Black;
+			}
 			numericUpDown3.BackColor = Color.White;
 			numericUpDown3.ForeColor = Color.Black;
 			for (int i = 0; i < s.Length; i++)
@@ -526,26 +570,32 @@ namespace Admin_Module
 		}
 		private void textBox5_TextChanged(object sender, EventArgs e)
 		{
+			
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox6_TextChanged(object sender, EventArgs e)
 		{
+			
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox7_TextChanged(object sender, EventArgs e)
 		{
+			
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox8_TextChanged(object sender, EventArgs e)
 		{
+			
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox9_TextChanged(object sender, EventArgs e)
 		{
+			
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox10_TextChanged(object sender, EventArgs e)
 		{
+			
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void button3_Click(object sender, EventArgs e)

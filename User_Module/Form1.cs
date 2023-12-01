@@ -48,6 +48,19 @@ namespace User_Module
 			
 		}
 		string path = "test.data";
+		public static string EncodeDecrypt(string str, int secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
+		{
+			string newStr = "";
+			foreach (var c in str)
+				newStr += TopSecret(c, secretKey);
+			return newStr;
+		}
+
+		public static char TopSecret(char character, int secretKey)
+		{
+			character = (char)(character ^ secretKey); //Производим XOR операцию символа с ключем
+			return character;
+		}
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			tabs.BringToFront();
@@ -64,16 +77,17 @@ namespace User_Module
 			StreamReader fin = new StreamReader(path);
 			string lastChanged = File.GetLastWriteTime(path).ToString();
 			lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
-			line = fin.ReadLine();
+			line = EncodeDecrypt(fin.ReadLine(), 0x123456);
 			string[] questm = line.Split(new[] { '.' }, StringSplitOptions.None); ;
 			password = questm[0] == "1";
 			isNamed = questm[1] == "1";
 			fromEveryTheme = questm[2] == "1";
 			obligateQuestions = questm[3] == "1";
+			lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
 			/////////////////////////////
 			///delete it for time check
-			lastChanged = lastChanged.Substring(0, lastChanged.Length - 6);
-			questm[4] = questm[4].Substring(0, questm[4].Length - 4);
+			//lastChanged = lastChanged.Substring(0, lastChanged.Length - 4);
+			//questm[4] = questm[4].Substring(0, questm[4].Length - 4);
 			//////////////////////////
 			if (questm[4] != lastChanged)
 			{
@@ -92,7 +106,7 @@ namespace User_Module
 					{
 						numbers.Add(i);
 					}
-					for (int i = 8; i < questm.Length; i++)
+					for (int i = 8; i < questm.Length-1; i++)
 					{
 						a = int.Parse(questm[i]);
 						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
@@ -103,7 +117,7 @@ namespace User_Module
 				else
 				{
 					int k = 0, a;
-					for (int i = 7; i < questm.Length; i++)
+					for (int i = 7; i < questm.Length-1; i++)
 					{
 						a = int.Parse(questm[i]);
 						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
@@ -126,7 +140,8 @@ namespace User_Module
 					GenerateRandomNumbers(generateCount, 0, n, ref numbers);
 			}
 			n = int.Parse(questm[6]);
-			Text = fin.ReadLine();
+			int key = int.Parse(questm[questm.Length - 1]);
+			Text = EncodeDecrypt(fin.ReadLine(), key);
 			label1.Text = Text;
 			TabPage tabPages;
 			SplitContainer splitter;
@@ -140,7 +155,7 @@ namespace User_Module
 				//if (!numbers.Contains(i))
 				//	continue;}
 				++questnumb;
-				line = fin.ReadLine();
+				line = EncodeDecrypt(fin.ReadLine(), key);
 				line = line.Remove(0, 1);
 				line = line.Remove(line.Length - 2, 2);
 				questm = line.Split(new[] { "\";\"" }, StringSplitOptions.None);
