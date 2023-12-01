@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using ExcelDataReader;
-using Excel = Microsoft.Office.Interop.Excel;
+//using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Web;
-
+using System.Windows.Forms.VisualStyles;
 namespace Admin_Module
 {
 	public partial class Form1 : Form
@@ -26,8 +26,6 @@ namespace Admin_Module
 		{
 			InitializeComponent();
 		}
-
-
 		private void OpenExcelFile(string path)
 		{
 			FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read);
@@ -47,18 +45,58 @@ namespace Admin_Module
 				throw new Exception("Загружаемая таблица имеет неверный формат!"); ;
 			}
 			dataGridView1.Rows.RemoveAt(0);
-			for (int i = 0; i < 10; i++)
-				dataGridView1.Columns[i].ValueType = typeof(string);
 			dataGridView1.Columns[0].HeaderText = "Номер темы";
+			dataGridView1.Columns[0].ValueType = typeof(string);
 			dataGridView1.Columns[1].HeaderText = "Название темы";
+			dataGridView1.Columns[1].ValueType = typeof(string);
 			dataGridView1.Columns[2].HeaderText = "Вопрос";
+			dataGridView1.Columns[2].ValueType = typeof(string);
 			dataGridView1.Columns[3].HeaderText = "Вариант 1";
+			dataGridView1.Columns[3].ValueType = typeof(string);
 			dataGridView1.Columns[4].HeaderText = "Вариант 2";
+			dataGridView1.Columns[4].ValueType = typeof(string);
 			dataGridView1.Columns[5].HeaderText = "Вариант 3";
+			dataGridView1.Columns[5].ValueType = typeof(string);
 			dataGridView1.Columns[6].HeaderText = "Вариант 4";
+			dataGridView1.Columns[6].ValueType = typeof(string);
 			dataGridView1.Columns[7].HeaderText = "Вариант 5";
+			dataGridView1.Columns[7].ValueType = typeof(string);
 			dataGridView1.Columns[8].HeaderText = "Вариант 6";
+			dataGridView1.Columns[8].ValueType = typeof(string);
 			dataGridView1.Columns[9].HeaderText = "Ответ";
+			dataGridView1.Columns[9].ValueType = typeof(string);
+		}
+		bool CheckTable()
+		{
+			string s = "";
+			for (int i = 0; i < dataGridView1.RowCount; i++)
+			{
+				if (string.IsNullOrWhiteSpace(dataGridView1[0, i].Value.ToString()))
+					s += "Вопрос " + (i + 1) + ": Не прописан номер темы!\n";
+				if (string.IsNullOrWhiteSpace(dataGridView1[1, i].Value.ToString()))
+					s += "Вопрос " + (i + 1) + ": Не прописано название темы!\n";
+				if (string.IsNullOrWhiteSpace(dataGridView1[2, i].Value.ToString()))
+					s += "Вопрос " + (i + 1) + ": Не прописан текст вопроса!\n";
+				if (string.IsNullOrWhiteSpace(dataGridView1[3, i].Value.ToString()))
+					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 1!\n";
+				if (!string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[4, i].Value.ToString()))
+					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 2!\n";
+				if (!string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()))
+					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 3!\n";
+				if (!string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()))
+					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 4!\n";
+				if (!string.IsNullOrWhiteSpace(dataGridView1[8, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()))
+					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 5!\n";
+				if (string.IsNullOrWhiteSpace(dataGridView1[9, i].Value.ToString()))
+					s += "Вопрос " + (i + 1) + ": Не прописан правильный ответ!\n";
+			}
+
+			if (s != "")
+			{
+				MessageBox.Show(s, "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				return true;
+			}
+			return false;
 		}
 		private void toolStripButton1_Click(object sender, EventArgs e)
 		{
@@ -78,8 +116,8 @@ namespace Admin_Module
 				if (res == DialogResult.OK)
 				{
 					filename = openFileDialog1.FileName;
-					Text = filename;
 					OpenExcelFile(filename);
+					Text = "Программа тестирования. Мастер | " + filename;
 				}
 				else throw new Exception("Файл не был сохранен");
 				btn_editor.Enabled = true;
@@ -91,18 +129,22 @@ namespace Admin_Module
 				groupBox2.Enabled = true;
 				label2.Enabled = true;
 				label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
+				numericUpDown1.Maximum = dataGridView1.RowCount;
+				numericUpDown2.Maximum = dataGridView1.RowCount;
+				dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
+				CheckTable();
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				Text = "Программа тестирования. Мастер";
 			}
 		}
-
-
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			label2.Enabled = false;
 			panel1.Visible = false;
+			panel1.Dock = DockStyle.Fill;
 			dataGridView1.Visible = false;
 			btn_editor.Enabled = false;
 			btn_newquestion.Enabled = false;
@@ -117,18 +159,19 @@ namespace Admin_Module
 			dataGridView1.Height = 578;
 			dataGridView1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Bottom;
 		}
-
 		string path = "input.txt";
 		private void button2_Click(object sender, EventArgs e)
 		{
 			try
 			{
+				saveFileDialog1.Filter = "Excel|*.xls";
 				DialogResult res = saveFileDialog1.ShowDialog();
 				if (res == DialogResult.OK)
 				{
 					string filename = saveFileDialog1.FileName;
-					Text = filename;
+
 					ExportExcelInterop(filename);
+
 				}
 				else throw new Exception("Файл не был сохранен!");
 			}
@@ -136,11 +179,9 @@ namespace Admin_Module
 			{
 				MessageBox.Show(ex.Message, "Ошибка сохранения таблицы", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
-
 		}
 		public void ExportExcelInterop(string filename)
 		{
-
 			Cursor.Current = Cursors.WaitCursor;
 			Microsoft.Office.Interop.Excel.Application xlApp;
 			try
@@ -149,7 +190,6 @@ namespace Admin_Module
 			}
 			catch (Exception)
 			{
-
 				throw;
 			}
 			if (xlApp == null)
@@ -164,7 +204,6 @@ namespace Admin_Module
 			Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
 			try
 			{
-
 				object misValue = System.Reflection.Missing.Value;
 				xlWorkBook = xlApp.Workbooks.Add(misValue);
 				xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
@@ -180,11 +219,12 @@ namespace Admin_Module
 				xlWorkSheet.Cells[1, 10] = "Ответ";
 				for (int i = 0; i < dataGridView1.RowCount; i++)
 				{
-					for (int j = 0; j < dataGridView1.ColumnCount - 1; j++)
+					for (int j = 0; j < dataGridView1.ColumnCount; j++)
 					{
 						xlWorkSheet.Cells[i + 2, j + 1] = dataGridView1[j, i].Value.ToString();
 					}
 				}
+				xlWorkSheet.Columns.AutoFit();
 				xlWorkBook.SaveAs(filename, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue,
 				misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
 				xlWorkBook.Close(0);
@@ -200,27 +240,50 @@ namespace Admin_Module
 				Cursor.Current = Cursors.Default;
 			}
 			MessageBox.Show("Файл таблицы создан по адресу \"" + filename + "\"", "Сохранение таблицы вопросов", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+			this.BringToFront();
 		}
 		private void button1_Click(object sender, EventArgs e)
 		{
 			try
 			{
+				saveFileDialog1.Filter = "Тест|*.testData";
 				DialogResult res = saveFileDialog1.ShowDialog();
 				if (res == DialogResult.OK)
 				{
 					string filename = saveFileDialog1.FileName;
-					Text = filename;
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
-					StreamWriter fout = new StreamWriter(path, false);
+					//StreamWriter fout = new StreamWriter(path, false);
 					string s = "";
-					int a = radioButton3.Checked ? 1 : 0;
-					s += a + ".1.";
-					a = radioButton2.Checked ? 1 : 0;
-					s += a + ".";
+					int a;
+					if (radioButton3.Checked)
+						s += "1.";
+					else
+						s += "0.";
+					s += "1.";
+					if (radioButton2.Checked)
+						s += "1.";
+					else
+						s += "0.";
+					a = 0;
+					for (int i = 0; i < dataGridView1.RowCount; i++)
+					{
+						if (dataGridView1.Rows[i].Cells[0].Value.ToString() == "0")
+						{
+							a++;
+						}
+
+					}
+					if (a > 0)
+						s += "1.";
+					else
+						s += "0.";
 					string lastChanged = DateTime.Now.ToString();
 					lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
+					s += lastChanged + ".";
+					s += numericUpDown1.Value.ToString() + ".";
+					s += dataGridView1.RowCount.ToString() + ".";
 					Text = s;
-					fout.Close();
+					//fout.Close();
 				}
 				else throw new Exception("Файл не был сохранен!");
 			}
@@ -228,15 +291,6 @@ namespace Admin_Module
 			{
 				MessageBox.Show(ex.Message, "Ошибка сохранения файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
-
-
-
-
-		}
-
-		private void toolStripButton4_Click(object sender, EventArgs e)
-		{
-
 		}
 		private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
@@ -250,36 +304,38 @@ namespace Admin_Module
 				}
 			}
 		}
-
-		private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-		{
-
-		}
-
 		private void btn_editor_Click(object sender, EventArgs e)
 		{
+			WindowState = FormWindowState.Maximized;
+			dataGridView1.Dock = DockStyle.Fill;
 			dataGridView1.Visible = true;
 			panel1.Visible = false;
 			dataGridView1.BringToFront();
+			CheckTable();
 		}
-
 		private void btn_main_Click(object sender, EventArgs e)
 		{
+			WindowState = FormWindowState.Normal;
 			panel1.Visible = false;
 			dataGridView1.Visible = false;
 		}
-
 		private void btn_newquestion_Click(object sender, EventArgs e)
 		{
+			WindowState = FormWindowState.Normal;
+			panel1.BringToFront();
+			numericUpDown3_ValueChanged(sender, e);
+			textBox3_TextChanged(sender, e);
+			textBox4_TextChanged(sender, e);
+			radioButton6_CheckedChanged(sender, e);
+			numericUpDown2_ValueChanged(sender, e);
 			panel1.Visible = true;
 			dataGridView1.Visible = false;
-			panel1.BringToFront();
 		}
-
 		private void radioButton6_CheckedChanged(object sender, EventArgs e)
 		{
 			if (radioButton6.Checked == true)
 			{
+				numericUpDown2.Minimum = 1;
 				label6.Visible = true;
 				numericUpDown2.Visible = true;
 			}
@@ -287,16 +343,17 @@ namespace Admin_Module
 			{
 				label6.Visible = false;
 				numericUpDown2.Visible = false;
+				numericUpDown2.Minimum = 0;
+				numericUpDown2.Value = 0;
 			}
 		}
-
 		private void numericUpDown3_ValueChanged(object sender, EventArgs e)
 		{
 			string s = numericUpDown3.Value.ToString();
 			textBox5.BackColor = Color.White;
 			textBox6.BackColor = Color.White;
 			textBox7.BackColor = Color.White;
-			textBox8.BackColor = Color.White; 
+			textBox8.BackColor = Color.White;
 			textBox9.BackColor = Color.White;
 			textBox10.BackColor = Color.White;
 			textBox5.ForeColor = Color.Black;
@@ -312,7 +369,7 @@ namespace Admin_Module
 				switch (s[i])
 				{
 					case '1':
-						if (textBox5.Text != "")
+						if (!string.IsNullOrWhiteSpace(textBox5.Text))
 						{
 							textBox5.BackColor = Color.Green;
 							textBox5.ForeColor = Color.White;
@@ -324,7 +381,7 @@ namespace Admin_Module
 						}
 						break;
 					case '2':
-						if (textBox6.Text!="" && textBox5.Text != "")
+						if (!string.IsNullOrWhiteSpace(textBox6.Text) && !string.IsNullOrWhiteSpace(textBox5.Text))
 						{
 							textBox6.BackColor = Color.Green;
 							textBox6.ForeColor = Color.White;
@@ -336,7 +393,7 @@ namespace Admin_Module
 						}
 						break;
 					case '3':
-						if (textBox7.Text != "" && textBox6.Text != "" && textBox5.Text != "")
+						if (!string.IsNullOrWhiteSpace(textBox7.Text) && !string.IsNullOrWhiteSpace(textBox6.Text) && !string.IsNullOrWhiteSpace(textBox5.Text))
 						{
 							textBox7.BackColor = Color.Green;
 							textBox7.ForeColor = Color.White;
@@ -348,7 +405,7 @@ namespace Admin_Module
 						}
 						break;
 					case '4':
-						if (textBox8.Text != "" && textBox7.Text != "" && textBox6.Text != "" && textBox5.Text != "")
+						if (!string.IsNullOrWhiteSpace(textBox8.Text) && !string.IsNullOrWhiteSpace(textBox7.Text) && !string.IsNullOrWhiteSpace(textBox6.Text) && !string.IsNullOrWhiteSpace(textBox5.Text))
 						{
 							textBox8.BackColor = Color.Green;
 							textBox8.ForeColor = Color.White;
@@ -360,7 +417,7 @@ namespace Admin_Module
 						}
 						break;
 					case '5':
-						if (textBox9.Text != "" && textBox8.Text != "" && textBox7.Text != "" && textBox6.Text != "" && textBox5.Text != "")
+						if (!string.IsNullOrWhiteSpace(textBox9.Text) && !string.IsNullOrWhiteSpace(textBox8.Text) && !string.IsNullOrWhiteSpace(textBox7.Text) && !string.IsNullOrWhiteSpace(textBox6.Text) && !string.IsNullOrWhiteSpace(textBox5.Text))
 						{
 							textBox9.BackColor = Color.Green;
 							textBox9.ForeColor = Color.White;
@@ -372,7 +429,7 @@ namespace Admin_Module
 						}
 						break;
 					case '6':
-						if (textBox10.Text != ""&&textBox9.Text != "" && textBox8.Text != "" && textBox7.Text != "" && textBox6.Text != "" && textBox5.Text != "")
+						if (!string.IsNullOrWhiteSpace(textBox10.Text) && !string.IsNullOrWhiteSpace(textBox9.Text) && !string.IsNullOrWhiteSpace(textBox8.Text) && !string.IsNullOrWhiteSpace(textBox7.Text) && !string.IsNullOrWhiteSpace(textBox6.Text) && !string.IsNullOrWhiteSpace(textBox5.Text))
 						{
 							textBox10.BackColor = Color.Green;
 							textBox10.ForeColor = Color.White;
@@ -390,36 +447,95 @@ namespace Admin_Module
 				}
 			}
 		}
-
 		private void textBox5_TextChanged(object sender, EventArgs e)
 		{
 			numericUpDown3_ValueChanged(sender, e);
-
 		}
-
 		private void textBox6_TextChanged(object sender, EventArgs e)
 		{
 			numericUpDown3_ValueChanged(sender, e);
 		}
-
 		private void textBox7_TextChanged(object sender, EventArgs e)
 		{
 			numericUpDown3_ValueChanged(sender, e);
 		}
-
 		private void textBox8_TextChanged(object sender, EventArgs e)
 		{
 			numericUpDown3_ValueChanged(sender, e);
 		}
-
 		private void textBox9_TextChanged(object sender, EventArgs e)
 		{
 			numericUpDown3_ValueChanged(sender, e);
 		}
-
 		private void textBox10_TextChanged(object sender, EventArgs e)
 		{
 			numericUpDown3_ValueChanged(sender, e);
+		}
+		private void button3_Click(object sender, EventArgs e)
+		{
+			if (numericUpDown3.BackColor == Color.Red || textBox4.BackColor == Color.Red || textBox3.BackColor == Color.Red)
+			{
+				MessageBox.Show("Вы заполнили не все поля!", "Ошибка добавления", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			else
+			{
+				tableCollection[0].Rows.Add(numericUpDown2.Value.ToString(), textBox4.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, textBox9.Text, textBox10.Text, numericUpDown3.Value.ToString());
+				MessageBox.Show("Вопрос добавлен", "Добавление вопроса", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+		}
+		private void textBox3_TextChanged(object sender, EventArgs e)
+		{
+			if (string.IsNullOrWhiteSpace(textBox3.Text))
+			{
+				textBox3.BackColor = Color.Red;
+				textBox3.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox3.BackColor = Color.White;
+				textBox3.ForeColor = Color.Black;
+			}
+		}
+		private void textBox4_TextChanged(object sender, EventArgs e)
+		{
+			if (string.IsNullOrWhiteSpace(textBox4.Text))
+			{
+				textBox4.BackColor = Color.Red;
+				textBox4.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox4.BackColor = Color.White;
+				textBox4.ForeColor = Color.Black;
+			}
+		}
+		private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+		{
+			dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
+			textBox12.Visible = false;
+			int k = 0;
+			for (int i = 0; i < dataGridView1.RowCount; i++)
+			{
+				dataGridView1.Rows[i].Selected = false;
+				if (dataGridView1.Rows[i].Cells[0].Value != null)
+					if (dataGridView1.Rows[i].Cells[0].Value.ToString() == numericUpDown2.Value.ToString())
+					{
+						dataGridView1.Rows[i].Selected = true;
+						k++;
+						if (k == 1)
+						{
+							textBox4.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+						}
+						else
+						{
+							if (dataGridView1.Rows[i].Cells[1].Value.ToString() != textBox4.Text)
+							{
+								textBox12.Text = "Темы с введенным номером имеют разные названия! Это допустимо, но не желательно.";
+								textBox12.Visible = true;
+							}
+						}
+					}
+			}
 		}
 	}
 }
