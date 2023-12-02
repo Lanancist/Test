@@ -25,11 +25,17 @@ namespace User_Module
 		{
 			if (textBox2.Text == genCheatPasswordAll(textBox1.Text))
 			{
+				tabs.Visible = true;
+				MaximizeBox = true;
+				WindowState = FormWindowState.Maximized;
 			}
 			else
 			{
 				if (textBox2.Text == genCheatPasswordSome(textBox1.Text))
 				{
+					tabs.Visible = true;
+					MaximizeBox = true;
+					WindowState = FormWindowState.Maximized;
 				}
 				else
 				{
@@ -53,17 +59,17 @@ namespace User_Module
 		}
 		public string genTeacherPassword()
 		{
-			string s = "123";
+			string s = "";
 			return s;
 		}
 		public string genCheatPasswordAll(string FIO)
 		{
-			string s = "";
+			string s = "1";
 			return s;
 		}
 		public string genCheatPasswordSome(string FIO)
 		{
-			string s = "";
+			string s = "2";
 			return s;
 		}
 		public void GenerateRandomNumbers(int n, int a, int b, ref List<int> num)
@@ -155,16 +161,17 @@ namespace User_Module
 			if (!password)
 			{
 				label2.Enabled = false;
-				button1.Enabled = false;
 				textBox2.BackColor = SystemColors.Menu;
 				textBox2.BorderStyle = BorderStyle.FixedSingle;
 			}
+			else
+				button1.Enabled = false;
 			ViewAnswers = questm[1] == "1";
 			fromEveryTheme = questm[2] == "1";
 			obligateQuestions = questm[3] == "1";
 			lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
 			/////////////////////////////
-			///delete it for time check
+			//delete it for time check
 			//lastChanged = lastChanged.Substring(0, lastChanged.Length - 4);
 			//questm[4] = questm[4].Substring(0, questm[4].Length - 4);
 			//////////////////////////
@@ -333,11 +340,40 @@ namespace User_Module
 				{
 					CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
 					string answer = tabs.TabPages[i].Tag.ToString();
+					int k = 0;
 					for (int j = 0; j < answer.Length; j++)
 					{
-						if (c.CheckedItems.Contains(answer[j]))
+						if (c.CheckedItems.Contains(c.Items[answer[j]-'0'-1]))
 						{
-							rightCount++;
+							k++;
+						}
+					}
+					if (k == answer.Length)
+					{
+						if (ViewAnswers)
+						{
+							tabs.TabPages[i].Controls[1].BackColor = Color.Green;
+							tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+						}
+						rightCount++;
+					}
+					else
+					{
+						if (k == 0)
+						{
+							if (ViewAnswers)
+							{
+								tabs.TabPages[i].Controls[1].BackColor = Color.DarkRed;
+								tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+							}
+						}
+						else
+						{
+							if (ViewAnswers)
+							{
+								tabs.TabPages[i].Controls[1].BackColor = Color.Yellow;
+								tabs.TabPages[i].Controls[1].ForeColor = Color.Black;
+							}
 						}
 					}
 				}
@@ -349,11 +385,25 @@ namespace User_Module
 						if (((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[answer - 1] as System.Windows.Forms.RadioButton).Checked == true)
 						{
 							rightCount++;
+							if (ViewAnswers)
+							{
+								tabs.TabPages[i].Controls[1].BackColor = Color.Green;
+								tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+							}
+
+						}
+						else
+						{
+							if (ViewAnswers)
+							{
+								tabs.TabPages[i].Controls[1].BackColor = Color.DarkRed;
+								tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+							}
 						}
 					}
 				}
 			}
-			int result = (int)((float)(rightCount / tabs.TabPages.Count)) * 100;
+			int result = (int)((float)(rightCount / (tabs.TabPages.Count-1)) * 100);
 			if (result == 60 || result == 75 || result == 90) { result++; }
 			label5.Text = result.ToString() + "/100";
 		}

@@ -41,5 +41,11 @@ D:\files\Git\TonyNov\TestNew\User_Module\obj\Debug\User_Module.csproj.CoreCompil
 D:\files\Git\TonyNov\TestNew\User_Module\obj\Debug\User_Module.csproj.CopyComplete
 D:\files\Git\TonyNov\TestNew\User_Module\obj\Debug\User_Module.exe
 D:\files\Git\TonyNov\TestNew\User_Module\obj\Debug\User_Module.pdb
-D:\files\Git\TonyNov\TestNew\User_Module\obj\Debug\User_Module.csproj.Fody.CopyLocal.cache
-D:\files\Git\TonyNov\TestNew\User_Module\obj\Debug\User_Module.csproj.Fody.RuntimeCopyLocal.cache
+D:\files\Git\TonyNov\TestNew\User_Module\bin\Debug\Costura.dll
+D:\files\Git\TonyNov\TestNew\User_Module\bin\Debug\System.Buffers.dll
+D:\files\Git\TonyNov\TestNew\User_Module\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+D:\files\Git\TonyNov\TestNew\User_Module\bin\Debug\System.Memory.dll
+D:\files\Git\TonyNov\TestNew\User_Module\bin\Debug\System.Numerics.Vectors.dll
+D:\files\Git\TonyNov\TestNew\User_Module\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\files\Git\TonyNov\TestNew\User_Module\bin\Debug\Costura.pdb
+D:\files\Git\TonyNov\TestNew\User_Module\bin\Debug\Costura.xml
