@@ -206,6 +206,7 @@ namespace Admin_Module
 			textBox1.Enabled = false;
 			groupBox1.Enabled = false;
 			groupBox2.Enabled = false;
+			groupBox3.Enabled = false;
 			label2.Enabled = false;
 			label2.Text = "Всего вопросов:____";
 			try
@@ -222,6 +223,7 @@ namespace Admin_Module
 				textBox1.Enabled = true;
 				groupBox1.Enabled = true;
 				groupBox2.Enabled = true;
+				groupBox3.Enabled = true;
 				label2.Enabled = true;
 				label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
 				numericUpDown1.Maximum = dataGridView1.RowCount;
@@ -269,6 +271,7 @@ namespace Admin_Module
 			textBox1.Enabled = false;
 			groupBox1.Enabled = false;
 			groupBox2.Enabled = false;
+			groupBox3.Enabled = false;
 			dataGridView1.Left = 0;
 			dataGridView1.Top = 20;
 			dataGridView1.Width = 792;
@@ -379,7 +382,10 @@ namespace Admin_Module
 						s += "1.";
 					else
 						s += "0.";
-					s += "1.";
+					if (radioButton7.Checked)
+						s += "1.";
+					else
+						s += "0.";
 					if (radioButton2.Checked)
 						s += "1.";
 					else

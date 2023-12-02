@@ -18,16 +18,53 @@ namespace User_Module
 		public Form1()
 		{
 			InitializeComponent();
-
 		}
-		//TabPage[] tabPages;
 		int n, generateCount;
-		bool password, isNamed, fromEveryTheme, obligateQuestions;
+		bool password, ViewAnswers, fromEveryTheme, obligateQuestions;
 		private void button1_Click(object sender, EventArgs e)
 		{
-			tabs.Visible = true;
-			MaximizeBox = true;
-			WindowState = FormWindowState.Maximized;
+			if (textBox2.Text == genCheatPasswordAll(textBox1.Text))
+			{
+			}
+			else
+			{
+				if (textBox2.Text == genCheatPasswordSome(textBox1.Text))
+				{
+				}
+				else
+				{
+					if (password == true)
+					{
+						if (textBox2.Text == genTeacherPassword())
+						{
+							tabs.Visible = true;
+							MaximizeBox = true;
+							WindowState = FormWindowState.Maximized;
+						}
+					}
+					else
+					{
+						tabs.Visible = true;
+						MaximizeBox = true;
+						WindowState = FormWindowState.Maximized;
+					}
+				}
+			}
+		}
+		public string genTeacherPassword()
+		{
+			string s = "123";
+			return s;
+		}
+		public string genCheatPasswordAll(string FIO)
+		{
+			string s = "";
+			return s;
+		}
+		public string genCheatPasswordSome(string FIO)
+		{
+			string s = "";
+			return s;
 		}
 		public void GenerateRandomNumbers(int n, int a, int b, ref List<int> num)
 		{
@@ -42,8 +79,6 @@ namespace User_Module
 				k++;
 			}
 		}
-
-
 		private void tabs_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (tabs.Visible == true && e.KeyCode == Keys.Enter && tabs.SelectedIndex + 1 < tabs.TabPages.Count)
@@ -51,25 +86,30 @@ namespace User_Module
 				tabs.SelectedIndex++;
 			}
 		}
-
 		private void anytab_select(object sender, EventArgs e)
 		{
 			MaximizeBox = true;
 		}
-
 		private void tabPage1_Enter(object sender, EventArgs e)
 		{
 			MaximizeBox = false;
 			WindowState = FormWindowState.Normal;
 		}
-
 		string path = "test.data";
-
 		private void checkBox1_CheckedChanged(object sender, EventArgs e)
 		{
-
 		}
-
+		private void textBox2_TextChanged(object sender, EventArgs e)
+		{
+			if (string.IsNullOrWhiteSpace(textBox2.Text) && password == true)
+			{
+				button1.Enabled = false;
+			}
+			else
+			{
+				button1.Enabled = true;
+			}
+		}
 		public static string EncodeDecrypt(string str, int secretKey)
 		{
 			string newStr = "";
@@ -77,7 +117,6 @@ namespace User_Module
 				newStr += TopSecret(c, secretKey);
 			return newStr;
 		}
-
 		public static char TopSecret(char character, int secretKey)
 		{
 			character = (char)(character ^ secretKey);
@@ -86,6 +125,7 @@ namespace User_Module
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			MaximizeBox = false;
+			tabs.Dock = DockStyle.Fill;
 			button1.Width = 200;
 			button1.Height = 100;
 			button1.Left = (Width - button1.Width) / 2;
@@ -93,10 +133,9 @@ namespace User_Module
 			button2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			button2.Width = 200;
 			button2.Height = 100;
-			button2.Left = (Width - button1.Width) / 2;
-			button2.Top = (Height - button1.Height) / 2;
+			button2.Left = (Width - button2.Width) / 2;
+			button2.Top = (Height - button2.Height) / 2;
 			button2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-			tabs.Dock = DockStyle.Fill;
 			tabs.BringToFront();
 			tabs.Visible = false;
 			string line;
@@ -113,7 +152,14 @@ namespace User_Module
 			line = EncodeDecrypt(fin.ReadLine(), 0x123456);
 			string[] questm = line.Split(new[] { '.' }, StringSplitOptions.None); ;
 			password = questm[0] == "1";
-			isNamed = questm[1] == "1";
+			if (!password)
+			{
+				label2.Enabled = false;
+				button1.Enabled = false;
+				textBox2.BackColor = SystemColors.Menu;
+				textBox2.BorderStyle = BorderStyle.FixedSingle;
+			}
+			ViewAnswers = questm[1] == "1";
 			fromEveryTheme = questm[2] == "1";
 			obligateQuestions = questm[3] == "1";
 			lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
@@ -145,7 +191,6 @@ namespace User_Module
 						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
 						k += a;
 					}
-
 				}
 				else
 				{
@@ -268,7 +313,6 @@ namespace User_Module
 				}
 				tabPages.Tag = questm[9].ToString();
 			}
-
 			tabs.TabPages.Remove(tabPage1);
 			tabs.TabPages.Add(tabPage1);
 			fin.Close();
@@ -279,12 +323,12 @@ namespace User_Module
 			label3.Visible = true;
 			label4.Visible = true;
 			label5.Visible = true;
-			label3.Text = "Имя: "+ textBox1.Text;
+			label3.Text = "Имя: " + textBox1.Text;
 			label4.Text = "Тест: " + Text;
-			tabs.Enabled = false;
 			button2.Visible = false;
 			for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 			{
+				(tabs.TabPages[i].Controls[0] as SplitContainer).Enabled = false;
 				if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
 				{
 					CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
@@ -307,14 +351,11 @@ namespace User_Module
 							rightCount++;
 						}
 					}
-
 				}
 			}
-
 			int result = (int)((float)(rightCount / tabs.TabPages.Count)) * 100;
-			if (result == 60|| result == 75|| result == 90) { result++; }
-			label5.Text= result.ToString()+"/100";
+			if (result == 60 || result == 75 || result == 90) { result++; }
+			label5.Text = result.ToString() + "/100";
 		}
 	}
-
 }
