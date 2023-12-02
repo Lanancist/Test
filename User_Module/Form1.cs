@@ -18,6 +18,7 @@ namespace User_Module
 		public Form1()
 		{
 			InitializeComponent();
+
 		}
 		//TabPage[] tabPages;
 		int n, generateCount;
@@ -25,6 +26,8 @@ namespace User_Module
 		private void button1_Click(object sender, EventArgs e)
 		{
 			tabs.Visible = true;
+			MaximizeBox = true;
+			WindowState = FormWindowState.Maximized;
 		}
 		public void GenerateRandomNumbers(int n, int a, int b, ref List<int> num)
 		{
@@ -39,19 +42,7 @@ namespace User_Module
 				k++;
 			}
 		}
-		private void Form1_ResizeEnd(object sender, EventArgs e)
-		{
-			button1.Top = (this.Height - 100) / 2;
-			button1.Left = (this.Width - 200) / 2;
-			button1.Width = 200;
-			button1.Height = 100;
 
-		}
-
-		private void button2_Click(object sender, EventArgs e)
-		{
-
-		}
 
 		private void tabs_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -61,8 +52,25 @@ namespace User_Module
 			}
 		}
 
+		private void anytab_select(object sender, EventArgs e)
+		{
+			MaximizeBox = true;
+		}
+
+		private void tabPage1_Enter(object sender, EventArgs e)
+		{
+			MaximizeBox = false;
+			WindowState = FormWindowState.Normal;
+		}
+
 		string path = "test.data";
-		public static string EncodeDecrypt(string str, int secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
+
+		private void checkBox1_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		public static string EncodeDecrypt(string str, int secretKey)
 		{
 			string newStr = "";
 			foreach (var c in str)
@@ -72,16 +80,22 @@ namespace User_Module
 
 		public static char TopSecret(char character, int secretKey)
 		{
-			character = (char)(character ^ secretKey); //Производим XOR операцию символа с ключем
+			character = (char)(character ^ secretKey);
 			return character;
 		}
 		private void Form1_Load(object sender, EventArgs e)
 		{
+			MaximizeBox = false;
 			button1.Width = 200;
 			button1.Height = 100;
-			button1.Left = (Width-button1.Width) / 2;
+			button1.Left = (Width - button1.Width) / 2;
 			button1.Top = (Height - button1.Height) / 2;
-			button1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			button2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			button2.Width = 200;
+			button2.Height = 100;
+			button2.Left = (Width - button1.Width) / 2;
+			button2.Top = (Height - button1.Height) / 2;
+			button2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			tabs.Dock = DockStyle.Fill;
 			tabs.BringToFront();
 			tabs.Visible = false;
@@ -170,7 +184,7 @@ namespace User_Module
 			int questnumb = -1;
 			for (int i = 0; i < n; i++)
 			{
-				line = EncodeDecrypt(fin.ReadLine(), key); 
+				line = EncodeDecrypt(fin.ReadLine(), key);
 				if (!numbers.Contains(i))
 					continue;
 				++questnumb;
@@ -181,6 +195,7 @@ namespace User_Module
 				tabPages.Text = "Вопрос " + (questnumb + 1);
 				tabPages.BackColor = Color.White;
 				tabPages.AutoScroll = true;
+				tabPages.Enter += new System.EventHandler(this.anytab_select);
 				tabs.TabPages.Add(tabPages);
 				splitter = new SplitContainer();
 				tabPages.Controls.Add(splitter);
@@ -251,10 +266,55 @@ namespace User_Module
 							j = 6;
 					}
 				}
+				tabPages.Tag = questm[9].ToString();
 			}
+
 			tabs.TabPages.Remove(tabPage1);
 			tabs.TabPages.Add(tabPage1);
 			fin.Close();
 		}
+		private void button2_Click(object sender, EventArgs e)
+		{
+			float rightCount = 0;
+			label3.Visible = true;
+			label4.Visible = true;
+			label5.Visible = true;
+			label3.Text = "Имя: "+ textBox1.Text;
+			label4.Text = "Тест: " + Text;
+			tabs.Enabled = false;
+			button2.Visible = false;
+			for (int i = 0; i < tabs.TabPages.Count - 1; i++)
+			{
+				if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
+				{
+					CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
+					string answer = tabs.TabPages[i].Tag.ToString();
+					for (int j = 0; j < answer.Length; j++)
+					{
+						if (c.CheckedItems.Contains(answer[j]))
+						{
+							rightCount++;
+						}
+					}
+				}
+				else
+				{
+					if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
+					{
+						int answer = int.Parse(tabs.TabPages[i].Tag.ToString());
+						if (((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[answer - 1] as System.Windows.Forms.RadioButton).Checked == true)
+						{
+							rightCount++;
+						}
+					}
+
+				}
+			}
+
+			int result = (int)((float)(rightCount / tabs.TabPages.Count)) * 100;
+			if (result == 60|| result == 75|| result == 90) { result++; }
+			label5.Text= result.ToString()+"/100";
+		}
 	}
+
 }

@@ -110,24 +110,25 @@ namespace Admin_Module
 					s += "Вопрос " + (i + 1) + ": Не прописан текст вопроса!\n";
 				if (string.IsNullOrWhiteSpace(dataGridView1[3, i].Value.ToString()))
 					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 1!\n";
-				if (!string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[4, i].Value.ToString()))
-					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 2!\n";
-				if (!string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()))
-					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 3!\n";
-				if (!string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()))
-					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 4!\n";
-				if (!string.IsNullOrWhiteSpace(dataGridView1[8, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()))
-					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 5!\n";
 				if (string.IsNullOrWhiteSpace(dataGridView1[9, i].Value.ToString()))
 					s += "Вопрос " + (i + 1) + ": Не прописан правильный ответ!\n";
 				else
 				{
+					string answer = dataGridView1[9, i].Value.ToString();
 					b = 0;
-					foreach (var c in dataGridView1[9, i].Value.ToString())
+					foreach (var c in answer)
 						if (c < '1' || c > '6')
 							b = 1;
 					if (b == 1)
 						s += "Вопрос " + (i + 1) + ": В ответе содержится некоректный символ\n";
+					if ((!string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()) || answer.Contains("2")) && string.IsNullOrWhiteSpace(dataGridView1[4, i].Value.ToString()))
+						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 2!\n";
+					if ((!string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()) || answer.Contains("3")) && string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()))
+						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 3!\n";
+					if ((!string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()) || answer.Contains("4")) && string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()))
+						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 4!\n";
+					if ((!string.IsNullOrWhiteSpace(dataGridView1[8, i].Value.ToString()) || answer.Contains("5")) && string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()))
+						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 5!\n";
 				}
 			}
 
@@ -348,12 +349,12 @@ namespace Admin_Module
 					lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
 					s += lastChanged + ".";
 					s += numericUpDown1.Value.ToString() + ".";
-					s += dataGridView1.RowCount.ToString()+".";
+					s += dataGridView1.RowCount.ToString() + ".";
 					foreach (var item in counts)
 					{
-						s += item+".";
+						s += item + ".";
 					}
-					int key=genKey();
+					int key = genKey();
 					s += key;
 					fout.WriteLine(EncodeDecrypt(s, 0x123456));
 					fout.WriteLine(EncodeDecrypt(textBox1.Text, key));
@@ -433,7 +434,7 @@ namespace Admin_Module
 		private void numericUpDown3_ValueChanged(object sender, EventArgs e)
 		{
 			string s = numericUpDown3.Value.ToString();
-			if ((textBox10.BackColor == Color.Red||!string.IsNullOrWhiteSpace(textBox10.Text)) && string.IsNullOrWhiteSpace(textBox9.Text))
+			if ((textBox10.BackColor == Color.Red || !string.IsNullOrWhiteSpace(textBox10.Text)) && string.IsNullOrWhiteSpace(textBox9.Text))
 			{
 				textBox9.BackColor = Color.Red;
 				textBox9.ForeColor = Color.White;
@@ -443,7 +444,7 @@ namespace Admin_Module
 				textBox9.BackColor = Color.White;
 				textBox9.ForeColor = Color.Black;
 			}
-			if ((textBox9.BackColor == Color.Red||!string.IsNullOrWhiteSpace(textBox9.Text)) && string.IsNullOrWhiteSpace(textBox8.Text))
+			if ((textBox9.BackColor == Color.Red || !string.IsNullOrWhiteSpace(textBox9.Text)) && string.IsNullOrWhiteSpace(textBox8.Text))
 			{
 				textBox8.BackColor = Color.Red;
 				textBox8.ForeColor = Color.White;
@@ -453,7 +454,7 @@ namespace Admin_Module
 				textBox8.BackColor = Color.White;
 				textBox8.ForeColor = Color.Black;
 			}
-			if ((textBox8.BackColor == Color.Red||!string.IsNullOrWhiteSpace(textBox8.Text)) && string.IsNullOrWhiteSpace(textBox7.Text))
+			if ((textBox8.BackColor == Color.Red || !string.IsNullOrWhiteSpace(textBox8.Text)) && string.IsNullOrWhiteSpace(textBox7.Text))
 			{
 				textBox7.BackColor = Color.Red;
 				textBox7.ForeColor = Color.White;
@@ -463,7 +464,7 @@ namespace Admin_Module
 				textBox7.BackColor = Color.White;
 				textBox7.ForeColor = Color.Black;
 			}
-			if ((textBox7.BackColor == Color.Red||!string.IsNullOrWhiteSpace(textBox7.Text)) && string.IsNullOrWhiteSpace(textBox6.Text))
+			if ((textBox7.BackColor == Color.Red || !string.IsNullOrWhiteSpace(textBox7.Text)) && string.IsNullOrWhiteSpace(textBox6.Text))
 			{
 				textBox6.BackColor = Color.Red;
 				textBox6.ForeColor = Color.White;
@@ -570,32 +571,32 @@ namespace Admin_Module
 		}
 		private void textBox5_TextChanged(object sender, EventArgs e)
 		{
-			
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox6_TextChanged(object sender, EventArgs e)
 		{
-			
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox7_TextChanged(object sender, EventArgs e)
 		{
-			
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox8_TextChanged(object sender, EventArgs e)
 		{
-			
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox9_TextChanged(object sender, EventArgs e)
 		{
-			
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox10_TextChanged(object sender, EventArgs e)
 		{
-			
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void button3_Click(object sender, EventArgs e)
