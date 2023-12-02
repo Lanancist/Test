@@ -87,8 +87,15 @@ namespace Admin_Module
 			int b = 0;
 			for (int i = 0; i < dataGridView1.RowCount; i++)
 			{
+				dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.White;
+				dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
 				if (string.IsNullOrWhiteSpace(dataGridView1[0, i].Value.ToString()))
+				{
 					s += "Вопрос " + (i + 1) + ": Не прописан номер темы!\n";
+					dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+					dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+				}
+
 				else
 				{
 
@@ -96,22 +103,44 @@ namespace Admin_Module
 					{
 						b = int.Parse(dataGridView1[0, i].Value.ToString());
 						if (b < 0)
+						{
 							s += "Вопрос " + (i + 1) + ": Не корректно введен номер темы\n";
+							dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+							dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+						}
 					}
 					catch (Exception)
 					{
 						s += "Вопрос " + (i + 1) + ": Не корректно введен номер темы\n";
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
 
 					}
 				}
 				if (string.IsNullOrWhiteSpace(dataGridView1[1, i].Value.ToString()))
+				{
 					s += "Вопрос " + (i + 1) + ": Не прописано название темы!\n";
+					dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+					dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+				}
 				if (string.IsNullOrWhiteSpace(dataGridView1[2, i].Value.ToString()))
+				{
 					s += "Вопрос " + (i + 1) + ": Не прописан текст вопроса!\n";
+					dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+					dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+				}
 				if (string.IsNullOrWhiteSpace(dataGridView1[3, i].Value.ToString()))
+				{
+					dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+					dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
 					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 1!\n";
+				}
 				if (string.IsNullOrWhiteSpace(dataGridView1[9, i].Value.ToString()))
+				{
 					s += "Вопрос " + (i + 1) + ": Не прописан правильный ответ!\n";
+					dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+					dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+				}
 				else
 				{
 					string answer = dataGridView1[9, i].Value.ToString();
@@ -120,15 +149,42 @@ namespace Admin_Module
 						if (c < '1' || c > '6')
 							b = 1;
 					if (b == 1)
+					{
 						s += "Вопрос " + (i + 1) + ": В ответе содержится некоректный символ\n";
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+					}
+
 					if ((!string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()) || answer.Contains("2")) && string.IsNullOrWhiteSpace(dataGridView1[4, i].Value.ToString()))
+					{
 						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 2!\n";
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+					}
 					if ((!string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()) || answer.Contains("3")) && string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()))
+					{
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
 						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 3!\n";
+					}
 					if ((!string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()) || answer.Contains("4")) && string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()))
+					{
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
 						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 4!\n";
+					}
 					if ((!string.IsNullOrWhiteSpace(dataGridView1[8, i].Value.ToString()) || answer.Contains("5")) && string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()))
+					{
 						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 5!\n";
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+					}
+					if (answer.Contains("6") && string.IsNullOrWhiteSpace(dataGridView1[8, i].Value.ToString()))
+					{
+						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 6!\n";
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+					}
 				}
 			}
 
@@ -434,9 +490,9 @@ namespace Admin_Module
 		private void numericUpDown3_ValueChanged(object sender, EventArgs e)
 		{
 			string s = numericUpDown3.Value.ToString();
-			if ((textBox10.BackColor == Color.Red || !string.IsNullOrWhiteSpace(textBox10.Text)) && string.IsNullOrWhiteSpace(textBox9.Text))
+			if ((textBox10.BackColor == Color.DarkRed || !string.IsNullOrWhiteSpace(textBox10.Text)) && string.IsNullOrWhiteSpace(textBox9.Text))
 			{
-				textBox9.BackColor = Color.Red;
+				textBox9.BackColor = Color.DarkRed;
 				textBox9.ForeColor = Color.White;
 			}
 			else
@@ -444,9 +500,9 @@ namespace Admin_Module
 				textBox9.BackColor = Color.White;
 				textBox9.ForeColor = Color.Black;
 			}
-			if ((textBox9.BackColor == Color.Red || !string.IsNullOrWhiteSpace(textBox9.Text)) && string.IsNullOrWhiteSpace(textBox8.Text))
+			if ((textBox9.BackColor == Color.DarkRed || !string.IsNullOrWhiteSpace(textBox9.Text)) && string.IsNullOrWhiteSpace(textBox8.Text))
 			{
-				textBox8.BackColor = Color.Red;
+				textBox8.BackColor = Color.DarkRed;
 				textBox8.ForeColor = Color.White;
 			}
 			else
@@ -454,9 +510,9 @@ namespace Admin_Module
 				textBox8.BackColor = Color.White;
 				textBox8.ForeColor = Color.Black;
 			}
-			if ((textBox8.BackColor == Color.Red || !string.IsNullOrWhiteSpace(textBox8.Text)) && string.IsNullOrWhiteSpace(textBox7.Text))
+			if ((textBox8.BackColor == Color.DarkRed || !string.IsNullOrWhiteSpace(textBox8.Text)) && string.IsNullOrWhiteSpace(textBox7.Text))
 			{
-				textBox7.BackColor = Color.Red;
+				textBox7.BackColor = Color.DarkRed;
 				textBox7.ForeColor = Color.White;
 			}
 			else
@@ -464,9 +520,9 @@ namespace Admin_Module
 				textBox7.BackColor = Color.White;
 				textBox7.ForeColor = Color.Black;
 			}
-			if ((textBox7.BackColor == Color.Red || !string.IsNullOrWhiteSpace(textBox7.Text)) && string.IsNullOrWhiteSpace(textBox6.Text))
+			if ((textBox7.BackColor == Color.DarkRed || !string.IsNullOrWhiteSpace(textBox7.Text)) && string.IsNullOrWhiteSpace(textBox6.Text))
 			{
-				textBox6.BackColor = Color.Red;
+				textBox6.BackColor = Color.DarkRed;
 				textBox6.ForeColor = Color.White;
 			}
 			else
@@ -476,7 +532,7 @@ namespace Admin_Module
 			}
 			if (string.IsNullOrWhiteSpace(textBox5.Text))
 			{
-				textBox5.BackColor = Color.Red;
+				textBox5.BackColor = Color.DarkRed;
 				textBox5.ForeColor = Color.White;
 			}
 			else
@@ -498,7 +554,7 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
@@ -510,7 +566,7 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
@@ -522,7 +578,7 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
@@ -534,7 +590,7 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
@@ -546,7 +602,7 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
@@ -558,12 +614,12 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
 					default:
-						numericUpDown3.BackColor = Color.Red;
+						numericUpDown3.BackColor = Color.DarkRed;
 						numericUpDown3.ForeColor = Color.White;
 						break;
 				}
@@ -601,7 +657,7 @@ namespace Admin_Module
 		}
 		private void button3_Click(object sender, EventArgs e)
 		{
-			if (numericUpDown3.BackColor == Color.Red || textBox4.BackColor == Color.Red || textBox3.BackColor == Color.Red)
+			if (numericUpDown3.BackColor == Color.DarkRed || textBox4.BackColor == Color.DarkRed || textBox3.BackColor == Color.DarkRed)
 			{
 				MessageBox.Show("Вы заполнили не все поля!", "Ошибка добавления", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -615,7 +671,7 @@ namespace Admin_Module
 		{
 			if (string.IsNullOrWhiteSpace(textBox3.Text))
 			{
-				textBox3.BackColor = Color.Red;
+				textBox3.BackColor = Color.DarkRed;
 				textBox3.ForeColor = Color.White;
 			}
 			else
@@ -628,7 +684,7 @@ namespace Admin_Module
 		{
 			if (string.IsNullOrWhiteSpace(textBox4.Text))
 			{
-				textBox4.BackColor = Color.Red;
+				textBox4.BackColor = Color.DarkRed;
 				textBox4.ForeColor = Color.White;
 			}
 			else
