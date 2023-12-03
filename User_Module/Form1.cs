@@ -19,12 +19,58 @@ namespace User_Module
 		{
 			InitializeComponent();
 		}
-		//TabPage[] tabPages;
 		int n, generateCount;
-		bool password, isNamed, fromEveryTheme, obligateQuestions;
+		bool password, ViewAnswers, fromEveryTheme, obligateQuestions;
 		private void button1_Click(object sender, EventArgs e)
 		{
-			tabs.Visible = true;
+			if (textBox2.Text == genCheatPasswordAll(textBox1.Text))
+			{
+				tabs.Visible = true;
+				MaximizeBox = true;
+				WindowState = FormWindowState.Maximized;
+			}
+			else
+			{
+				if (textBox2.Text == genCheatPasswordSome(textBox1.Text))
+				{
+					tabs.Visible = true;
+					MaximizeBox = true;
+					WindowState = FormWindowState.Maximized;
+				}
+				else
+				{
+					if (password == true)
+					{
+						if (textBox2.Text == genTeacherPassword())
+						{
+							tabs.Visible = true;
+							MaximizeBox = true;
+							WindowState = FormWindowState.Maximized;
+						}
+					}
+					else
+					{
+						tabs.Visible = true;
+						MaximizeBox = true;
+						WindowState = FormWindowState.Maximized;
+					}
+				}
+			}
+		}
+		public string genTeacherPassword()
+		{
+			string s = "";
+			return s;
+		}
+		public string genCheatPasswordAll(string FIO)
+		{
+			string s = "1";
+			return s;
+		}
+		public string genCheatPasswordSome(string FIO)
+		{
+			string s = "2";
+			return s;
 		}
 		public void GenerateRandomNumbers(int n, int a, int b, ref List<int> num)
 		{
@@ -39,56 +85,95 @@ namespace User_Module
 				k++;
 			}
 		}
-		private void Form1_ResizeEnd(object sender, EventArgs e)
+		private void tabs_KeyDown(object sender, KeyEventArgs e)
 		{
-			button1.Top = (this.Height - 100) / 2;
-			button1.Left = (this.Width - 200) / 2;
-			button1.Width = 200;
-			button1.Height = 100;
-			try
+			if (tabs.Visible == true && e.KeyCode == Keys.Enter && tabs.SelectedIndex + 1 < tabs.TabPages.Count)
 			{
-				if (tabs.TabPages[n + 1].Controls[0] is Button)
-				{
-					tabs.TabPages[n + 1].Controls[0].Top = (this.Height - 100) / 2;
-					tabs.TabPages[n + 1].Controls[0].Left = (this.Width - 200) / 2;
-					tabs.TabPages[n + 1].Controls[0].Width = 200;
-					tabs.TabPages[n + 1].Controls[0].Height = 100;
-				}
+				tabs.SelectedIndex++;
 			}
-			catch (Exception)
-			{
-
-				throw;
-			}
-			
 		}
-		string path = "input.txt";
+		private void anytab_select(object sender, EventArgs e)
+		{
+			MaximizeBox = true;
+		}
+		private void tabPage1_Enter(object sender, EventArgs e)
+		{
+			MaximizeBox = false;
+			WindowState = FormWindowState.Normal;
+		}
+		string path = "test.data";
+		private void checkBox1_CheckedChanged(object sender, EventArgs e)
+		{
+		}
+		private void textBox2_TextChanged(object sender, EventArgs e)
+		{
+			if (string.IsNullOrWhiteSpace(textBox2.Text) && password == true)
+			{
+				button1.Enabled = false;
+			}
+			else
+			{
+				button1.Enabled = true;
+			}
+		}
+		public static string EncodeDecrypt(string str, int secretKey)
+		{
+			string newStr = "";
+			foreach (var c in str)
+				newStr += TopSecret(c, secretKey);
+			return newStr;
+		}
+		public static char TopSecret(char character, int secretKey)
+		{
+			character = (char)(character ^ secretKey);
+			return character;
+		}
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			tabs.BringToFront();
-			tabs.Visible = true;
+			MaximizeBox = false;
 			tabs.Dock = DockStyle.Fill;
+			button1.Width = 200;
+			button1.Height = 100;
+			button1.Left = (Width - button1.Width) / 2;
+			button1.Top = (Height - button1.Height) / 2;
+			button2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			button2.Width = 200;
+			button2.Height = 100;
+			button2.Left = (Width - button2.Width) / 2;
+			button2.Top = (Height - button2.Height) / 2;
+			button2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			tabs.BringToFront();
+			tabs.Visible = false;
 			string line;
 			FileInfo filepath = new FileInfo(path);
 			if (!filepath.Exists)
 			{
-				MessageBox.Show("Файл с вопросами не найден!", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Файл \"" + path + "\" не найден!", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Close();
 				return;
 			}
 			StreamReader fin = new StreamReader(path);
 			string lastChanged = File.GetLastWriteTime(path).ToString();
 			lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
-			line = fin.ReadLine();
+			line = EncodeDecrypt(fin.ReadLine(), 0x123456);
 			string[] questm = line.Split(new[] { '.' }, StringSplitOptions.None); ;
 			password = questm[0] == "1";
-			isNamed = questm[1] == "1";
+			if (!password)
+			{
+				label2.Enabled = false;
+				textBox2.BackColor = SystemColors.Menu;
+				textBox2.BorderStyle = BorderStyle.FixedSingle;
+			}
+			else
+				button1.Enabled = false;
+			ViewAnswers = questm[1] == "1";
 			fromEveryTheme = questm[2] == "1";
 			obligateQuestions = questm[3] == "1";
+			lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
 			/////////////////////////////
-			///delete it for time check
-			lastChanged = lastChanged.Substring(0, lastChanged.Length - 6);
-			questm[4] = questm[4].Substring(0, questm[4].Length - 6);
+			//delete it for time check
+			//lastChanged = lastChanged.Substring(0, lastChanged.Length - 4);
+			//questm[4] = questm[4].Substring(0, questm[4].Length - 4);
 			//////////////////////////
 			if (questm[4] != lastChanged)
 			{
@@ -107,18 +192,17 @@ namespace User_Module
 					{
 						numbers.Add(i);
 					}
-					for (int i = 8; i < questm.Length; i++)
+					for (int i = 8; i < questm.Length - 1; i++)
 					{
 						a = int.Parse(questm[i]);
 						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
 						k += a;
 					}
-					
 				}
 				else
 				{
 					int k = 0, a;
-					for (int i = 7; i < questm.Length; i++)
+					for (int i = 7; i < questm.Length - 1; i++)
 					{
 						a = int.Parse(questm[i]);
 						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
@@ -141,8 +225,8 @@ namespace User_Module
 					GenerateRandomNumbers(generateCount, 0, n, ref numbers);
 			}
 			n = int.Parse(questm[6]);
-			Text = fin.ReadLine();
-			label1.Text = Text;
+			int key = int.Parse(questm[questm.Length - 1]);
+			Text = EncodeDecrypt(fin.ReadLine(), key);
 			TabPage tabPages;
 			SplitContainer splitter;
 			Label labelLocal;
@@ -152,17 +236,18 @@ namespace User_Module
 			int questnumb = -1;
 			for (int i = 0; i < n; i++)
 			{
-				//if (!numbers.Contains(i))
-				//	continue;}
+				line = EncodeDecrypt(fin.ReadLine(), key);
+				if (!numbers.Contains(i))
+					continue;
 				++questnumb;
-				line = fin.ReadLine();
 				line = line.Remove(0, 1);
-				line = line.Remove(line.Length - 1, 1);
+				line = line.Remove(line.Length - 2, 2);
 				questm = line.Split(new[] { "\";\"" }, StringSplitOptions.None);
 				tabPages = new TabPage();
 				tabPages.Text = "Вопрос " + (questnumb + 1);
 				tabPages.BackColor = Color.White;
 				tabPages.AutoScroll = true;
+				tabPages.Enter += new System.EventHandler(this.anytab_select);
 				tabs.TabPages.Add(tabPages);
 				splitter = new SplitContainer();
 				tabPages.Controls.Add(splitter);
@@ -194,7 +279,6 @@ namespace User_Module
 				quest.ScrollBars = RichTextBoxScrollBars.Vertical;
 				quest.WordWrap = true;
 				quest.ShortcutsEnabled = false;
-				quest.TabIndex = 0;
 				if (questm[9].Length > 1)
 				{
 					answers = new CheckedListBox();
@@ -225,7 +309,6 @@ namespace User_Module
 							radioButton.Location = new System.Drawing.Point(10, 23 * j);
 							radioButton.Name = "radioButton" + questnumb;
 							radioButton.Size = new System.Drawing.Size(85, 17);
-							radioButton.TabIndex = j;
 							radioButton.TabStop = true;
 							radioButton.Text = questm[3 + j];
 							radioButton.UseVisualStyleBackColor = true;
@@ -235,23 +318,94 @@ namespace User_Module
 							j = 6;
 					}
 				}
+				tabPages.Tag = questm[9].ToString();
 			}
-			tabPages = new TabPage();
-			tabPages.BackColor = Color.White;
-			tabPages.Text = "Окончить тест";
-			tabPages.AutoScroll = true;
-			tabs.TabPages.Add(tabPages);
-			Button btn = new Button();
-			tabPages.Controls.Add(btn);
-			btn.Name = "btnEnd";
-			btn.Text = "Завершить тест";
-			btn.Visible = true;
-			btn.Enabled = true;
-			btn.Top = (this.Height - 100) / 2;
-			btn.Left = (this.Width - 200) / 2;
-			btn.Width = 200;
-			btn.Height = 100;
+			tabs.TabPages.Remove(tabPage1);
+			tabs.TabPages.Add(tabPage1);
 			fin.Close();
+		}
+		private void button2_Click(object sender, EventArgs e)
+		{
+			float rightCount = 0;
+			label3.Visible = true;
+			label4.Visible = true;
+			label5.Visible = true;
+			label3.Text = "Имя: " + textBox1.Text;
+			label4.Text = "Тест: " + Text;
+			button2.Visible = false;
+			for (int i = 0; i < tabs.TabPages.Count - 1; i++)
+			{
+				(tabs.TabPages[i].Controls[0] as SplitContainer).Enabled = false;
+				if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
+				{
+					CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
+					string answer = tabs.TabPages[i].Tag.ToString();
+					int k = 0;
+					for (int j = 0; j < answer.Length; j++)
+					{
+						if (c.CheckedItems.Contains(c.Items[answer[j]-'0'-1]))
+						{
+							k++;
+						}
+					}
+					if (k == answer.Length)
+					{
+						if (ViewAnswers)
+						{
+							tabs.TabPages[i].Controls[1].BackColor = Color.Green;
+							tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+						}
+						rightCount++;
+					}
+					else
+					{
+						if (k == 0)
+						{
+							if (ViewAnswers)
+							{
+								tabs.TabPages[i].Controls[1].BackColor = Color.DarkRed;
+								tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+							}
+						}
+						else
+						{
+							if (ViewAnswers)
+							{
+								tabs.TabPages[i].Controls[1].BackColor = Color.Yellow;
+								tabs.TabPages[i].Controls[1].ForeColor = Color.Black;
+							}
+						}
+					}
+				}
+				else
+				{
+					if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
+					{
+						int answer = int.Parse(tabs.TabPages[i].Tag.ToString());
+						if (((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[answer - 1] as System.Windows.Forms.RadioButton).Checked == true)
+						{
+							rightCount++;
+							if (ViewAnswers)
+							{
+								tabs.TabPages[i].Controls[1].BackColor = Color.Green;
+								tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+							}
+
+						}
+						else
+						{
+							if (ViewAnswers)
+							{
+								tabs.TabPages[i].Controls[1].BackColor = Color.DarkRed;
+								tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+							}
+						}
+					}
+				}
+			}
+			int result = (int)((float)(rightCount / (tabs.TabPages.Count-1)) * 100);
+			if (result == 60 || result == 75 || result == 90) { result++; }
+			label5.Text = result.ToString() + "/100";
 		}
 	}
 }

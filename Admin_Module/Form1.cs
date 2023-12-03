@@ -27,22 +27,21 @@ namespace Admin_Module
 			InitializeComponent();
 		}
 
-        public static string EncodeDecrypt(string str, uint secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
-        {
-            var ch = str.ToArray(); 
-            string newStr = "";      
-            foreach (var c in ch)  
-                newStr += TopSecret(c, secretKey);  
-            return newStr;
-        }
+		public static string EncodeDecrypt(string str, int secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
+		{
+			string newStr = "";
+			foreach (var c in str)
+				newStr += TopSecret(c, secretKey);
+			return newStr;
+		}
 
-        public static char TopSecret(char character, uint secretKey)
-        {
-            character = (char)(character ^ secretKey); //Производим XOR операцию символа с ключем
-            return character;
-        }
+		public static char TopSecret(char character, int secretKey)
+		{
+			character = (char)(character ^ secretKey); //Производим XOR операцию символа с ключем
+			return character;
+		}
 
-        private void OpenExcelFile(string path)
+		private void OpenExcelFile(string path)
 		{
 			FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read);
 			IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream);
@@ -81,30 +80,143 @@ namespace Admin_Module
 			dataGridView1.Columns[8].ValueType = typeof(string);
 			dataGridView1.Columns[9].HeaderText = "Ответ";
 			dataGridView1.Columns[9].ValueType = typeof(string);
+			btn_editor.Enabled = true;
+			button1.Enabled = true;
+			textBox1.Enabled = true;
+			groupBox1.Enabled = true;
+			groupBox2.Enabled = true;
+			groupBox3.Enabled = true;
+			label2.Enabled = true;
+			label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
+			numericUpDown1.Maximum = dataGridView1.RowCount;
+			numericUpDown2.Maximum = dataGridView1.RowCount;
+			dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
+			CheckTable();
+			Microsoft.Office.Interop.Excel.Application xlApp;
+			try
+			{
+				xlApp = new Microsoft.Office.Interop.Excel.Application();
+				xlApp.Quit();
+				Marshal.ReleaseComObject(xlApp);
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+				btn_newquestion.Enabled = true;
+				button2.Enabled = true;
+				dataGridView1.ReadOnly = false;
+			}
+			catch (Exception)
+			{
+				button2.Enabled = false;
+				dataGridView1.ReadOnly = true;
+				btn_newquestion.Enabled = false;
+				MessageBox.Show("Найти excel не удалось. Вы все еще можете создать файл вопросов для теста, но редактировать таблицу в данной программе у Вас не получится.", "Невозможно сохранить таблицу", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
 		}
 		bool CheckTable()
 		{
 			string s = "";
+			int b = 0;
 			for (int i = 0; i < dataGridView1.RowCount; i++)
 			{
+				dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.White;
+				dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
 				if (string.IsNullOrWhiteSpace(dataGridView1[0, i].Value.ToString()))
+				{
 					s += "Вопрос " + (i + 1) + ": Не прописан номер темы!\n";
+					dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+					dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+				}
+
+				else
+				{
+
+					try
+					{
+						b = int.Parse(dataGridView1[0, i].Value.ToString());
+						if (b < 0)
+						{
+							s += "Вопрос " + (i + 1) + ": Не корректно введен номер темы\n";
+							dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+							dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+						}
+					}
+					catch (Exception)
+					{
+						s += "Вопрос " + (i + 1) + ": Не корректно введен номер темы\n";
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+
+					}
+				}
 				if (string.IsNullOrWhiteSpace(dataGridView1[1, i].Value.ToString()))
+				{
 					s += "Вопрос " + (i + 1) + ": Не прописано название темы!\n";
+					dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+					dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+				}
 				if (string.IsNullOrWhiteSpace(dataGridView1[2, i].Value.ToString()))
+				{
 					s += "Вопрос " + (i + 1) + ": Не прописан текст вопроса!\n";
+					dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+					dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+				}
 				if (string.IsNullOrWhiteSpace(dataGridView1[3, i].Value.ToString()))
+				{
+					dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+					dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
 					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 1!\n";
-				if (!string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[4, i].Value.ToString()))
-					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 2!\n";
-				if (!string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()))
-					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 3!\n";
-				if (!string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()))
-					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 4!\n";
-				if (!string.IsNullOrWhiteSpace(dataGridView1[8, i].Value.ToString()) && string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()))
-					s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 5!\n";
+				}
 				if (string.IsNullOrWhiteSpace(dataGridView1[9, i].Value.ToString()))
+				{
 					s += "Вопрос " + (i + 1) + ": Не прописан правильный ответ!\n";
+					dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+					dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+				}
+				else
+				{
+					string answer = dataGridView1[9, i].Value.ToString();
+					b = 0;
+					foreach (var c in answer)
+						if (c < '1' || c > '6')
+							b = 1;
+					if (b == 1)
+					{
+						s += "Вопрос " + (i + 1) + ": В ответе содержится некоректный символ\n";
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+					}
+
+					if ((!string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()) || answer.Contains("2")) && string.IsNullOrWhiteSpace(dataGridView1[4, i].Value.ToString()))
+					{
+						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 2!\n";
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+					}
+					if ((!string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()) || answer.Contains("3")) && string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()))
+					{
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 3!\n";
+					}
+					if ((!string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()) || answer.Contains("4")) && string.IsNullOrWhiteSpace(dataGridView1[6, i].Value.ToString()))
+					{
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 4!\n";
+					}
+					if ((!string.IsNullOrWhiteSpace(dataGridView1[8, i].Value.ToString()) || answer.Contains("5")) && string.IsNullOrWhiteSpace(dataGridView1[7, i].Value.ToString()))
+					{
+						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 5!\n";
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+					}
+					if (answer.Contains("6") && string.IsNullOrWhiteSpace(dataGridView1[8, i].Value.ToString()))
+					{
+						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 6!\n";
+						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
+						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+					}
+				}
 			}
 
 			if (s != "")
@@ -116,7 +228,16 @@ namespace Admin_Module
 		}
 		private void toolStripButton1_Click(object sender, EventArgs e)
 		{
+			if (btn_newquestion.Enabled)
+			{
+				if (!(MessageBox.Show("Если вы изменяли файл и не хотите потерять эти изменения, нажмите на кнопку \"" + button2.Text + "\" и следуйте инструкциям. Вы уверены, что хотите загрузить новый файл? ", "Загрузка файла", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes))
+				{
+					return;
+				}
+
+			}
 			dataGridView1.Visible = false;
+			WindowState = FormWindowState.Normal;
 			btn_editor.Enabled = false;
 			btn_newquestion.Enabled = false;
 			button1.Enabled = false;
@@ -124,31 +245,24 @@ namespace Admin_Module
 			textBox1.Enabled = false;
 			groupBox1.Enabled = false;
 			groupBox2.Enabled = false;
+			groupBox3.Enabled = false;
 			label2.Enabled = false;
 			label2.Text = "Всего вопросов:____";
 			try
 			{
-				DialogResult res = openFileDialog1.ShowDialog();
-				if (res == DialogResult.OK)
+				if (openFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					filename = openFileDialog1.FileName;
-					OpenExcelFile(filename);
+					if (filename.EndsWith(".xls"))
+						OpenExcelFile(filename);
+					else
+						//openTestFile(filename);
 					Text = "Программа тестирования. Мастер | " + filename;
 				}
-				else throw new Exception("Файл не был сохранен");
-				btn_editor.Enabled = true;
-				btn_newquestion.Enabled = true;
-				button1.Enabled = true;
-				button2.Enabled = true;
-				textBox1.Enabled = true;
-				groupBox1.Enabled = true;
-				groupBox2.Enabled = true;
-				label2.Enabled = true;
-				label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
-				numericUpDown1.Maximum = dataGridView1.RowCount;
-				numericUpDown2.Maximum = dataGridView1.RowCount;
-				dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
-				CheckTable();
+				else throw new Exception("Файл не был загружен");
+
+
+
 			}
 			catch (Exception ex)
 			{
@@ -169,20 +283,19 @@ namespace Admin_Module
 			textBox1.Enabled = false;
 			groupBox1.Enabled = false;
 			groupBox2.Enabled = false;
+			groupBox3.Enabled = false;
 			dataGridView1.Left = 0;
 			dataGridView1.Top = 20;
 			dataGridView1.Width = 792;
 			dataGridView1.Height = 578;
 			dataGridView1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Bottom;
 		}
-		string path = "input.txt";
 		private void button2_Click(object sender, EventArgs e)
 		{
 			try
 			{
 				saveFileDialog1.Filter = "Excel|*.xls";
-				DialogResult res = saveFileDialog1.ShowDialog();
-				if (res == DialogResult.OK)
+				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = saveFileDialog1.FileName;
 
@@ -206,7 +319,7 @@ namespace Admin_Module
 			}
 			catch (Exception)
 			{
-				throw;
+				throw new Exception("Не удается найти Excel!Установите его или редактируйте таблицу в другом редакторе.");
 			}
 			if (xlApp == null)
 			{
@@ -258,48 +371,76 @@ namespace Admin_Module
 			MessageBox.Show("Файл таблицы создан по адресу \"" + filename + "\"", "Сохранение таблицы вопросов", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 			this.BringToFront();
 		}
+		public int genKey()
+		{
+			Random random = new Random();
+			return random.Next(0, 16777216);
+		}
 		private void button1_Click(object sender, EventArgs e)
 		{
+			if (CheckTable())
+				return;
 			try
 			{
-				saveFileDialog1.Filter = "Тест|*.testData";
-				DialogResult res = saveFileDialog1.ShowDialog();
-				if (res == DialogResult.OK)
+				folderBrowserDialog1.SelectedPath = Application.StartupPath;
+				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
 				{
-					string filename = saveFileDialog1.FileName;
+					string filename = folderBrowserDialog1.SelectedPath + "\\test.data";
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
-					//StreamWriter fout = new StreamWriter(path, false);
-					string s = "";
-					int a;
+					StreamWriter fout = new StreamWriter(filename, false);
+					string s = "", current, previous;
 					if (radioButton3.Checked)
 						s += "1.";
 					else
 						s += "0.";
-					s += "1.";
+					if (radioButton7.Checked)
+						s += "1.";
+					else
+						s += "0.";
 					if (radioButton2.Checked)
 						s += "1.";
 					else
 						s += "0.";
-					a = 0;
-					for (int i = 0; i < dataGridView1.RowCount; i++)
+					List<int> counts = new List<int>();
+					counts.Add(1);
+					previous = dataGridView1.Rows[0].Cells[0].Value.ToString();
+					for (int i = 1; i < dataGridView1.RowCount; i++)
 					{
-						if (dataGridView1.Rows[i].Cells[0].Value.ToString() == "0")
-						{
-							a++;
-						}
-
+						current = dataGridView1.Rows[i].Cells[0].Value.ToString();
+						if (current == previous)
+							counts[counts.Count - 1]++;
+						else
+							counts.Add(1);
+						previous = current;
 					}
-					if (a > 0)
+					if (counts.Count > 0 && dataGridView1.Rows[0].Cells[0].Value.ToString() == "0")
 						s += "1.";
 					else
 						s += "0.";
 					string lastChanged = DateTime.Now.ToString();
 					lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
+					lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
 					s += lastChanged + ".";
 					s += numericUpDown1.Value.ToString() + ".";
 					s += dataGridView1.RowCount.ToString() + ".";
-					Text = s;
-					//fout.Close();
+					foreach (var item in counts)
+					{
+						s += item + ".";
+					}
+					int key = genKey();
+					s += key;
+					fout.WriteLine(EncodeDecrypt(s, 0x123456));
+					fout.WriteLine(EncodeDecrypt(textBox1.Text, key));
+					s = "";
+					for (int i = 0; i < dataGridView1.RowCount; i++)
+					{
+						for (int j = 0; j < dataGridView1.ColumnCount; j++)
+							s += '\"' + dataGridView1.Rows[i].Cells[j].Value.ToString() + "\";";
+						fout.WriteLine(EncodeDecrypt(s, key));
+						s = "";
+					}
+					fout.Close();
+					MessageBox.Show("Файл сохранен", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 				else throw new Exception("Файл не был сохранен!");
 			}
@@ -310,7 +451,7 @@ namespace Admin_Module
 		}
 		private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right)
+			if (e.Button == MouseButtons.Right && dataGridView1.ReadOnly == false)
 			{
 				if (MessageBox.Show("Вы действительно хотите удалить этот вопрос?", "Удаление вопроса", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
 				{
@@ -366,18 +507,56 @@ namespace Admin_Module
 		private void numericUpDown3_ValueChanged(object sender, EventArgs e)
 		{
 			string s = numericUpDown3.Value.ToString();
-			textBox5.BackColor = Color.White;
-			textBox6.BackColor = Color.White;
-			textBox7.BackColor = Color.White;
-			textBox8.BackColor = Color.White;
-			textBox9.BackColor = Color.White;
-			textBox10.BackColor = Color.White;
-			textBox5.ForeColor = Color.Black;
-			textBox6.ForeColor = Color.Black;
-			textBox7.ForeColor = Color.Black;
-			textBox8.ForeColor = Color.Black;
-			textBox9.ForeColor = Color.Black;
-			textBox10.ForeColor = Color.Black;
+			if ((textBox10.BackColor == Color.DarkRed || !string.IsNullOrWhiteSpace(textBox10.Text)) && string.IsNullOrWhiteSpace(textBox9.Text))
+			{
+				textBox9.BackColor = Color.DarkRed;
+				textBox9.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox9.BackColor = Color.White;
+				textBox9.ForeColor = Color.Black;
+			}
+			if ((textBox9.BackColor == Color.DarkRed || !string.IsNullOrWhiteSpace(textBox9.Text)) && string.IsNullOrWhiteSpace(textBox8.Text))
+			{
+				textBox8.BackColor = Color.DarkRed;
+				textBox8.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox8.BackColor = Color.White;
+				textBox8.ForeColor = Color.Black;
+			}
+			if ((textBox8.BackColor == Color.DarkRed || !string.IsNullOrWhiteSpace(textBox8.Text)) && string.IsNullOrWhiteSpace(textBox7.Text))
+			{
+				textBox7.BackColor = Color.DarkRed;
+				textBox7.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox7.BackColor = Color.White;
+				textBox7.ForeColor = Color.Black;
+			}
+			if ((textBox7.BackColor == Color.DarkRed || !string.IsNullOrWhiteSpace(textBox7.Text)) && string.IsNullOrWhiteSpace(textBox6.Text))
+			{
+				textBox6.BackColor = Color.DarkRed;
+				textBox6.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox6.BackColor = Color.White;
+				textBox6.ForeColor = Color.Black;
+			}
+			if (string.IsNullOrWhiteSpace(textBox5.Text))
+			{
+				textBox5.BackColor = Color.DarkRed;
+				textBox5.ForeColor = Color.White;
+			}
+			else
+			{
+				textBox5.BackColor = Color.White;
+				textBox5.ForeColor = Color.Black;
+			}
 			numericUpDown3.BackColor = Color.White;
 			numericUpDown3.ForeColor = Color.Black;
 			for (int i = 0; i < s.Length; i++)
@@ -392,7 +571,7 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
@@ -404,7 +583,7 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
@@ -416,7 +595,7 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
@@ -428,7 +607,7 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
@@ -440,7 +619,7 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
@@ -452,12 +631,12 @@ namespace Admin_Module
 						}
 						else
 						{
-							numericUpDown3.BackColor = Color.Red;
+							numericUpDown3.BackColor = Color.DarkRed;
 							numericUpDown3.ForeColor = Color.White;
 						}
 						break;
 					default:
-						numericUpDown3.BackColor = Color.Red;
+						numericUpDown3.BackColor = Color.DarkRed;
 						numericUpDown3.ForeColor = Color.White;
 						break;
 				}
@@ -465,31 +644,37 @@ namespace Admin_Module
 		}
 		private void textBox5_TextChanged(object sender, EventArgs e)
 		{
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox6_TextChanged(object sender, EventArgs e)
 		{
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox7_TextChanged(object sender, EventArgs e)
 		{
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox8_TextChanged(object sender, EventArgs e)
 		{
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox9_TextChanged(object sender, EventArgs e)
 		{
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox10_TextChanged(object sender, EventArgs e)
 		{
+
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void button3_Click(object sender, EventArgs e)
 		{
-			if (numericUpDown3.BackColor == Color.Red || textBox4.BackColor == Color.Red || textBox3.BackColor == Color.Red)
+			if (numericUpDown3.BackColor == Color.DarkRed || textBox4.BackColor == Color.DarkRed || textBox3.BackColor == Color.DarkRed)
 			{
 				MessageBox.Show("Вы заполнили не все поля!", "Ошибка добавления", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -503,7 +688,7 @@ namespace Admin_Module
 		{
 			if (string.IsNullOrWhiteSpace(textBox3.Text))
 			{
-				textBox3.BackColor = Color.Red;
+				textBox3.BackColor = Color.DarkRed;
 				textBox3.ForeColor = Color.White;
 			}
 			else
@@ -516,7 +701,7 @@ namespace Admin_Module
 		{
 			if (string.IsNullOrWhiteSpace(textBox4.Text))
 			{
-				textBox4.BackColor = Color.Red;
+				textBox4.BackColor = Color.DarkRed;
 				textBox4.ForeColor = Color.White;
 			}
 			else
@@ -553,5 +738,7 @@ namespace Admin_Module
 					}
 			}
 		}
+
+	
 	}
 }

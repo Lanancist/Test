@@ -35,8 +35,9 @@
 			this.btn_main = new System.Windows.Forms.ToolStripButton();
 			this.btn_editor = new System.Windows.Forms.ToolStripButton();
 			this.btn_newquestion = new System.Windows.Forms.ToolStripButton();
-			this.button1 = new System.Windows.Forms.Button();
+			this.button4 = new System.Windows.Forms.Button();
 			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.button1 = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
 			this.label4 = new System.Windows.Forms.Label();
@@ -79,6 +80,11 @@
 			this.textBox3 = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
+			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.radioButton8 = new System.Windows.Forms.RadioButton();
+			this.radioButton7 = new System.Windows.Forms.RadioButton();
+			this.textBox13 = new System.Windows.Forms.TextBox();
 			this.toolStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -87,6 +93,7 @@
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+			this.groupBox3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// openFileDialog1
@@ -99,10 +106,10 @@
 			this.toolStrip1.AllowMerge = false;
 			this.toolStrip1.CanOverflow = false;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-				this.btn_load,
-				this.btn_main,
-				this.btn_editor,
-				this.btn_newquestion});
+            this.btn_load,
+            this.btn_main,
+            this.btn_editor,
+            this.btn_newquestion});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(788, 25);
@@ -149,18 +156,6 @@
 			this.btn_newquestion.Text = "Добавление вопроса";
 			this.btn_newquestion.Click += new System.EventHandler(this.btn_newquestion_Click);
 			// 
-			// button1
-			// 
-			this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.button1.Location = new System.Drawing.Point(282, 504);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(244, 67);
-			this.button1.TabIndex = 3;
-			this.button1.Text = "Сохранить в файл";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
-			// 
 			// textBox1
 			// 
 			this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -170,6 +165,28 @@
 			this.textBox1.Size = new System.Drawing.Size(560, 30);
 			this.textBox1.TabIndex = 4;
 			this.textBox1.Text = "Тест без названия";
+			// 
+			// button4
+			// 
+			this.button4.Location = new System.Drawing.Point(613, 492);
+			this.button4.Name = "button4";
+			this.button4.Size = new System.Drawing.Size(75, 23);
+			this.button4.TabIndex = 0;
+			this.button4.Text = "Не удалять! Очень нужная неиспользуема якнопка";
+			this.button4.UseVisualStyleBackColor = true;
+			this.button4.Visible = false;
+			// 
+			// button1
+			// 
+			this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.button1.Location = new System.Drawing.Point(291, 521);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(244, 67);
+			this.button1.TabStop = false;
+			this.button1.Text = "Сохранить в файл";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// groupBox1
 			// 
@@ -182,7 +199,7 @@
 			this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.groupBox1.Location = new System.Drawing.Point(12, 123);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(370, 314);
+			this.groupBox1.Size = new System.Drawing.Size(273, 335);
 			this.groupBox1.TabIndex = 6;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Настройки выбора вопросов";
@@ -192,10 +209,10 @@
 			this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
 			this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.richTextBox1.Location = new System.Drawing.Point(8, 116);
+			this.richTextBox1.Location = new System.Drawing.Point(8, 91);
 			this.richTextBox1.Name = "richTextBox1";
 			this.richTextBox1.ReadOnly = true;
-			this.richTextBox1.Size = new System.Drawing.Size(356, 180);
+			this.richTextBox1.Size = new System.Drawing.Size(254, 223);
 			this.richTextBox1.TabIndex = 3;
 			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
 			// 
@@ -260,9 +277,9 @@
 			this.groupBox2.Controls.Add(this.radioButton3);
 			this.groupBox2.Controls.Add(this.label3);
 			this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.groupBox2.Location = new System.Drawing.Point(388, 123);
+			this.groupBox2.Location = new System.Drawing.Point(291, 123);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(388, 314);
+			this.groupBox2.Size = new System.Drawing.Size(244, 335);
 			this.groupBox2.TabIndex = 8;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Настройки пароля";
@@ -271,7 +288,7 @@
 			// 
 			this.radioButton4.AutoSize = true;
 			this.radioButton4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.radioButton4.Location = new System.Drawing.Point(225, 83);
+			this.radioButton4.Location = new System.Drawing.Point(19, 100);
 			this.radioButton4.Name = "radioButton4";
 			this.radioButton4.Size = new System.Drawing.Size(91, 19);
 			this.radioButton4.TabIndex = 3;
@@ -287,7 +304,7 @@
 			this.textBox2.Multiline = true;
 			this.textBox2.Name = "textBox2";
 			this.textBox2.ReadOnly = true;
-			this.textBox2.Size = new System.Drawing.Size(333, 123);
+			this.textBox2.Size = new System.Drawing.Size(196, 181);
 			this.textBox2.TabIndex = 4;
 			this.textBox2.Text = resources.GetString("textBox2.Text");
 			// 
@@ -297,7 +314,7 @@
 			this.radioButton3.BackColor = System.Drawing.Color.Transparent;
 			this.radioButton3.Checked = true;
 			this.radioButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.radioButton3.Location = new System.Drawing.Point(56, 83);
+			this.radioButton3.Location = new System.Drawing.Point(19, 73);
 			this.radioButton3.Name = "radioButton3";
 			this.radioButton3.Size = new System.Drawing.Size(82, 19);
 			this.radioButton3.TabIndex = 2;
@@ -308,7 +325,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(60, 36);
+			this.label3.Location = new System.Drawing.Point(16, 22);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(137, 17);
 			this.label3.TabIndex = 0;
@@ -333,10 +350,11 @@
 			// 
 			this.button2.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.button2.Location = new System.Drawing.Point(282, 453);
+			this.button2.Location = new System.Drawing.Point(291, 464);
 			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(244, 45);
-			this.button2.TabIndex = 9;
+			this.button2.Size = new System.Drawing.Size(244, 51);
+			this.button2.TabIndex = 29;
+			this.button2.TabStop = false;
 			this.button2.Text = "Сохранить в таблицу";
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -375,7 +393,7 @@
 			this.panel1.Controls.Add(this.label5);
 			this.panel1.Controls.Add(this.label1);
 			this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.panel1.Location = new System.Drawing.Point(496, 29);
+			this.panel1.Location = new System.Drawing.Point(461, 29);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(111, 72);
 			this.panel1.TabIndex = 11;
@@ -422,10 +440,10 @@
 			this.numericUpDown3.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.numericUpDown3.Location = new System.Drawing.Point(-77, 229);
 			this.numericUpDown3.Maximum = new decimal(new int[] {
-				654321,
-				0,
-				0,
-				0});
+            654321,
+            0,
+            0,
+            0});
 			this.numericUpDown3.Name = "numericUpDown3";
 			this.numericUpDown3.Size = new System.Drawing.Size(120, 30);
 			this.numericUpDown3.TabIndex = 23;
@@ -610,10 +628,10 @@
 			this.numericUpDown2.Size = new System.Drawing.Size(120, 30);
 			this.numericUpDown2.TabIndex = 5;
 			this.numericUpDown2.Value = new decimal(new int[] {
-				1,
-				0,
-				0,
-				0});
+            1,
+            0,
+            0,
+            0});
 			this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
 			// 
 			// label6
@@ -661,11 +679,59 @@
 			// 
 			this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.label1.AutoSize = true;
+			this.label1.BackColor = System.Drawing.SystemColors.Control;
 			this.label1.Location = new System.Drawing.Point(-332, -207);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(84, 25);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Вопрос:";
+			// 
+			// groupBox3
+			// 
+			this.groupBox3.Controls.Add(this.radioButton8);
+			this.groupBox3.Controls.Add(this.radioButton7);
+			this.groupBox3.Controls.Add(this.textBox13);
+			this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.groupBox3.Location = new System.Drawing.Point(541, 123);
+			this.groupBox3.Name = "groupBox3";
+			this.groupBox3.Size = new System.Drawing.Size(235, 335);
+			this.groupBox3.TabIndex = 12;
+			this.groupBox3.TabStop = false;
+			this.groupBox3.Text = "Настройки ответов";
+			// 
+			// radioButton8
+			// 
+			this.radioButton8.AutoSize = true;
+			this.radioButton8.Location = new System.Drawing.Point(23, 98);
+			this.radioButton8.Name = "radioButton8";
+			this.radioButton8.Size = new System.Drawing.Size(51, 21);
+			this.radioButton8.TabIndex = 2;
+			this.radioButton8.Text = "Нет";
+			this.radioButton8.UseVisualStyleBackColor = true;
+			// 
+			// radioButton7
+			// 
+			this.radioButton7.AutoSize = true;
+			this.radioButton7.Checked = true;
+			this.radioButton7.Location = new System.Drawing.Point(23, 70);
+			this.radioButton7.Name = "radioButton7";
+			this.radioButton7.Size = new System.Drawing.Size(45, 21);
+			this.radioButton7.TabIndex = 1;
+			this.radioButton7.TabStop = true;
+			this.radioButton7.Text = "Да";
+			this.radioButton7.UseVisualStyleBackColor = true;
+			// 
+			// textBox13
+			// 
+			this.textBox13.BackColor = System.Drawing.SystemColors.Control;
+			this.textBox13.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.textBox13.Location = new System.Drawing.Point(16, 24);
+			this.textBox13.Multiline = true;
+			this.textBox13.Name = "textBox13";
+			this.textBox13.ReadOnly = true;
+			this.textBox13.Size = new System.Drawing.Size(211, 44);
+			this.textBox13.TabIndex = 0;
+			this.textBox13.Text = "Отобразить правильные ответы по окончании теста?";
 			// 
 			// Form1
 			// 
@@ -673,6 +739,8 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(788, 597);
+			this.Controls.Add(this.button4);
+			this.Controls.Add(this.groupBox3);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.button2);
@@ -684,6 +752,7 @@
 			this.Controls.Add(this.toolStrip1);
 			this.DoubleBuffered = true;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "Form1";
 			this.Text = "Программа тестирования. Мастер";
@@ -700,6 +769,8 @@
 			this.panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+			this.groupBox3.ResumeLayout(false);
+			this.groupBox3.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -710,8 +781,9 @@
 		private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.ToolStripButton btn_load;
 		private System.Windows.Forms.ToolStripButton btn_editor;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button button4;
 		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.RadioButton radioButton2;
 		private System.Windows.Forms.RadioButton radioButton1;
@@ -756,6 +828,12 @@
 		private System.Windows.Forms.Label label14;
 		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.TextBox textBox12;
+		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+		private System.Windows.Forms.GroupBox groupBox3;
+		private System.Windows.Forms.TextBox textBox13;
+		private System.Windows.Forms.RadioButton radioButton8;
+		private System.Windows.Forms.RadioButton radioButton7;
+		
 	}
 }
 
