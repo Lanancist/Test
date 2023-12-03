@@ -45,7 +45,11 @@
 			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
 			this.label2 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.textBox2 = new System.Windows.Forms.TextBox();
+			this.radioButton8 = new System.Windows.Forms.RadioButton();
 			this.label3 = new System.Windows.Forms.Label();
+			this.radioButton7 = new System.Windows.Forms.RadioButton();
+			this.textBox13 = new System.Windows.Forms.TextBox();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
 			this.button2 = new System.Windows.Forms.Button();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
@@ -77,10 +81,6 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-			this.radioButton8 = new System.Windows.Forms.RadioButton();
-			this.radioButton7 = new System.Windows.Forms.RadioButton();
-			this.textBox13 = new System.Windows.Forms.TextBox();
-			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.toolStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -93,7 +93,6 @@
 			// 
 			// openFileDialog1
 			// 
-			this.openFileDialog1.FileName = "openFileDialog1";
 			this.openFileDialog1.Filter = "Тест|*.xls; test.data|Таблица|*.xls|Файл| test.data";
 			// 
 			// toolStrip1
@@ -272,6 +271,24 @@
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Другие настройки";
 			// 
+			// textBox2
+			// 
+			this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.textBox2.Location = new System.Drawing.Point(21, 59);
+			this.textBox2.Name = "textBox2";
+			this.textBox2.Size = new System.Drawing.Size(309, 26);
+			this.textBox2.TabIndex = 3;
+			// 
+			// radioButton8
+			// 
+			this.radioButton8.AutoSize = true;
+			this.radioButton8.Location = new System.Drawing.Point(179, 179);
+			this.radioButton8.Name = "radioButton8";
+			this.radioButton8.Size = new System.Drawing.Size(51, 21);
+			this.radioButton8.TabIndex = 2;
+			this.radioButton8.Text = "Нет";
+			this.radioButton8.UseVisualStyleBackColor = true;
+			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
@@ -280,6 +297,31 @@
 			this.label3.Size = new System.Drawing.Size(61, 17);
 			this.label3.TabIndex = 0;
 			this.label3.Text = "Пароль:";
+			// 
+			// radioButton7
+			// 
+			this.radioButton7.AutoSize = true;
+			this.radioButton7.Checked = true;
+			this.radioButton7.Location = new System.Drawing.Point(41, 175);
+			this.radioButton7.Name = "radioButton7";
+			this.radioButton7.Size = new System.Drawing.Size(45, 21);
+			this.radioButton7.TabIndex = 1;
+			this.radioButton7.TabStop = true;
+			this.radioButton7.Text = "Да";
+			this.radioButton7.UseVisualStyleBackColor = true;
+			// 
+			// textBox13
+			// 
+			this.textBox13.BackColor = System.Drawing.SystemColors.Control;
+			this.textBox13.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.textBox13.Location = new System.Drawing.Point(19, 129);
+			this.textBox13.Multiline = true;
+			this.textBox13.Name = "textBox13";
+			this.textBox13.ReadOnly = true;
+			this.textBox13.Size = new System.Drawing.Size(211, 44);
+			this.textBox13.TabIndex = 0;
+			this.textBox13.TabStop = false;
+			this.textBox13.Text = "Отобразить правильные ответы по окончании теста?";
 			// 
 			// dataGridView1
 			// 
@@ -635,49 +677,6 @@
 			this.label1.Size = new System.Drawing.Size(84, 25);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Вопрос:";
-			// 
-			// radioButton8
-			// 
-			this.radioButton8.AutoSize = true;
-			this.radioButton8.Location = new System.Drawing.Point(179, 179);
-			this.radioButton8.Name = "radioButton8";
-			this.radioButton8.Size = new System.Drawing.Size(51, 21);
-			this.radioButton8.TabIndex = 2;
-			this.radioButton8.Text = "Нет";
-			this.radioButton8.UseVisualStyleBackColor = true;
-			// 
-			// radioButton7
-			// 
-			this.radioButton7.AutoSize = true;
-			this.radioButton7.Checked = true;
-			this.radioButton7.Location = new System.Drawing.Point(41, 175);
-			this.radioButton7.Name = "radioButton7";
-			this.radioButton7.Size = new System.Drawing.Size(45, 21);
-			this.radioButton7.TabIndex = 1;
-			this.radioButton7.TabStop = true;
-			this.radioButton7.Text = "Да";
-			this.radioButton7.UseVisualStyleBackColor = true;
-			// 
-			// textBox13
-			// 
-			this.textBox13.BackColor = System.Drawing.SystemColors.Control;
-			this.textBox13.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.textBox13.Location = new System.Drawing.Point(19, 129);
-			this.textBox13.Multiline = true;
-			this.textBox13.Name = "textBox13";
-			this.textBox13.ReadOnly = true;
-			this.textBox13.Size = new System.Drawing.Size(211, 44);
-			this.textBox13.TabIndex = 0;
-			this.textBox13.TabStop = false;
-			this.textBox13.Text = "Отобразить правильные ответы по окончании теста?";
-			// 
-			// textBox2
-			// 
-			this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.textBox2.Location = new System.Drawing.Point(21, 59);
-			this.textBox2.Name = "textBox2";
-			this.textBox2.Size = new System.Drawing.Size(309, 26);
-			this.textBox2.TabIndex = 3;
 			// 
 			// Form1
 			// 
