@@ -80,6 +80,37 @@ namespace Admin_Module
 			dataGridView1.Columns[8].ValueType = typeof(string);
 			dataGridView1.Columns[9].HeaderText = "Ответ";
 			dataGridView1.Columns[9].ValueType = typeof(string);
+			btn_editor.Enabled = true;
+			button1.Enabled = true;
+			textBox1.Enabled = true;
+			groupBox1.Enabled = true;
+			groupBox2.Enabled = true;
+			groupBox3.Enabled = true;
+			label2.Enabled = true;
+			label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
+			numericUpDown1.Maximum = dataGridView1.RowCount;
+			numericUpDown2.Maximum = dataGridView1.RowCount;
+			dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
+			CheckTable();
+			Microsoft.Office.Interop.Excel.Application xlApp;
+			try
+			{
+				xlApp = new Microsoft.Office.Interop.Excel.Application();
+				xlApp.Quit();
+				Marshal.ReleaseComObject(xlApp);
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+				btn_newquestion.Enabled = true;
+				button2.Enabled = true;
+				dataGridView1.ReadOnly = false;
+			}
+			catch (Exception)
+			{
+				button2.Enabled = false;
+				dataGridView1.ReadOnly = true;
+				btn_newquestion.Enabled = false;
+				MessageBox.Show("Найти excel не удалось. Вы все еще можете создать файл вопросов для теста, но редактировать таблицу в данной программе у Вас не получится.", "Невозможно сохранить таблицу", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
 		}
 		bool CheckTable()
 		{
@@ -197,6 +228,14 @@ namespace Admin_Module
 		}
 		private void toolStripButton1_Click(object sender, EventArgs e)
 		{
+			if (btn_newquestion.Enabled)
+			{
+				if (!(MessageBox.Show("Если вы изменяли файл и не хотите потерять эти изменения, нажмите на кнопку \"" + button2.Text + "\" и следуйте инструкциям. Вы уверены, что хотите загрузить новый файл? ", "Загрузка файла", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes))
+				{
+					return;
+				}
+
+			}
 			dataGridView1.Visible = false;
 			WindowState = FormWindowState.Normal;
 			btn_editor.Enabled = false;
@@ -214,41 +253,14 @@ namespace Admin_Module
 				if (openFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					filename = openFileDialog1.FileName;
-					OpenExcelFile(filename);
+					if (filename.EndsWith(".xls"))
+						OpenExcelFile(filename);
+					else
+						//openTestFile(filename);
 					Text = "Программа тестирования. Мастер | " + filename;
 				}
 				else throw new Exception("Файл не был загружен");
-				btn_editor.Enabled = true;
-				button1.Enabled = true;
-				textBox1.Enabled = true;
-				groupBox1.Enabled = true;
-				groupBox2.Enabled = true;
-				groupBox3.Enabled = true;
-				label2.Enabled = true;
-				label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
-				numericUpDown1.Maximum = dataGridView1.RowCount;
-				numericUpDown2.Maximum = dataGridView1.RowCount;
-				dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
-				CheckTable();
-				Microsoft.Office.Interop.Excel.Application xlApp;
-				try
-				{
-					xlApp = new Microsoft.Office.Interop.Excel.Application();
-					xlApp.Quit();
-					Marshal.ReleaseComObject(xlApp);
-					GC.Collect();
-					GC.WaitForPendingFinalizers();
-					btn_newquestion.Enabled = true;
-					button2.Enabled = true;
-					dataGridView1.ReadOnly = false;
-				}
-				catch (Exception)
-				{
-					button2.Enabled = false;
-					dataGridView1.ReadOnly = true;
-					btn_newquestion.Enabled = false;
-					MessageBox.Show("Найти excel не удалось. Вы все еще можете создать файл вопросов для теста, но редактировать таблицу в данной программе у Вас не получится.", "Невозможно сохранить таблицу", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				}
+
 
 
 			}
@@ -278,7 +290,6 @@ namespace Admin_Module
 			dataGridView1.Height = 578;
 			dataGridView1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Bottom;
 		}
-		string path = "input.txt";
 		private void button2_Click(object sender, EventArgs e)
 		{
 			try
@@ -727,5 +738,7 @@ namespace Admin_Module
 					}
 			}
 		}
+
+	
 	}
 }
