@@ -27,7 +27,6 @@ namespace Admin_Module
 		{
 			InitializeComponent();
 		}
-
 		public static string EncodeDecrypt(string str, int secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
 		{
 			string newStr = "";
@@ -35,24 +34,26 @@ namespace Admin_Module
 				newStr += TopSecret(c, secretKey);
 			return newStr;
 		}
-
 		public static char TopSecret(char character, int secretKey)
 		{
 			character = (char)(character ^ secretKey); //Производим XOR операцию символа с ключем
 			return character;
 		}
-
 		private void OpenExcelFile(string path)
 		{
-			FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read);
-			IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream);
-			DataSet db = reader.AsDataSet(new ExcelDataSetConfiguration()
+			DataSet db;
+			using (FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read))
 			{
-				ConfigureDataTable = (x) => new ExcelDataTableConfiguration()
+				IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream);
+				db = reader.AsDataSet(new ExcelDataSetConfiguration()
 				{
-					UseHeaderRow = false
-				}
-			});
+					ConfigureDataTable = (x) => new ExcelDataTableConfiguration()
+					{
+						UseHeaderRow = false
+					}
+				});
+			}
+			//FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read);
 			tableCollection = db.Tables;
 			System.Data.DataTable table = tableCollection[Convert.ToString(tableCollection[0].TableName)];
 			dataGridView1.DataSource = table;
@@ -117,16 +118,13 @@ namespace Admin_Module
 		private void openTestFile(string filename)
 		{
 			string line;
-			FileInfo filepath = new FileInfo(filename);
-			if (!filepath.Exists)
+			string[] questm;
+			using (StreamReader reader = new StreamReader(filename))
 			{
-				MessageBox.Show("Файл \"" + filename + "\" не найден!", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				Close();
-				return;
+				line = EncodeDecrypt(reader.ReadLine(), 0x123456);
+				questm = line.Split(new[] { '.' }, StringSplitOptions.None);
+				textBox1.Text = EncodeDecrypt(reader.ReadLine(), int.Parse(questm[questm.Length - 2]));
 			}
-			StreamReader fin = new StreamReader(filename);
-			line = EncodeDecrypt(fin.ReadLine(), 0x123456);
-			string[] questm = line.Split(new[] { '.' }, StringSplitOptions.None);
 			label2.Text = "Всего вопросов: " + int.Parse(questm[6]);
 			label2.Enabled = true;
 			numericUpDown1.Maximum = int.Parse(questm[5]);
@@ -137,20 +135,13 @@ namespace Admin_Module
 			label2.Enabled = false;
 			textBox2.Text = questm[questm.Length - 1];
 			if (questm[1] == "1")
-
 				radioButton7.Checked = true;
-
 			else
 				radioButton8.Checked = true;
 			if (questm[2] == "1")
-
 				radioButton2.Checked = true;
-
 			else
 				radioButton1.Checked = true;
-			int key = int.Parse(questm[questm.Length - 2]);
-			textBox1.Text = EncodeDecrypt(fin.ReadLine(), key);
-			fin.Close();
 		}
 		bool CheckTable()
 		{
@@ -166,10 +157,8 @@ namespace Admin_Module
 					dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
 					dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
 				}
-
 				else
 				{
-
 					try
 					{
 						b = int.Parse(dataGridView1[0, i].Value.ToString());
@@ -185,7 +174,6 @@ namespace Admin_Module
 						s += "Вопрос " + (i + 1) + ": Не корректно введен номер темы\n";
 						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
 						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
-
 					}
 				}
 				if (string.IsNullOrWhiteSpace(dataGridView1[1, i].Value.ToString()))
@@ -225,7 +213,6 @@ namespace Admin_Module
 						dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.DarkRed;
 						dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
 					}
-
 					if ((!string.IsNullOrWhiteSpace(dataGridView1[5, i].Value.ToString()) || answer.Contains("2")) && string.IsNullOrWhiteSpace(dataGridView1[4, i].Value.ToString()))
 					{
 						s += "Вопрос " + (i + 1) + ": Пропущен вариант ответа 2!\n";
@@ -258,7 +245,6 @@ namespace Admin_Module
 					}
 				}
 			}
-
 			if (s != "")
 			{
 				MessageBox.Show(s, "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -274,7 +260,6 @@ namespace Admin_Module
 				{
 					return;
 				}
-
 			}
 			dataGridView1.Visible = false;
 			WindowState = FormWindowState.Normal;
@@ -300,9 +285,6 @@ namespace Admin_Module
 					Text = "Программа тестирования. Мастер | " + filename;
 				}
 				else throw new Exception("Файл не был загружен");
-
-
-
 			}
 			catch (Exception ex)
 			{
@@ -323,11 +305,6 @@ namespace Admin_Module
 			textBox1.Enabled = false;
 			groupBox1.Enabled = false;
 			groupBox2.Enabled = false;
-			dataGridView1.Left = 0;
-			dataGridView1.Top = 20;
-			dataGridView1.Width = 792;
-			dataGridView1.Height = 578;
-			dataGridView1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Bottom;
 		}
 		public void ExportExcelInterop(string filename)
 		{
@@ -591,32 +568,26 @@ namespace Admin_Module
 		}
 		private void textBox5_TextChanged(object sender, EventArgs e)
 		{
-
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox6_TextChanged(object sender, EventArgs e)
 		{
-
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox7_TextChanged(object sender, EventArgs e)
 		{
-
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox8_TextChanged(object sender, EventArgs e)
 		{
-
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox9_TextChanged(object sender, EventArgs e)
 		{
-
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void textBox10_TextChanged(object sender, EventArgs e)
 		{
-
 			numericUpDown3_ValueChanged(sender, e);
 		}
 		private void button3_Click(object sender, EventArgs e)
@@ -685,7 +656,6 @@ namespace Admin_Module
 					}
 			}
 		}
-
 		private void button1_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (CheckTable())
@@ -756,7 +726,6 @@ namespace Admin_Module
 				MessageBox.Show(ex.Message, "Ошибка сохранения файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
-
 		private void button2_MouseDown(object sender, MouseEventArgs e)
 		{
 			try
@@ -765,9 +734,7 @@ namespace Admin_Module
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = saveFileDialog1.FileName;
-
 					ExportExcelInterop(filename);
-
 				}
 				else throw new Exception("Файл не был сохранен!");
 			}
