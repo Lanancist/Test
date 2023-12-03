@@ -305,11 +305,6 @@ namespace Admin_Module
 			textBox1.Enabled = false;
 			groupBox1.Enabled = false;
 			groupBox2.Enabled = false;
-			dataGridView1.Left = 0;
-			dataGridView1.Top = 20;
-			dataGridView1.Width = 792;
-			dataGridView1.Height = 578;
-			dataGridView1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Bottom;
 		}
 		public void ExportExcelInterop(string filename)
 		{
