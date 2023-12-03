@@ -20,7 +20,7 @@ namespace User_Module
 			InitializeComponent();
 		}
 		int n, generateCount;
-		bool password, ViewAnswers, fromEveryTheme, obligateQuestions;
+		bool ViewAnswers, fromEveryTheme, obligateQuestions;
 		private void button1_Click(object sender, EventArgs e)
 		{
 			if (textBox2.Text == genCheatPasswordAll(textBox1.Text))
@@ -39,9 +39,9 @@ namespace User_Module
 				}
 				else
 				{
-					if (password == true)
+					if (!string.IsNullOrWhiteSpace(textBox2.Tag.ToString()))
 					{
-						if (textBox2.Text == genTeacherPassword())
+						if (textBox2.Text == textBox2.Tag.ToString())
 						{
 							tabs.Visible = true;
 							MaximizeBox = true;
@@ -64,12 +64,12 @@ namespace User_Module
 		}
 		public string genCheatPasswordAll(string FIO)
 		{
-			string s = "1";
+			string s = "allpassword";
 			return s;
 		}
 		public string genCheatPasswordSome(string FIO)
 		{
-			string s = "2";
+			string s = "somepassword";
 			return s;
 		}
 		public void GenerateRandomNumbers(int n, int a, int b, ref List<int> num)
@@ -107,7 +107,7 @@ namespace User_Module
 		}
 		private void textBox2_TextChanged(object sender, EventArgs e)
 		{
-			if (string.IsNullOrWhiteSpace(textBox2.Text) && password == true)
+			if (string.IsNullOrWhiteSpace(textBox2.Text) && !string.IsNullOrWhiteSpace(textBox2.Tag.ToString()))
 			{
 				button1.Enabled = false;
 			}
@@ -156,9 +156,10 @@ namespace User_Module
 			string lastChanged = File.GetLastWriteTime(path).ToString();
 			lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
 			line = EncodeDecrypt(fin.ReadLine(), 0x123456);
-			string[] questm = line.Split(new[] { '.' }, StringSplitOptions.None); ;
-			password = questm[0] == "1";
-			if (!password)
+			string[] questm = line.Split(new[] { '.' }, StringSplitOptions.None);
+			textBox2.Tag = "";
+			textBox2.Tag = questm[questm.Length - 1];
+			if (string.IsNullOrWhiteSpace(textBox2.Tag.ToString()))
 			{
 				label2.Enabled = false;
 				textBox2.BackColor = SystemColors.Menu;
@@ -192,7 +193,7 @@ namespace User_Module
 					{
 						numbers.Add(i);
 					}
-					for (int i = 8; i < questm.Length - 1; i++)
+					for (int i = 8; i < questm.Length - 2; i++)
 					{
 						a = int.Parse(questm[i]);
 						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
@@ -202,7 +203,7 @@ namespace User_Module
 				else
 				{
 					int k = 0, a;
-					for (int i = 7; i < questm.Length - 1; i++)
+					for (int i = 7; i < questm.Length - 2; i++)
 					{
 						a = int.Parse(questm[i]);
 						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
@@ -225,7 +226,7 @@ namespace User_Module
 					GenerateRandomNumbers(generateCount, 0, n, ref numbers);
 			}
 			n = int.Parse(questm[6]);
-			int key = int.Parse(questm[questm.Length - 1]);
+			int key = int.Parse(questm[questm.Length - 2]);
 			Text = EncodeDecrypt(fin.ReadLine(), key);
 			TabPage tabPages;
 			SplitContainer splitter;
