@@ -16,6 +16,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Web;
 using System.Windows.Forms.VisualStyles;
+using Microsoft.Office.Interop.Excel;
 namespace Admin_Module
 {
 	public partial class Form1 : Form
@@ -53,7 +54,7 @@ namespace Admin_Module
 				}
 			});
 			tableCollection = db.Tables;
-			DataTable table = tableCollection[Convert.ToString(tableCollection[0].TableName)];
+			System.Data.DataTable table = tableCollection[Convert.ToString(tableCollection[0].TableName)];
 			dataGridView1.DataSource = table;
 			if (dataGridView1.ColumnCount != 10)
 			{
@@ -85,9 +86,10 @@ namespace Admin_Module
 			textBox1.Enabled = true;
 			groupBox1.Enabled = true;
 			groupBox2.Enabled = true;
-			groupBox3.Enabled = true;
 			label2.Enabled = true;
+			textBox1.ReadOnly = false;
 			label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
+			numericUpDown1.Minimum = 0;
 			numericUpDown1.Maximum = dataGridView1.RowCount;
 			numericUpDown2.Maximum = dataGridView1.RowCount;
 			dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
@@ -111,6 +113,44 @@ namespace Admin_Module
 				btn_newquestion.Enabled = false;
 				MessageBox.Show("Найти excel не удалось. Вы все еще можете создать файл вопросов для теста, но редактировать таблицу в данной программе у Вас не получится.", "Невозможно сохранить таблицу", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
+		}
+		private void openTestFile(string filename)
+		{
+			string line;
+			FileInfo filepath = new FileInfo(filename);
+			if (!filepath.Exists)
+			{
+				MessageBox.Show("Файл \"" + filename + "\" не найден!", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				Close();
+				return;
+			}
+			StreamReader fin = new StreamReader(filename);
+			line = EncodeDecrypt(fin.ReadLine(), 0x123456);
+			string[] questm = line.Split(new[] { '.' }, StringSplitOptions.None);
+			label2.Text = "Всего вопросов: " + int.Parse(questm[6]);
+			label2.Enabled = true;
+			numericUpDown1.Maximum = int.Parse(questm[5]);
+			numericUpDown1.Minimum = int.Parse(questm[5]);
+			textBox1.Enabled = true;
+			groupBox1.Enabled = true;
+			groupBox2.Enabled = true;
+			label2.Enabled = false;
+			textBox2.Text = questm[questm.Length - 1];
+			if (questm[1] == "1")
+
+				radioButton7.Checked = true;
+
+			else
+				radioButton8.Checked = true;
+			if (questm[2] == "1")
+
+				radioButton2.Checked = true;
+
+			else
+				radioButton1.Checked = true;
+			int key = int.Parse(questm[questm.Length - 2]);
+			textBox1.Text = EncodeDecrypt(fin.ReadLine(), key);
+			fin.Close();
 		}
 		bool CheckTable()
 		{
@@ -243,9 +283,9 @@ namespace Admin_Module
 			button1.Enabled = false;
 			button2.Enabled = false;
 			textBox1.Enabled = false;
+			textBox1.ReadOnly = true;
 			groupBox1.Enabled = false;
 			groupBox2.Enabled = false;
-			groupBox3.Enabled = false;
 			label2.Enabled = false;
 			label2.Text = "Всего вопросов:____";
 			try
@@ -256,7 +296,7 @@ namespace Admin_Module
 					if (filename.EndsWith(".xls"))
 						OpenExcelFile(filename);
 					else
-						//openTestFile(filename);
+						openTestFile(filename);
 					Text = "Программа тестирования. Мастер | " + filename;
 				}
 				else throw new Exception("Файл не был загружен");
@@ -283,7 +323,6 @@ namespace Admin_Module
 			textBox1.Enabled = false;
 			groupBox1.Enabled = false;
 			groupBox2.Enabled = false;
-			groupBox3.Enabled = false;
 			dataGridView1.Left = 0;
 			dataGridView1.Top = 20;
 			dataGridView1.Width = 792;
@@ -653,17 +692,14 @@ namespace Admin_Module
 				return;
 			try
 			{
-				folderBrowserDialog1.SelectedPath = Application.StartupPath;
+				folderBrowserDialog1.SelectedPath = System.Windows.Forms.Application.StartupPath;
 				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = folderBrowserDialog1.SelectedPath + "\\test.data";
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 					StreamWriter fout = new StreamWriter(filename, false);
 					string s = "", current, previous;
-					if (radioButton3.Checked)
-						s += "1.";
-					else
-						s += "0.";
+					s += "1.";
 					if (radioButton7.Checked)
 						s += "1.";
 					else
@@ -699,7 +735,7 @@ namespace Admin_Module
 						s += item + ".";
 					}
 					int key = genKey();
-					s += key;
+					s += key + "." + textBox2.Text;
 					fout.WriteLine(EncodeDecrypt(s, 0x123456));
 					fout.WriteLine(EncodeDecrypt(textBox1.Text, key));
 					s = "";

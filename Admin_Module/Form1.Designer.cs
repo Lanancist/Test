@@ -45,9 +45,6 @@
 			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
 			this.label2 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.radioButton4 = new System.Windows.Forms.RadioButton();
-			this.textBox2 = new System.Windows.Forms.TextBox();
-			this.radioButton3 = new System.Windows.Forms.RadioButton();
 			this.label3 = new System.Windows.Forms.Label();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
 			this.button2 = new System.Windows.Forms.Button();
@@ -80,10 +77,10 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.radioButton8 = new System.Windows.Forms.RadioButton();
 			this.radioButton7 = new System.Windows.Forms.RadioButton();
 			this.textBox13 = new System.Windows.Forms.TextBox();
+			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.toolStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -92,13 +89,12 @@
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-			this.groupBox3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// openFileDialog1
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
-			this.openFileDialog1.Filter = "Excel|*.xls";
+			this.openFileDialog1.Filter = "Тест|*.xls; test.data|Таблица|*.xls|Файл| test.data";
 			// 
 			// toolStrip1
 			// 
@@ -189,7 +185,7 @@
 			this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.groupBox1.Location = new System.Drawing.Point(12, 123);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(273, 335);
+			this.groupBox1.Size = new System.Drawing.Size(390, 267);
 			this.groupBox1.TabIndex = 6;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Настройки выбора вопросов";
@@ -199,10 +195,10 @@
 			this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
 			this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.richTextBox1.Location = new System.Drawing.Point(8, 91);
+			this.richTextBox1.Location = new System.Drawing.Point(16, 91);
 			this.richTextBox1.Name = "richTextBox1";
 			this.richTextBox1.ReadOnly = true;
-			this.richTextBox1.Size = new System.Drawing.Size(254, 223);
+			this.richTextBox1.Size = new System.Drawing.Size(350, 165);
 			this.richTextBox1.TabIndex = 0;
 			this.richTextBox1.TabStop = false;
 			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
@@ -263,65 +259,27 @@
 			// groupBox2
 			// 
 			this.groupBox2.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.groupBox2.Controls.Add(this.radioButton4);
 			this.groupBox2.Controls.Add(this.textBox2);
-			this.groupBox2.Controls.Add(this.radioButton3);
+			this.groupBox2.Controls.Add(this.radioButton8);
 			this.groupBox2.Controls.Add(this.label3);
+			this.groupBox2.Controls.Add(this.radioButton7);
+			this.groupBox2.Controls.Add(this.textBox13);
 			this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.groupBox2.Location = new System.Drawing.Point(291, 123);
+			this.groupBox2.Location = new System.Drawing.Point(408, 123);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(244, 335);
+			this.groupBox2.Size = new System.Drawing.Size(356, 267);
 			this.groupBox2.TabIndex = 8;
 			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Настройки пароля";
-			// 
-			// radioButton4
-			// 
-			this.radioButton4.AutoSize = true;
-			this.radioButton4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.radioButton4.Location = new System.Drawing.Point(19, 100);
-			this.radioButton4.Name = "radioButton4";
-			this.radioButton4.Size = new System.Drawing.Size(91, 19);
-			this.radioButton4.TabIndex = 3;
-			this.radioButton4.Text = "Выключить";
-			this.radioButton4.UseVisualStyleBackColor = true;
-			// 
-			// textBox2
-			// 
-			this.textBox2.BackColor = System.Drawing.SystemColors.Control;
-			this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.textBox2.Location = new System.Drawing.Point(19, 133);
-			this.textBox2.Multiline = true;
-			this.textBox2.Name = "textBox2";
-			this.textBox2.ReadOnly = true;
-			this.textBox2.Size = new System.Drawing.Size(196, 181);
-			this.textBox2.TabIndex = 4;
-			this.textBox2.TabStop = false;
-			this.textBox2.Text = resources.GetString("textBox2.Text");
-			// 
-			// radioButton3
-			// 
-			this.radioButton3.AutoSize = true;
-			this.radioButton3.BackColor = System.Drawing.Color.Transparent;
-			this.radioButton3.Checked = true;
-			this.radioButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.radioButton3.Location = new System.Drawing.Point(19, 73);
-			this.radioButton3.Name = "radioButton3";
-			this.radioButton3.Size = new System.Drawing.Size(82, 19);
-			this.radioButton3.TabIndex = 2;
-			this.radioButton3.TabStop = true;
-			this.radioButton3.Text = "Включить";
-			this.radioButton3.UseVisualStyleBackColor = false;
+			this.groupBox2.Text = "Другие настройки";
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(16, 22);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(137, 17);
+			this.label3.Size = new System.Drawing.Size(61, 17);
 			this.label3.TabIndex = 0;
-			this.label3.Text = "Пароль на сегодня:";
+			this.label3.Text = "Пароль:";
 			// 
 			// dataGridView1
 			// 
@@ -678,23 +636,10 @@
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Вопрос:";
 			// 
-			// groupBox3
-			// 
-			this.groupBox3.Controls.Add(this.radioButton8);
-			this.groupBox3.Controls.Add(this.radioButton7);
-			this.groupBox3.Controls.Add(this.textBox13);
-			this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.groupBox3.Location = new System.Drawing.Point(541, 123);
-			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(235, 335);
-			this.groupBox3.TabIndex = 12;
-			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "Настройки ответов";
-			// 
 			// radioButton8
 			// 
 			this.radioButton8.AutoSize = true;
-			this.radioButton8.Location = new System.Drawing.Point(23, 98);
+			this.radioButton8.Location = new System.Drawing.Point(179, 179);
 			this.radioButton8.Name = "radioButton8";
 			this.radioButton8.Size = new System.Drawing.Size(51, 21);
 			this.radioButton8.TabIndex = 2;
@@ -705,7 +650,7 @@
 			// 
 			this.radioButton7.AutoSize = true;
 			this.radioButton7.Checked = true;
-			this.radioButton7.Location = new System.Drawing.Point(23, 70);
+			this.radioButton7.Location = new System.Drawing.Point(41, 175);
 			this.radioButton7.Name = "radioButton7";
 			this.radioButton7.Size = new System.Drawing.Size(45, 21);
 			this.radioButton7.TabIndex = 1;
@@ -717,7 +662,7 @@
 			// 
 			this.textBox13.BackColor = System.Drawing.SystemColors.Control;
 			this.textBox13.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.textBox13.Location = new System.Drawing.Point(16, 24);
+			this.textBox13.Location = new System.Drawing.Point(19, 129);
 			this.textBox13.Multiline = true;
 			this.textBox13.Name = "textBox13";
 			this.textBox13.ReadOnly = true;
@@ -726,13 +671,20 @@
 			this.textBox13.TabStop = false;
 			this.textBox13.Text = "Отобразить правильные ответы по окончании теста?";
 			// 
+			// textBox2
+			// 
+			this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.textBox2.Location = new System.Drawing.Point(21, 59);
+			this.textBox2.Name = "textBox2";
+			this.textBox2.Size = new System.Drawing.Size(309, 26);
+			this.textBox2.TabIndex = 3;
+			// 
 			// Form1
 			// 
 			this.AcceptButton = this.button1;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(788, 597);
-			this.Controls.Add(this.groupBox3);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.button2);
@@ -761,8 +713,6 @@
 			this.panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-			this.groupBox3.ResumeLayout(false);
-			this.groupBox3.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -784,9 +734,6 @@
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.TextBox textBox2;
-		private System.Windows.Forms.RadioButton radioButton4;
-		private System.Windows.Forms.RadioButton radioButton3;
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 		private System.Windows.Forms.DataGridView dataGridView1;
@@ -820,11 +767,10 @@
 		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.TextBox textBox12;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.TextBox textBox13;
 		private System.Windows.Forms.RadioButton radioButton8;
 		private System.Windows.Forms.RadioButton radioButton7;
-		
+		private System.Windows.Forms.TextBox textBox2;
 	}
 }
 
