@@ -290,25 +290,6 @@ namespace Admin_Module
 			dataGridView1.Height = 578;
 			dataGridView1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Bottom;
 		}
-		private void button2_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				saveFileDialog1.Filter = "Excel|*.xls";
-				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-				{
-					string filename = saveFileDialog1.FileName;
-
-					ExportExcelInterop(filename);
-
-				}
-				else throw new Exception("Файл не был сохранен!");
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Ошибка сохранения таблицы", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
 		public void ExportExcelInterop(string filename)
 		{
 			Cursor.Current = Cursors.WaitCursor;
@@ -375,79 +356,6 @@ namespace Admin_Module
 		{
 			Random random = new Random();
 			return random.Next(0, 16777216);
-		}
-		private void button1_Click(object sender, EventArgs e)
-		{
-			if (CheckTable())
-				return;
-			try
-			{
-				folderBrowserDialog1.SelectedPath = Application.StartupPath;
-				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-				{
-					string filename = folderBrowserDialog1.SelectedPath + "\\test.data";
-					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
-					StreamWriter fout = new StreamWriter(filename, false);
-					string s = "", current, previous;
-					if (radioButton3.Checked)
-						s += "1.";
-					else
-						s += "0.";
-					if (radioButton7.Checked)
-						s += "1.";
-					else
-						s += "0.";
-					if (radioButton2.Checked)
-						s += "1.";
-					else
-						s += "0.";
-					List<int> counts = new List<int>();
-					counts.Add(1);
-					previous = dataGridView1.Rows[0].Cells[0].Value.ToString();
-					for (int i = 1; i < dataGridView1.RowCount; i++)
-					{
-						current = dataGridView1.Rows[i].Cells[0].Value.ToString();
-						if (current == previous)
-							counts[counts.Count - 1]++;
-						else
-							counts.Add(1);
-						previous = current;
-					}
-					if (counts.Count > 0 && dataGridView1.Rows[0].Cells[0].Value.ToString() == "0")
-						s += "1.";
-					else
-						s += "0.";
-					string lastChanged = DateTime.Now.ToString();
-					lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
-					lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
-					s += lastChanged + ".";
-					s += numericUpDown1.Value.ToString() + ".";
-					s += dataGridView1.RowCount.ToString() + ".";
-					foreach (var item in counts)
-					{
-						s += item + ".";
-					}
-					int key = genKey();
-					s += key;
-					fout.WriteLine(EncodeDecrypt(s, 0x123456));
-					fout.WriteLine(EncodeDecrypt(textBox1.Text, key));
-					s = "";
-					for (int i = 0; i < dataGridView1.RowCount; i++)
-					{
-						for (int j = 0; j < dataGridView1.ColumnCount; j++)
-							s += '\"' + dataGridView1.Rows[i].Cells[j].Value.ToString() + "\";";
-						fout.WriteLine(EncodeDecrypt(s, key));
-						s = "";
-					}
-					fout.Close();
-					MessageBox.Show("Файл сохранен", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				}
-				else throw new Exception("Файл не был сохранен!");
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Ошибка сохранения файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
 		}
 		private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
@@ -739,6 +647,98 @@ namespace Admin_Module
 			}
 		}
 
-	
+		private void button1_MouseDown(object sender, MouseEventArgs e)
+		{
+			if (CheckTable())
+				return;
+			try
+			{
+				folderBrowserDialog1.SelectedPath = Application.StartupPath;
+				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+				{
+					string filename = folderBrowserDialog1.SelectedPath + "\\test.data";
+					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
+					StreamWriter fout = new StreamWriter(filename, false);
+					string s = "", current, previous;
+					if (radioButton3.Checked)
+						s += "1.";
+					else
+						s += "0.";
+					if (radioButton7.Checked)
+						s += "1.";
+					else
+						s += "0.";
+					if (radioButton2.Checked)
+						s += "1.";
+					else
+						s += "0.";
+					List<int> counts = new List<int>();
+					counts.Add(1);
+					previous = dataGridView1.Rows[0].Cells[0].Value.ToString();
+					for (int i = 1; i < dataGridView1.RowCount; i++)
+					{
+						current = dataGridView1.Rows[i].Cells[0].Value.ToString();
+						if (current == previous)
+							counts[counts.Count - 1]++;
+						else
+							counts.Add(1);
+						previous = current;
+					}
+					if (counts.Count > 0 && dataGridView1.Rows[0].Cells[0].Value.ToString() == "0")
+						s += "1.";
+					else
+						s += "0.";
+					string lastChanged = DateTime.Now.ToString();
+					lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
+					lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
+					s += lastChanged + ".";
+					s += numericUpDown1.Value.ToString() + ".";
+					s += dataGridView1.RowCount.ToString() + ".";
+					foreach (var item in counts)
+					{
+						s += item + ".";
+					}
+					int key = genKey();
+					s += key;
+					fout.WriteLine(EncodeDecrypt(s, 0x123456));
+					fout.WriteLine(EncodeDecrypt(textBox1.Text, key));
+					s = "";
+					for (int i = 0; i < dataGridView1.RowCount; i++)
+					{
+						for (int j = 0; j < dataGridView1.ColumnCount; j++)
+							s += '\"' + dataGridView1.Rows[i].Cells[j].Value.ToString() + "\";";
+						fout.WriteLine(EncodeDecrypt(s, key));
+						s = "";
+					}
+					fout.Close();
+					MessageBox.Show("Файл сохранен", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				else throw new Exception("Файл не был сохранен!");
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка сохранения файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private void button2_MouseDown(object sender, MouseEventArgs e)
+		{
+			try
+			{
+				saveFileDialog1.Filter = "Excel|*.xls";
+				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+				{
+					string filename = saveFileDialog1.FileName;
+
+					ExportExcelInterop(filename);
+
+				}
+				else throw new Exception("Файл не был сохранен!");
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка сохранения таблицы", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 	}
 }

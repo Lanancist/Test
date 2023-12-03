@@ -35,7 +35,6 @@
 			this.btn_main = new System.Windows.Forms.ToolStripButton();
 			this.btn_editor = new System.Windows.Forms.ToolStripButton();
 			this.btn_newquestion = new System.Windows.Forms.ToolStripButton();
-			this.button4 = new System.Windows.Forms.Button();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.button1 = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -166,16 +165,6 @@
 			this.textBox1.TabIndex = 4;
 			this.textBox1.Text = "Тест без названия";
 			// 
-			// button4
-			// 
-			this.button4.Location = new System.Drawing.Point(613, 492);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(75, 23);
-			this.button4.TabIndex = 0;
-			this.button4.Text = "Не удалять! Очень нужная неиспользуема якнопка";
-			this.button4.UseVisualStyleBackColor = true;
-			this.button4.Visible = false;
-			// 
 			// button1
 			// 
 			this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -183,10 +172,11 @@
 			this.button1.Location = new System.Drawing.Point(291, 521);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(244, 67);
+			this.button1.TabIndex = 30;
 			this.button1.TabStop = false;
 			this.button1.Text = "Сохранить в файл";
 			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
 			// 
 			// groupBox1
 			// 
@@ -213,7 +203,8 @@
 			this.richTextBox1.Name = "richTextBox1";
 			this.richTextBox1.ReadOnly = true;
 			this.richTextBox1.Size = new System.Drawing.Size(254, 223);
-			this.richTextBox1.TabIndex = 3;
+			this.richTextBox1.TabIndex = 0;
+			this.richTextBox1.TabStop = false;
 			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
 			// 
 			// label4
@@ -306,6 +297,7 @@
 			this.textBox2.ReadOnly = true;
 			this.textBox2.Size = new System.Drawing.Size(196, 181);
 			this.textBox2.TabIndex = 4;
+			this.textBox2.TabStop = false;
 			this.textBox2.Text = resources.GetString("textBox2.Text");
 			// 
 			// radioButton3
@@ -357,7 +349,7 @@
 			this.button2.TabStop = false;
 			this.button2.Text = "Сохранить в таблицу";
 			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
+			this.button2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button2_MouseDown);
 			// 
 			// saveFileDialog1
 			// 
@@ -731,6 +723,7 @@
 			this.textBox13.ReadOnly = true;
 			this.textBox13.Size = new System.Drawing.Size(211, 44);
 			this.textBox13.TabIndex = 0;
+			this.textBox13.TabStop = false;
 			this.textBox13.Text = "Отобразить правильные ответы по окончании теста?";
 			// 
 			// Form1
@@ -739,7 +732,6 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(788, 597);
-			this.Controls.Add(this.button4);
 			this.Controls.Add(this.groupBox3);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.dataGridView1);
@@ -781,7 +773,6 @@
 		private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.ToolStripButton btn_load;
 		private System.Windows.Forms.ToolStripButton btn_editor;
-		private System.Windows.Forms.Button button4;
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.GroupBox groupBox1;
