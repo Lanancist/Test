@@ -743,5 +743,11 @@ namespace Admin_Module
 				MessageBox.Show(ex.Message, "Ошибка сохранения таблицы", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
+
+
+		private void numericUpDown3_KeyUp(object sender, KeyEventArgs e)
+		{
+			numericUpDown3_ValueChanged(sender, e);
+		}
 	}
 }
