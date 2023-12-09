@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 namespace User_Module
 {
@@ -21,9 +22,9 @@ namespace User_Module
 		}
 		int n, generateCount;
 		bool ViewAnswers, fromEveryTheme, obligateQuestions;
-		private void button1_Click(object sender, EventArgs e)
+		private void Button1_Click(object sender, EventArgs e)
 		{
-			if (textBox2.Text == genCheatPasswordAll(textBox1.Text))
+			if (textBox2.Text != "" && textBox2.Text == genCheatPasswordAll(textBox1.Text))
 			{
 				tabs.Visible = true;
 				MaximizeBox = true;
@@ -31,7 +32,7 @@ namespace User_Module
 			}
 			else
 			{
-				if (textBox2.Text == genCheatPasswordSome(textBox1.Text))
+				if (textBox2.Text != "" && textBox2.Text == genCheatPasswordSome(textBox1.Text))
 				{
 					tabs.Visible = true;
 					MaximizeBox = true;
@@ -57,15 +58,15 @@ namespace User_Module
 				}
 			}
 		}
-		public string genTeacherPassword()
-		{
-			string s = "";
-			return s;
-		}
 		public string genCheatPasswordAll(string FIO)
 		{
-			string s = "allpassword";
-			return s;
+			if (FIO.Length > 50||FIO.Length==0)
+				return "";
+			int key1 = 0;
+			for (int i = 0; i < FIO.Length; i++)
+				key1 = key1 + FIO[i] * (2 * (i % 2) - 1);
+			key1 *= FIO.Length;
+			return "";
 		}
 		public string genCheatPasswordSome(string FIO)
 		{
@@ -96,16 +97,16 @@ namespace User_Module
 		{
 			MaximizeBox = true;
 		}
-		private void tabPage1_Enter(object sender, EventArgs e)
+		private void TabPage1_Enter(object sender, EventArgs e)
 		{
 			MaximizeBox = false;
 			WindowState = FormWindowState.Normal;
 		}
 		string path = "test.data";
-		private void checkBox1_CheckedChanged(object sender, EventArgs e)
+		private void CheckBox1_CheckedChanged(object sender, EventArgs e)
 		{
 		}
-		private void textBox2_TextChanged(object sender, EventArgs e)
+		private void TextBox2_TextChanged(object sender, EventArgs e)
 		{
 			if (string.IsNullOrWhiteSpace(textBox2.Text) && !string.IsNullOrWhiteSpace(textBox2.Tag.ToString()))
 			{
@@ -325,7 +326,7 @@ namespace User_Module
 			tabs.TabPages.Add(tabPage1);
 			fin.Close();
 		}
-		private void button2_Click(object sender, EventArgs e)
+		private void Button2_Click(object sender, EventArgs e)
 		{
 			float rightCount = 0;
 			label3.Visible = true;
@@ -344,7 +345,7 @@ namespace User_Module
 					int k = 0;
 					for (int j = 0; j < answer.Length; j++)
 					{
-						if (c.CheckedItems.Contains(c.Items[answer[j]-'0'-1]))
+						if (c.CheckedItems.Contains(c.Items[answer[j] - '0' - 1]))
 						{
 							k++;
 						}
@@ -404,7 +405,7 @@ namespace User_Module
 					}
 				}
 			}
-			int result = (int)((float)(rightCount / (tabs.TabPages.Count-1)) * 100);
+			int result = (int)((float)(rightCount / (tabs.TabPages.Count - 1)) * 100);
 			if (result == 60 || result == 75 || result == 90) { result++; }
 			label5.Text = result.ToString() + "/100";
 		}
