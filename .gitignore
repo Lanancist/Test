@@ -365,3 +365,7 @@ _themes.VS.Modern/
 settings.json
 /Admin_Module/.vs/Admin_Module/v17/.suo
 /Admin_Module/bin/Debug/Admin_Module.exe
+/Admin_Module/obj/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+/Admin_Module/obj/Debug/Admin_Module.csproj.CopyComplete
+/Admin_Module/obj/Debug/Admin_Module.Properties.Resources.resources
+/Admin_Module/obj/Debug/DesignTimeResolveAssemblyReferences.cache
