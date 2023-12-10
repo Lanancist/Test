@@ -19,20 +19,20 @@ namespace PasswordGen
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			label4.Text = "100%: ";
-			label5.Text = "76-100%: ";
-			label6.Text = "61-100%: ";
-			label7.Text = "Пасхалка: ";
+			label4.Text = "91-100%: ";
+			label5.Text = "76-93%: ";
+			label6.Text = "76-90%: ";
+			label7.Text = "Пасхалка: Easter egg";
 			label8.Text = "Вход без пароля: ";
-			textBox2.Text = (DateTime.Now).ToString().Replace(".", "").Replace(" ", "").Replace(":", "").Substring(0,8);
+			textBox2.Text = (DateTime.Now).ToString().Replace(".", "").Replace(" ", "").Replace(":", "").Substring(0, 8);
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void Button1_Click(object sender, EventArgs e)
 		{
-			label4.Text = "100%: "+ GenCheatPasswordByType(textBox1.Text,0);
-			label5.Text = "76-100%: "+ GenCheatPasswordByType(textBox1.Text, 1);
-			label6.Text = "61-100%: " + GenCheatPasswordByType(textBox1.Text, 2);
-			label7.Text = "Пасхалка: " + GenCheatPasswordByType(textBox1.Text, 3);
+			label4.Text = "91-100%: " + GenCheatPasswordByType(textBox1.Text, 0);
+			label5.Text = "76-93%: " + GenCheatPasswordByType(textBox1.Text, 1);
+			label6.Text = "76-90%: " + GenCheatPasswordByType(textBox1.Text, 2);
+			label7.Text = "Пасхалка: Easter egg";
 			label8.Text = "Вход без пароля: " + GenCheatPasswordByType(textBox1.Text, 4);
 		}
 		public string GenCheatPasswordMain(string FIO)
@@ -70,6 +70,25 @@ namespace PasswordGen
 				case 4: return "0" + string.Concat(s.Substring(0, 4).Reverse()) + string.Concat(s.Substring(4).Reverse()) + "0";
 				default: return "";
 			}
+		}
+		private void TextBox3_TextChanged(object sender, EventArgs e)
+		{
+			textBox4.Text = "";
+			foreach (var c in textBox3.Text)
+				textBox4.Text += (char)(c ^ int.Parse(textBox5.Text));
+		}
+
+		private void TextBox5_TextChanged(object sender, EventArgs e)
+		{
+			if (textBox5.Text == "")
+				textBox5.Text = "1193046";
+			else
+				TextBox3_TextChanged(sender,e);
+		}
+
+		private void tabPage2_Enter(object sender, EventArgs e)
+		{
+			textBox5.Text = "1193046";
 		}
 	}
 }
