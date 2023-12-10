@@ -75,7 +75,7 @@ namespace User_Module
 				//на 3-5
 				case 2: return s.Substring(0, 4) + "35" + s.Substring(4);
 				//войти без пароля
-				case 4: return "0" + s.Substring(0, 4).Reverse() + s.Substring(4).Reverse() + "0";
+				case 4: return "0" + string.Concat(s.Substring(0, 4).Reverse()) + string.Concat(s.Substring(4).Reverse()) + "0";
 				default: return "";
 			}
 		}
@@ -99,11 +99,6 @@ namespace User_Module
 				return 4;
 			else
 				return -1;
-		}
-		public string GenCheatPasswordSome(string FIO)
-		{
-			string s = FIO;
-			return s;
 		}
 		/// <summary>
 		/// добавляется с лист num n случайных чисел таких, что a<=X<b
