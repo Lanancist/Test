@@ -95,7 +95,7 @@ namespace User_Module
 						if (Pass == "Easter")
 				return 3;
 			else
-							if (Pass == "0" + s1.Reverse() + s2.Reverse() + "0")
+							if (Pass == "0" + string.Concat(s1.Reverse()) + string.Concat(s2.Reverse()) + "0")
 				return 4;
 			else
 				return -1;
@@ -160,6 +160,41 @@ namespace User_Module
 			switch (GetPassType(textBox2.Text, textBox1.Text))
 			{
 				case 0:
+					for (int i = 0; i < tabs.TabPages.Count - 1; i++)
+					{
+						if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
+						{
+							CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
+							string answer = tabs.TabPages[i].Tag.ToString();
+							c.SetItemCheckState(1, CheckState.Checked);
+							for (int j = 0; j < answer.Length; j++) { }
+						}
+						else
+						{
+						/*	if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
+							{
+								int answer = int.Parse(tabs.TabPages[i].Tag.ToString());
+								if (((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[answer - 1] as System.Windows.Forms.RadioButton).Checked == true)
+								{
+									rightCount += 1;
+									if (ViewAnswers)
+									{
+										tabs.TabPages[i].Controls[1].BackColor = Color.Green;
+										tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+									}
+
+								}
+								else
+								{
+									if (ViewAnswers)
+									{
+										tabs.TabPages[i].Controls[1].BackColor = Color.DarkRed;
+										tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+									}
+								}
+							}*/
+						}
+					}
 					break;
 				case 1:
 					break;
@@ -167,7 +202,7 @@ namespace User_Module
 					break;
 				case 3:
 					easter = !easter;
-					Text += " Easter begin";
+					textBox2.Text = "";
 					break;
 				case 4:
 					textBox2.Text = textBox2.Tag.ToString();
