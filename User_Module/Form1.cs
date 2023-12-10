@@ -64,7 +64,7 @@ namespace User_Module
 		public string GenCheatPasswordByType(string FIO, int passType)
 		{
 			if (FIO == "") return "";
-			if (passType == 3) return "Easter";
+			if (passType == 3) return "Easter egg";
 			string s = GenCheatPasswordMain(FIO);
 			switch (passType)
 			{
@@ -92,7 +92,7 @@ namespace User_Module
 					if (Pass == s1 + "35" + s2)
 				return 2;
 			else
-						if (Pass == "Easter")
+						if (Pass == "Easter egg")
 				return 3;
 			else
 							if (Pass == "0" + string.Concat(s1.Reverse()) + string.Concat(s2.Reverse()) + "0")
@@ -105,13 +105,20 @@ namespace User_Module
 			string s = FIO;
 			return s;
 		}
+		/// <summary>
+		/// добавляется с лист num n случайных чисел таких, что a<=X<b
+		/// </summary>
+		/// <param name="n"></param>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		/// <param name="num"></param>
 		public void GenerateRandomNumbers(int n, int a, int b, ref List<int> num)
 		{
 			Random rand = new Random();
 			int k = 0, c;
-			while (k < n && k < b - a + 1)
+			while (k < n && k < b - a)
 			{
-				c = rand.Next(a, b + 1);
+				c = rand.Next(a, b);
 				if (num.Contains(c))
 					continue;
 				num.Add(c);
@@ -152,7 +159,7 @@ namespace User_Module
 
 		private void PictureBox1_Click(object sender, EventArgs e)
 		{
-			if (pictureBox1.Visible)	pictureBox1.Visible = false;
+			if (pictureBox1.Visible) pictureBox1.Visible = false;
 		}
 
 		private void Label1_Click(object sender, EventArgs e)
@@ -165,38 +172,19 @@ namespace User_Module
 						if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
 						{
 							CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
-							string answer = tabs.TabPages[i].Tag.ToString();
-							c.SetItemCheckState(1, CheckState.Checked);
-							for (int j = 0; j < answer.Length; j++) { }
+							foreach (var item in tabs.TabPages[i].Tag.ToString())
+							{
+								c.SetItemCheckState(item - '0' - 1, CheckState.Checked);
+							}
 						}
 						else
-						{
-						/*	if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
-							{
-								int answer = int.Parse(tabs.TabPages[i].Tag.ToString());
-								if (((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[answer - 1] as System.Windows.Forms.RadioButton).Checked == true)
-								{
-									rightCount += 1;
-									if (ViewAnswers)
-									{
-										tabs.TabPages[i].Controls[1].BackColor = Color.Green;
-										tabs.TabPages[i].Controls[1].ForeColor = Color.White;
-									}
-
-								}
-								else
-								{
-									if (ViewAnswers)
-									{
-										tabs.TabPages[i].Controls[1].BackColor = Color.DarkRed;
-										tabs.TabPages[i].Controls[1].ForeColor = Color.White;
-									}
-								}
-							}*/
-						}
+							if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
+							((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[int.Parse(tabs.TabPages[i].Tag.ToString()) - 1] as System.Windows.Forms.RadioButton).Checked = true;
 					}
 					break;
 				case 1:
+					List<int> numbers = new List<int>();
+					GenerateRandomNumbers((int)(0.91*n), 0, n, ref numbers);
 					break;
 				case 2:
 					break;
@@ -288,15 +276,15 @@ namespace User_Module
 			{
 				if (obligateQuestions)
 				{
-					int k = int.Parse(questm[7]) - 1, a;
-					for (int i = 0; i <= k; i++)
+					int k = int.Parse(questm[7]), a;
+					for (int i = 0; i < k; i++)
 					{
 						numbers.Add(i);
 					}
 					for (int i = 8; i < questm.Length - 2; i++)
 					{
 						a = int.Parse(questm[i]);
-						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
+						GenerateRandomNumbers(generateCount, k, k + a, ref numbers);
 						k += a;
 					}
 				}
@@ -306,7 +294,7 @@ namespace User_Module
 					for (int i = 7; i < questm.Length - 2; i++)
 					{
 						a = int.Parse(questm[i]);
-						GenerateRandomNumbers(generateCount, k + 1, k + a, ref numbers);
+						GenerateRandomNumbers(generateCount, k, k + a, ref numbers);
 						k += a;
 					}
 				}
@@ -315,15 +303,15 @@ namespace User_Module
 			{
 				if (obligateQuestions)
 				{
-					int a = int.Parse(questm[7]) - 1;
-					for (int i = 0; i < a; i++)
+					int k = int.Parse(questm[7]);
+					for (int i = 0; i < k; i++)
 					{
 						numbers.Add(i);
 					}
-					GenerateRandomNumbers(generateCount, a + 1, n - 1, ref numbers);
+					GenerateRandomNumbers(generateCount, k, n, ref numbers);
 				}
 				else
-					GenerateRandomNumbers(generateCount, 0, n - 1, ref numbers);
+					GenerateRandomNumbers(generateCount, 0, n, ref numbers);
 			}
 
 			int key = int.Parse(questm[questm.Length - 2]);

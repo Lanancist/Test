@@ -65,11 +65,5 @@ D:\files\TonyNov\TestNew\User_Module\obj\Debug\User_Module.csproj.CoreCompileInp
 D:\files\TonyNov\TestNew\User_Module\obj\Debug\User_Module.csproj.CopyComplete
 D:\files\TonyNov\TestNew\User_Module\obj\Debug\User_Module.exe
 D:\files\TonyNov\TestNew\User_Module\obj\Debug\User_Module.pdb
-D:\files\TonyNov\TestNew\User_Module\bin\Debug\Costura.dll
-D:\files\TonyNov\TestNew\User_Module\bin\Debug\System.Buffers.dll
-D:\files\TonyNov\TestNew\User_Module\bin\Debug\System.Diagnostics.DiagnosticSource.dll
-D:\files\TonyNov\TestNew\User_Module\bin\Debug\System.Memory.dll
-D:\files\TonyNov\TestNew\User_Module\bin\Debug\System.Numerics.Vectors.dll
-D:\files\TonyNov\TestNew\User_Module\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
-D:\files\TonyNov\TestNew\User_Module\bin\Debug\Costura.pdb
-D:\files\TonyNov\TestNew\User_Module\bin\Debug\Costura.xml
+D:\files\TonyNov\TestNew\User_Module\obj\Debug\User_Module.csproj.Fody.CopyLocal.cache
+D:\files\TonyNov\TestNew\User_Module\obj\Debug\User_Module.csproj.Fody.RuntimeCopyLocal.cache
