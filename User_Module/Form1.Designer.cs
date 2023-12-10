@@ -31,6 +31,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.tabs = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
@@ -43,6 +44,7 @@
 			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.tabs.SuspendLayout();
 			this.tabPage1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabs
@@ -60,6 +62,7 @@
 			// tabPage1
 			// 
 			this.tabPage1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+			this.tabPage1.Controls.Add(this.pictureBox1);
 			this.tabPage1.Controls.Add(this.label5);
 			this.tabPage1.Controls.Add(this.label4);
 			this.tabPage1.Controls.Add(this.label3);
@@ -73,6 +76,20 @@
 			this.tabPage1.Text = "Окончить тест";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			this.tabPage1.Enter += new System.EventHandler(this.TabPage1_Enter);
+			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+			this.pictureBox1.InitialImage = null;
+			this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(914, 520);
+			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+			this.pictureBox1.TabIndex = 4;
+			this.pictureBox1.TabStop = false;
+			this.pictureBox1.Visible = false;
+			this.pictureBox1.Click += new System.EventHandler(this.PictureBox1_Click);
 			// 
 			// label5
 			// 
@@ -151,7 +168,7 @@
 			this.label1.Size = new System.Drawing.Size(139, 24);
 			this.label1.TabIndex = 2;
 			this.label1.Text = "Имя студента:";
-			this.label1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Label1_MouseClick);
+			this.label1.Click += new System.EventHandler(this.Label1_Click);
 			// 
 			// label2
 			// 
@@ -202,6 +219,7 @@
 			this.tabs.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -221,6 +239,7 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.PictureBox pictureBox1;
 	}
 }
 

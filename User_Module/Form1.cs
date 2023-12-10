@@ -63,10 +63,9 @@ namespace User_Module
 		}
 		public string GenCheatPasswordByType(string FIO, int passType)
 		{
-
+			if (FIO == "") return "";
+			if (passType == 3) return "Easter";
 			string s = GenCheatPasswordMain(FIO);
-			if (s == "")
-				return "";
 			switch (passType)
 			{
 				//на 5
@@ -75,10 +74,8 @@ namespace User_Module
 				case 1: return s.Substring(0, 4) + "45" + s.Substring(4);
 				//на 3-5
 				case 2: return s.Substring(0, 4) + "35" + s.Substring(4);
-				//пасхалка
-				case 3: return s.Substring(0, 4) + "66" + s.Substring(4);
 				//войти без пароля
-				case 4: return s.Substring(0, 4) + "00" + s.Substring(4);
+				case 4: return "0" + s.Substring(0, 4).Reverse() + s.Substring(4).Reverse() + "0";
 				default: return "";
 			}
 		}
@@ -95,10 +92,10 @@ namespace User_Module
 					if (Pass == s1 + "35" + s2)
 				return 2;
 			else
-						if (Pass == s1 + "66" + s2)
+						if (Pass == "Easter")
 				return 3;
 			else
-							if (Pass == s1 + "00" + s2)
+							if (Pass == "0" + s1.Reverse() + s2.Reverse() + "0")
 				return 4;
 			else
 				return -1;
@@ -153,7 +150,12 @@ namespace User_Module
 			}
 		}
 
-		private void Label1_MouseClick(object sender, MouseEventArgs e)
+		private void PictureBox1_Click(object sender, EventArgs e)
+		{
+			if (pictureBox1.Visible)	pictureBox1.Visible = false;
+		}
+
+		private void Label1_Click(object sender, EventArgs e)
 		{
 			switch (GetPassType(textBox2.Text, textBox1.Text))
 			{
@@ -164,6 +166,8 @@ namespace User_Module
 				case 2:
 					break;
 				case 3:
+					easter = !easter;
+					Text += " Easter begin";
 					break;
 				case 4:
 					textBox2.Text = textBox2.Tag.ToString();
@@ -480,6 +484,10 @@ namespace User_Module
 						}
 					}
 				}
+			}
+			if (easter && (int)((rightCount / (tabs.TabPages.Count - 1)) * 100) >= 90)
+			{
+				pictureBox1.Visible = true;
 			}
 			if (procents)
 			{
