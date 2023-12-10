@@ -22,7 +22,7 @@ namespace User_Module
 			InitializeComponent();
 		}
 		int n, generateCount;
-		bool ViewAnswers, fromEveryTheme, obligateQuestions, procents, easter = false;
+		bool ViewAnswers, fromEveryTheme, obligateQuestions, procents, easter = false, canWritePass = true;
 		private void Button1_Click(object sender, EventArgs e)
 		{
 			if (!string.IsNullOrWhiteSpace(textBox2.Tag.ToString()))
@@ -167,26 +167,77 @@ namespace User_Module
 			switch (GetPassType(textBox2.Text, textBox1.Text))
 			{
 				case 0:
-					for (int i = 0; i < tabs.TabPages.Count - 1; i++)
+					if (canWritePass)
 					{
-						if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
+						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
-							CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
-							foreach (var item in tabs.TabPages[i].Tag.ToString())
+							if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
 							{
-								c.SetItemCheckState(item - '0' - 1, CheckState.Checked);
+								CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
+								foreach (var item in tabs.TabPages[i].Tag.ToString())
+								{
+									c.SetItemCheckState(item - '0' - 1, CheckState.Checked);
+								}
+							}
+							else
+							{
+								if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
+									((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[int.Parse(tabs.TabPages[i].Tag.ToString()) - 1] as System.Windows.Forms.RadioButton).Checked = true;
 							}
 						}
-						else
-							if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
-							((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[int.Parse(tabs.TabPages[i].Tag.ToString()) - 1] as System.Windows.Forms.RadioButton).Checked = true;
+						canWritePass = false;
 					}
+
 					break;
 				case 1:
-					List<int> numbers = new List<int>();
-					GenerateRandomNumbers((int)(0.91*n), 0, n, ref numbers);
+					if (canWritePass)
+					{
+						List<int> numbers = new List<int>();
+						GenerateRandomNumbers((int)(Math.Ceiling(0.76 * 15)), 0, n, ref numbers);
+						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
+						{
+							if (numbers.Contains(i))
+							{
+								if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
+								{
+									CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
+									foreach (var item in tabs.TabPages[i].Tag.ToString())
+										c.SetItemCheckState(item - '0' - 1, CheckState.Checked);
+								}
+								else
+								{
+									if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
+										((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[int.Parse(tabs.TabPages[i].Tag.ToString()) - 1] as System.Windows.Forms.RadioButton).Checked = true;
+								}
+							}
+						}
+						canWritePass = false;
+					}
 					break;
 				case 2:
+					if (canWritePass)
+					{
+						List<int> numbers = new List<int>();
+						GenerateRandomNumbers((int)(Math.Ceiling(0.61 * 15)), 0, n, ref numbers);
+						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
+						{
+							if (numbers.Contains(i))
+							{
+								if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
+								{
+									CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
+									foreach (var item in tabs.TabPages[i].Tag.ToString())
+										c.SetItemCheckState(item - '0' - 1, CheckState.Checked);
+								}
+								else
+								{
+									if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
+										((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[int.Parse(tabs.TabPages[i].Tag.ToString()) - 1] as System.Windows.Forms.RadioButton).Checked = true;
+								}
+							}
+						}
+						canWritePass = false;
+					}
 					break;
 				case 3:
 					easter = !easter;
