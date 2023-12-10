@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,56 +22,90 @@ namespace User_Module
 			InitializeComponent();
 		}
 		int n, generateCount;
-		bool ViewAnswers, fromEveryTheme, obligateQuestions;
+		bool ViewAnswers, fromEveryTheme, obligateQuestions, procents;
 		private void Button1_Click(object sender, EventArgs e)
 		{
-			if (textBox2.Text != "" && textBox2.Text == genCheatPasswordAll(textBox1.Text))
+			if (!string.IsNullOrWhiteSpace(textBox2.Tag.ToString()))
 			{
-				tabs.Visible = true;
-				MaximizeBox = true;
-				WindowState = FormWindowState.Maximized;
-			}
-			else
-			{
-				if (textBox2.Text != "" && textBox2.Text == genCheatPasswordSome(textBox1.Text))
+				if (textBox2.Text == textBox2.Tag.ToString())
 				{
 					tabs.Visible = true;
 					MaximizeBox = true;
 					WindowState = FormWindowState.Maximized;
 				}
-				else
-				{
-					if (!string.IsNullOrWhiteSpace(textBox2.Tag.ToString()))
-					{
-						if (textBox2.Text == textBox2.Tag.ToString())
-						{
-							tabs.Visible = true;
-							MaximizeBox = true;
-							WindowState = FormWindowState.Maximized;
-						}
-					}
-					else
-					{
-						tabs.Visible = true;
-						MaximizeBox = true;
-						WindowState = FormWindowState.Maximized;
-					}
-				}
+			}
+			else
+			{
+				tabs.Visible = true;
+				MaximizeBox = true;
+				WindowState = FormWindowState.Maximized;
 			}
 		}
-		public string genCheatPasswordAll(string FIO)
+		public string GenCheatPasswordMain(string FIO)
 		{
-			if (FIO.Length > 50||FIO.Length==0)
+			if (FIO.Length > 50 || FIO.Length == 0)
 				return "";
-			int key1 = 0;
+			long key1 = 0;
 			for (int i = 0; i < FIO.Length; i++)
-				key1 = key1 + FIO[i] * (2 * (i % 2) - 1);
+				key1 += FIO[i] * (2 * (i % 2) - 1);
 			key1 *= FIO.Length;
-			return "";
+			string s = (DateTime.Now).ToString();
+			s = s.Replace(".", "").Replace(" ", "").Replace(":", "");
+			s = s.Substring(0, 8);
+			var d = s.ToArray();
+			for (int i = 0; i < d.Length; i++)
+				d[i] = (char)('0' + ((d[i] - '0') + 3) % 10);
+			if (d[0] == '0') d[0] = '1';
+			long key2 = int.Parse(d.ToString());
+			key1 += key2;
+			return key1.ToString();
+
 		}
-		public string genCheatPasswordSome(string FIO)
+		public string GenCheatPasswordByType(string FIO, int passType)
 		{
-			string s = "somepassword";
+
+			string s = GenCheatPasswordMain(FIO);
+			if (s == "")
+				return "";
+			switch (passType)
+			{
+				//на 5
+				case 0: return s.Substring(0, 4) + "05" + s.Substring(4);
+				//на 4-5
+				case 1: return s.Substring(0, 4) + "45" + s.Substring(4);
+				//на 3-5
+				case 2: return s.Substring(0, 4) + "35" + s.Substring(4);
+				//пасхалка
+				case 3: return s.Substring(0, 4) + "66" + s.Substring(4);
+				//войти без пароля
+				case 4: return s.Substring(0, 4) + "00" + s.Substring(4);
+				default: return "";
+			}
+		}
+		public int GetPassType(string Pass, string FIO)
+		{
+			string s = GenCheatPasswordMain(FIO);
+			string s1 = s.Substring(0, 4), s2 = s.Substring(4);
+			if (Pass == s1 + "05" + s2)
+				return 0;
+			else
+				if (Pass == s1 + "45" + s2)
+				return 1;
+			else
+					if (Pass == s1 + "35" + s2)
+				return 2;
+			else
+						if (Pass == s1 + "66" + s2)
+				return 3;
+			else
+							if (Pass == s1 + "00" + s2)
+				return 4;
+			else
+				return -1;
+		}
+		public string GenCheatPasswordSome(string FIO)
+		{
+			string s = FIO;
 			return s;
 		}
 		public void GenerateRandomNumbers(int n, int a, int b, ref List<int> num)
@@ -86,14 +121,14 @@ namespace User_Module
 				k++;
 			}
 		}
-		private void tabs_KeyDown(object sender, KeyEventArgs e)
+		private void Tabs_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (tabs.Visible == true && e.KeyCode == Keys.Enter && tabs.SelectedIndex + 1 < tabs.TabPages.Count)
 			{
 				tabs.SelectedIndex++;
 			}
 		}
-		private void anytab_select(object sender, EventArgs e)
+		private void Anytab_select(object sender, EventArgs e)
 		{
 			MaximizeBox = true;
 		}
@@ -102,7 +137,7 @@ namespace User_Module
 			MaximizeBox = false;
 			WindowState = FormWindowState.Normal;
 		}
-		string path = "test.data";
+		readonly string path = "test.data";
 		private void CheckBox1_CheckedChanged(object sender, EventArgs e)
 		{
 		}
@@ -117,6 +152,24 @@ namespace User_Module
 				button1.Enabled = true;
 			}
 		}
+
+		private void Label2_Click(object sender, EventArgs e)
+		{
+			switch (GetPassType(textBox2.Text,textBox1.Text))
+			{
+				case 0:
+					break;
+				case 1:
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+			}
+		}
+
 		public static string EncodeDecrypt(string str, int secretKey)
 		{
 			string newStr = "";
@@ -168,6 +221,7 @@ namespace User_Module
 			}
 			else
 				button1.Enabled = false;
+			procents = questm[0] == "1";
 			ViewAnswers = questm[1] == "1";
 			fromEveryTheme = questm[2] == "1";
 			obligateQuestions = questm[3] == "1";
@@ -245,11 +299,13 @@ namespace User_Module
 				line = line.Remove(0, 1);
 				line = line.Remove(line.Length - 2, 2);
 				questm = line.Split(new[] { "\";\"" }, StringSplitOptions.None);
-				tabPages = new TabPage();
-				tabPages.Text = "Вопрос " + (questnumb + 1);
-				tabPages.BackColor = Color.White;
-				tabPages.AutoScroll = true;
-				tabPages.Enter += new System.EventHandler(this.anytab_select);
+				tabPages = new TabPage
+				{
+					Text = "Вопрос " + (questnumb + 1),
+					BackColor = Color.White,
+					AutoScroll = true,
+				};
+				tabPages.Enter += new System.EventHandler(this.Anytab_select);
 				tabs.TabPages.Add(tabPages);
 				splitter = new SplitContainer();
 				tabPages.Controls.Add(splitter);
@@ -261,13 +317,15 @@ namespace User_Module
 				splitter.Orientation = Orientation.Horizontal;
 				splitter.Parent = tabPages;
 				splitter.SplitterDistance = 236;
-				labelLocal = new Label();
-				labelLocal.Name = "Label" + questnumb;
-				labelLocal.Text = questm[1];
-				labelLocal.Dock = DockStyle.Top;
-				labelLocal.Height = 40;
-				labelLocal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-				labelLocal.Visible = true;
+				labelLocal = new Label
+				{
+					Name = "Label" + questnumb,
+					Text = questm[1],
+					Dock = DockStyle.Top,
+					Height = 40,
+					TextAlign = System.Drawing.ContentAlignment.MiddleCenter,
+					Visible = true
+				};
 				tabPages.Controls.Add(labelLocal);
 				quest = new RichTextBox();
 				splitter.Panel1.Controls.Add(quest);
@@ -306,14 +364,16 @@ namespace User_Module
 					{
 						if (questm[3 + j] != "")
 						{
-							radioButton = new System.Windows.Forms.RadioButton();
-							radioButton.AutoSize = true;
-							radioButton.Location = new System.Drawing.Point(10, 23 * j);
-							radioButton.Name = "radioButton" + questnumb;
-							radioButton.Size = new System.Drawing.Size(85, 17);
-							radioButton.TabStop = true;
-							radioButton.Text = questm[3 + j];
-							radioButton.UseVisualStyleBackColor = true;
+							radioButton = new System.Windows.Forms.RadioButton
+							{
+								AutoSize = true,
+								Location = new System.Drawing.Point(10, 23 * j),
+								Name = "radioButton" + questnumb,
+								Size = new System.Drawing.Size(85, 17),
+								TabStop = true,
+								Text = questm[3 + j],
+								UseVisualStyleBackColor = true
+							};
 							splitter.Panel2.Controls.Add(radioButton);
 						}
 						else
@@ -342,12 +402,12 @@ namespace User_Module
 				{
 					CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
 					string answer = tabs.TabPages[i].Tag.ToString();
-					int k = 0;
+					float k = 0;
 					for (int j = 0; j < answer.Length; j++)
 					{
 						if (c.CheckedItems.Contains(c.Items[answer[j] - '0' - 1]))
 						{
-							k++;
+							k += 1 / 2;
 						}
 					}
 					if (k == answer.Length)
@@ -357,7 +417,7 @@ namespace User_Module
 							tabs.TabPages[i].Controls[1].BackColor = Color.Green;
 							tabs.TabPages[i].Controls[1].ForeColor = Color.White;
 						}
-						rightCount++;
+						rightCount += 1;
 					}
 					else
 					{
@@ -386,7 +446,7 @@ namespace User_Module
 						int answer = int.Parse(tabs.TabPages[i].Tag.ToString());
 						if (((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[answer - 1] as System.Windows.Forms.RadioButton).Checked == true)
 						{
-							rightCount++;
+							rightCount += 1;
 							if (ViewAnswers)
 							{
 								tabs.TabPages[i].Controls[1].BackColor = Color.Green;
@@ -405,9 +465,17 @@ namespace User_Module
 					}
 				}
 			}
-			int result = (int)((float)(rightCount / (tabs.TabPages.Count - 1)) * 100);
-			if (result == 60 || result == 75 || result == 90) { result++; }
-			label5.Text = result.ToString() + "/100";
+			if (procents)
+			{
+				int result = (int)((rightCount / (tabs.TabPages.Count - 1)) * 100);
+				if (result == 60 || result == 75 || result == 90) { result++; }
+				label5.Text = result.ToString() + "/100";
+			}
+			else
+			{
+				label5.Text = rightCount + " / " + (tabs.TabPages.Count - 1);
+			}
+
 		}
 	}
 }
