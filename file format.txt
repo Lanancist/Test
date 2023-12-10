@@ -1,5 +1,5 @@
 1 строка:
-есть ли пароль
+результат в процентах
 Показать ли ответы после решения
 брать несколько вопросов из каждой темы
 есть ли обязательные вопросы
@@ -13,3 +13,91 @@
 
 2 строка: название теста
 3 строка и далее: список вопросов
+
+
+
+
+
+
+double rightCount = 0;
+label3.Visible = true;
+label4.Visible = true;
+label5.Visible = true;
+label3.Text = "Имя: " + textBox1.Text;
+label4.Text = "Тест: " + Text;
+button2.Visible = false;
+for (int i = 0; i < tabs.TabPages.Count - 1; i++)
+{
+			(tabs.TabPages[i].Controls[0] as SplitContainer).Enabled = false;
+			if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
+			{
+				CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
+				string answer = tabs.TabPages[i].Tag.ToString();
+				double k = 0;
+				for (int j = 0; j < answer.Length; j++)
+					if (c.CheckedItems.Contains(c.Items[answer[j] - '0' - 1]))
+						k += 1;
+				if (c.CheckedItems.Count > k)
+				{
+					if (k == answer.Length)
+						tabs.TabPages[i].Controls[1].Text += "\n*Вы дали правильный ответ, но баллы были снижены за лишние выбранные пункты!";
+					k -= c.CheckedItems.Count - k;
+					if (k < 0) k = 0;
+				}
+				if (k == answer.Length)
+					if (ViewAnswers)
+					{
+						tabs.TabPages[i].Controls[1].BackColor = Color.Green;
+						tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+					}
+					else
+					if (k == 0)
+						if (ViewAnswers)
+						{
+							tabs.TabPages[i].Controls[1].BackColor = Color.DarkRed;
+							tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+						}
+						else
+						if (ViewAnswers)
+						{
+							tabs.TabPages[i].Controls[1].BackColor = Color.Yellow;
+							tabs.TabPages[i].Controls[1].ForeColor = Color.Black;
+						}
+				rightCount += k / answer.Length;
+			}
+			else
+			{
+				if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
+				{
+					int answer = int.Parse(tabs.TabPages[i].Tag.ToString());
+					if (((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[answer - 1] as System.Windows.Forms.RadioButton).Checked == true)
+					{
+						rightCount += 1;
+						if (ViewAnswers)
+						{
+							tabs.TabPages[i].Controls[1].BackColor = Color.Green;
+							tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+						}
+
+					}
+					else
+					{
+						if (ViewAnswers)
+						{
+							tabs.TabPages[i].Controls[1].BackColor = Color.DarkRed;
+							tabs.TabPages[i].Controls[1].ForeColor = Color.White;
+						}
+					}
+				}
+			}
+}
+if (procents)
+{
+			int result = (int)((rightCount / (tabs.TabPages.Count - 1)) * 100);
+			if (result == 60 || result == 75 || result == 90) { result++; }
+			label5.Text = result.ToString() + "/100";
+}
+else
+{
+			label5.Text = rightCount + " / " + (tabs.TabPages.Count - 1);
+}

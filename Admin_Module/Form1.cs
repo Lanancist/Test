@@ -115,7 +115,7 @@ namespace Admin_Module
 				MessageBox.Show("Найти excel не удалось. Вы все еще можете создать файл вопросов для теста, но редактировать таблицу в данной программе у Вас не получится.", "Невозможно сохранить таблицу", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
-		private void openTestFile(string filename)
+		private void OpenTestFile(string filename)
 		{
 			string line;
 			string[] questm;
@@ -124,6 +124,7 @@ namespace Admin_Module
 				line = EncodeDecrypt(reader.ReadLine(), 0x123456);
 				questm = line.Split(new[] { '.' }, StringSplitOptions.None);
 				textBox1.Text = EncodeDecrypt(reader.ReadLine(), int.Parse(questm[questm.Length - 2]));
+				reader.Close();
 			}
 			label2.Text = "Всего вопросов: " + int.Parse(questm[6]);
 			label2.Enabled = true;
@@ -132,8 +133,11 @@ namespace Admin_Module
 			textBox1.Enabled = true;
 			groupBox1.Enabled = true;
 			groupBox2.Enabled = true;
-			label2.Enabled = false;
 			textBox2.Text = questm[questm.Length - 1];
+			if (questm[0] == "1")
+				radioButton4.Checked = true;
+			else
+				radioButton3.Checked = true;
 			if (questm[1] == "1")
 				radioButton7.Checked = true;
 			else
@@ -146,7 +150,7 @@ namespace Admin_Module
 		bool CheckTable()
 		{
 			string s = "";
-			int b = 0;
+			int b;
 			for (int i = 0; i < dataGridView1.RowCount; i++)
 			{
 				dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.White;
@@ -252,7 +256,7 @@ namespace Admin_Module
 			}
 			return false;
 		}
-		private void toolStripButton1_Click(object sender, EventArgs e)
+		private void ToolStripButton1_Click(object sender, EventArgs e)
 		{
 			if (btn_newquestion.Enabled)
 			{
@@ -281,7 +285,7 @@ namespace Admin_Module
 					if (filename.EndsWith(".xls"))
 						OpenExcelFile(filename);
 					else
-						openTestFile(filename);
+						OpenTestFile(filename);
 					Text = "Программа тестирования. Мастер | " + filename;
 				}
 				else throw new Exception("Файл не был загружен");
@@ -368,12 +372,12 @@ namespace Admin_Module
 			MessageBox.Show("Файл таблицы создан по адресу \"" + filename + "\"", "Сохранение таблицы вопросов", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 			this.BringToFront();
 		}
-		public int genKey()
+		public int GenKey()
 		{
 			Random random = new Random();
 			return random.Next(0, 16777216);
 		}
-		private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+		private void DataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right && dataGridView1.ReadOnly == false)
 			{
@@ -385,7 +389,7 @@ namespace Admin_Module
 				}
 			}
 		}
-		private void btn_editor_Click(object sender, EventArgs e)
+		private void Btn_editor_Click(object sender, EventArgs e)
 		{
 			WindowState = FormWindowState.Maximized;
 			dataGridView1.Dock = DockStyle.Fill;
@@ -394,25 +398,25 @@ namespace Admin_Module
 			dataGridView1.BringToFront();
 			CheckTable();
 		}
-		private void btn_main_Click(object sender, EventArgs e)
+		private void Btn_main_Click(object sender, EventArgs e)
 		{
 			WindowState = FormWindowState.Normal;
 			panel1.Visible = false;
 			dataGridView1.Visible = false;
 		}
-		private void btn_newquestion_Click(object sender, EventArgs e)
+		private void Btn_newquestion_Click(object sender, EventArgs e)
 		{
 			WindowState = FormWindowState.Normal;
 			panel1.BringToFront();
-			numericUpDown3_ValueChanged(sender, e);
-			textBox3_TextChanged(sender, e);
-			textBox4_TextChanged(sender, e);
-			radioButton6_CheckedChanged(sender, e);
-			numericUpDown2_ValueChanged(sender, e);
+			NumericUpDown3_ValueChanged(sender, e);
+			TextBox3_TextChanged(sender, e);
+			TextBox4_TextChanged(sender, e);
+			RadioButton6_CheckedChanged(sender, e);
+			NumericUpDown2_ValueChanged(sender, e);
 			panel1.Visible = true;
 			dataGridView1.Visible = false;
 		}
-		private void radioButton6_CheckedChanged(object sender, EventArgs e)
+		private void RadioButton6_CheckedChanged(object sender, EventArgs e)
 		{
 			if (radioButton6.Checked == true)
 			{
@@ -428,7 +432,7 @@ namespace Admin_Module
 				numericUpDown2.Value = 0;
 			}
 		}
-		private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+		private void NumericUpDown3_ValueChanged(object sender, EventArgs e)
 		{
 			string s = numericUpDown3.Value.ToString();
 			if ((textBox10.BackColor == Color.DarkRed || !string.IsNullOrWhiteSpace(textBox10.Text)) && string.IsNullOrWhiteSpace(textBox9.Text))
@@ -566,31 +570,31 @@ namespace Admin_Module
 				}
 			}
 		}
-		private void textBox5_TextChanged(object sender, EventArgs e)
+		private void TextBox5_TextChanged(object sender, EventArgs e)
 		{
-			numericUpDown3_ValueChanged(sender, e);
+			NumericUpDown3_ValueChanged(sender, e);
 		}
-		private void textBox6_TextChanged(object sender, EventArgs e)
+		private void TextBox6_TextChanged(object sender, EventArgs e)
 		{
-			numericUpDown3_ValueChanged(sender, e);
+			NumericUpDown3_ValueChanged(sender, e);
 		}
-		private void textBox7_TextChanged(object sender, EventArgs e)
+		private void TextBox7_TextChanged(object sender, EventArgs e)
 		{
-			numericUpDown3_ValueChanged(sender, e);
+			NumericUpDown3_ValueChanged(sender, e);
 		}
-		private void textBox8_TextChanged(object sender, EventArgs e)
+		private void TextBox8_TextChanged(object sender, EventArgs e)
 		{
-			numericUpDown3_ValueChanged(sender, e);
+			NumericUpDown3_ValueChanged(sender, e);
 		}
-		private void textBox9_TextChanged(object sender, EventArgs e)
+		private void TextBox9_TextChanged(object sender, EventArgs e)
 		{
-			numericUpDown3_ValueChanged(sender, e);
+			NumericUpDown3_ValueChanged(sender, e);
 		}
-		private void textBox10_TextChanged(object sender, EventArgs e)
+		private void TextBox10_TextChanged(object sender, EventArgs e)
 		{
-			numericUpDown3_ValueChanged(sender, e);
+			NumericUpDown3_ValueChanged(sender, e);
 		}
-		private void button3_Click(object sender, EventArgs e)
+		private void Button3_Click(object sender, EventArgs e)
 		{
 			if (numericUpDown3.BackColor == Color.DarkRed || textBox4.BackColor == Color.DarkRed || textBox3.BackColor == Color.DarkRed)
 			{
@@ -602,7 +606,7 @@ namespace Admin_Module
 				MessageBox.Show("Вопрос добавлен", "Добавление вопроса", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
-		private void textBox3_TextChanged(object sender, EventArgs e)
+		private void TextBox3_TextChanged(object sender, EventArgs e)
 		{
 			if (string.IsNullOrWhiteSpace(textBox3.Text))
 			{
@@ -615,7 +619,7 @@ namespace Admin_Module
 				textBox3.ForeColor = Color.Black;
 			}
 		}
-		private void textBox4_TextChanged(object sender, EventArgs e)
+		private void TextBox4_TextChanged(object sender, EventArgs e)
 		{
 			if (string.IsNullOrWhiteSpace(textBox4.Text))
 			{
@@ -628,7 +632,7 @@ namespace Admin_Module
 				textBox4.ForeColor = Color.Black;
 			}
 		}
-		private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+		private void NumericUpDown2_ValueChanged(object sender, EventArgs e)
 		{
 			dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 			textBox12.Visible = false;
@@ -656,7 +660,28 @@ namespace Admin_Module
 					}
 			}
 		}
-		private void button1_MouseDown(object sender, MouseEventArgs e)
+		private void NumericUpDown3_KeyUp(object sender, KeyEventArgs e)
+		{
+			NumericUpDown3_ValueChanged(sender, e);
+		}
+		private void Button2_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				saveFileDialog1.Filter = "Excel|*.xls";
+				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+				{
+					string filename = saveFileDialog1.FileName;
+					ExportExcelInterop(filename);
+				}
+				else throw new Exception("Файл не был сохранен!");
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка сохранения таблицы", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+		private void Button1_Click(object sender, EventArgs e)
 		{
 			if (CheckTable())
 				return;
@@ -669,7 +694,10 @@ namespace Admin_Module
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 					StreamWriter fout = new StreamWriter(filename, false);
 					string s = "", current, previous;
-					s += "1.";
+					if (radioButton4.Checked)
+						s += "1.";
+					else
+						s += "0.";
 					if (radioButton7.Checked)
 						s += "1.";
 					else
@@ -704,7 +732,7 @@ namespace Admin_Module
 					{
 						s += item + ".";
 					}
-					int key = genKey();
+					int key = GenKey();
 					s += key + "." + textBox2.Text;
 					fout.WriteLine(EncodeDecrypt(s, 0x123456));
 					fout.WriteLine(EncodeDecrypt(textBox1.Text, key));
@@ -724,23 +752,6 @@ namespace Admin_Module
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message, "Ошибка сохранения файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
-		private void button2_MouseDown(object sender, MouseEventArgs e)
-		{
-			try
-			{
-				saveFileDialog1.Filter = "Excel|*.xls";
-				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-				{
-					string filename = saveFileDialog1.FileName;
-					ExportExcelInterop(filename);
-				}
-				else throw new Exception("Файл не был сохранен!");
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Ошибка сохранения таблицы", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 	}
