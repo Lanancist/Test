@@ -155,7 +155,7 @@ namespace User_Module
 
 		private void Label2_Click(object sender, EventArgs e)
 		{
-			switch (GetPassType(textBox2.Text,textBox1.Text))
+			switch (GetPassType(textBox2.Text, textBox1.Text))
 			{
 				case 0:
 					break;
@@ -233,7 +233,7 @@ namespace User_Module
 			//////////////////////////
 			if (questm[4] != lastChanged)
 			{
-				MessageBox.Show("Похоже, кто-то имзменял файл вопросов. Попросите преподавателя пересоздать его или взять с другого компьютера.", "Замечен обман", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				MessageBox.Show("Похоже, кто-то имзменял файл вопросов. Попросите преподавателя пересоздать его или взять с другого компьютера.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				Close();
 				return;
 			}
@@ -381,6 +381,8 @@ namespace User_Module
 					}
 				}
 				tabPages.Tag = questm[9].ToString();
+				/////////////////////////////////////////////////////////
+				tabPages.Text = tabPages.Tag.ToString();
 			}
 			tabs.TabPages.Remove(tabPage1);
 			tabs.TabPages.Add(tabPage1);
@@ -388,7 +390,7 @@ namespace User_Module
 		}
 		private void Button2_Click(object sender, EventArgs e)
 		{
-			float rightCount = 0;
+			double rightCount = 0;
 			label3.Visible = true;
 			label4.Visible = true;
 			label5.Visible = true;
@@ -402,42 +404,37 @@ namespace User_Module
 				{
 					CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
 					string answer = tabs.TabPages[i].Tag.ToString();
-					float k = 0;
+					double k = 0;
 					for (int j = 0; j < answer.Length; j++)
-					{
 						if (c.CheckedItems.Contains(c.Items[answer[j] - '0' - 1]))
-						{
-							k += 1 / 2;
-						}
-					}
-					if (k == answer.Length)
+							k += 1;
+					if (c.CheckedItems.Count > k)
 					{
+						if (k == answer.Length)
+							tabs.TabPages[i].Controls[1].Text += "\n*Вы дали правильный ответ, но баллы были снижены за лишние выбранные пункты!";
+						k -= c.CheckedItems.Count - k;
+						if (k < 0) k = 0;
+					}
+					if (k ==answer.Length)
 						if (ViewAnswers)
 						{
 							tabs.TabPages[i].Controls[1].BackColor = Color.Green;
 							tabs.TabPages[i].Controls[1].ForeColor = Color.White;
 						}
-						rightCount += 1;
-					}
-					else
-					{
+						else
 						if (k == 0)
-						{
 							if (ViewAnswers)
 							{
 								tabs.TabPages[i].Controls[1].BackColor = Color.DarkRed;
 								tabs.TabPages[i].Controls[1].ForeColor = Color.White;
 							}
-						}
-						else
-						{
+							else
 							if (ViewAnswers)
 							{
 								tabs.TabPages[i].Controls[1].BackColor = Color.Yellow;
 								tabs.TabPages[i].Controls[1].ForeColor = Color.Black;
 							}
-						}
-					}
+					rightCount += k / answer.Length;
 				}
 				else
 				{

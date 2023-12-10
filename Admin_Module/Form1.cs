@@ -124,6 +124,7 @@ namespace Admin_Module
 				line = EncodeDecrypt(reader.ReadLine(), 0x123456);
 				questm = line.Split(new[] { '.' }, StringSplitOptions.None);
 				textBox1.Text = EncodeDecrypt(reader.ReadLine(), int.Parse(questm[questm.Length - 2]));
+				reader.Close();
 			}
 			label2.Text = "Всего вопросов: " + int.Parse(questm[6]);
 			label2.Enabled = true;
@@ -132,8 +133,11 @@ namespace Admin_Module
 			textBox1.Enabled = true;
 			groupBox1.Enabled = true;
 			groupBox2.Enabled = true;
-			label2.Enabled = false;
 			textBox2.Text = questm[questm.Length - 1];
+			if (questm[0] == "1")
+				radioButton4.Checked = true;
+			else
+				radioButton3.Checked = true;
 			if (questm[1] == "1")
 				radioButton7.Checked = true;
 			else
@@ -690,7 +694,10 @@ namespace Admin_Module
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 					StreamWriter fout = new StreamWriter(filename, false);
 					string s = "", current, previous;
-					s += "1.";
+					if (radioButton4.Checked)
+						s += "1.";
+					else
+						s += "0.";
 					if (radioButton7.Checked)
 						s += "1.";
 					else

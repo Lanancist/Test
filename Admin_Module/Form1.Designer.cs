@@ -85,6 +85,10 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -107,8 +111,12 @@
 			this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btn_load,
+            this.toolStripSeparator1,
+            this.toolStripSeparator4,
             this.btn_main,
+            this.toolStripSeparator2,
             this.btn_editor,
+            this.toolStripSeparator3,
             this.btn_newquestion});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
@@ -122,8 +130,8 @@
 			this.btn_load.Image = ((System.Drawing.Image)(resources.GetObject("btn_load.Image")));
 			this.btn_load.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btn_load.Name = "btn_load";
-			this.btn_load.Size = new System.Drawing.Size(113, 22);
-			this.btn_load.Text = "Загрузить таблицу";
+			this.btn_load.Size = new System.Drawing.Size(97, 22);
+			this.btn_load.Text = "Загрузить файл";
 			this.btn_load.Click += new System.EventHandler(this.ToolStripButton1_Click);
 			// 
 			// btn_main
@@ -283,7 +291,7 @@
 			this.panel2.Controls.Add(this.radioButton3);
 			this.panel2.Controls.Add(this.radioButton4);
 			this.panel2.Controls.Add(this.textBox14);
-			this.panel2.Location = new System.Drawing.Point(19, 141);
+			this.panel2.Location = new System.Drawing.Point(8, 139);
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(311, 132);
 			this.panel2.TabIndex = 4;
@@ -291,7 +299,7 @@
 			// radioButton3
 			// 
 			this.radioButton3.AutoSize = true;
-			this.radioButton3.Location = new System.Drawing.Point(182, 63);
+			this.radioButton3.Location = new System.Drawing.Point(177, 46);
 			this.radioButton3.Name = "radioButton3";
 			this.radioButton3.Size = new System.Drawing.Size(69, 21);
 			this.radioButton3.TabIndex = 5;
@@ -302,7 +310,7 @@
 			// 
 			this.radioButton4.AutoSize = true;
 			this.radioButton4.Checked = true;
-			this.radioButton4.Location = new System.Drawing.Point(34, 63);
+			this.radioButton4.Location = new System.Drawing.Point(29, 46);
 			this.radioButton4.Name = "radioButton4";
 			this.radioButton4.Size = new System.Drawing.Size(93, 21);
 			this.radioButton4.TabIndex = 4;
@@ -314,14 +322,14 @@
 			// 
 			this.textBox14.BackColor = System.Drawing.SystemColors.Control;
 			this.textBox14.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.textBox14.Location = new System.Drawing.Point(22, 13);
+			this.textBox14.Location = new System.Drawing.Point(8, 14);
 			this.textBox14.Multiline = true;
 			this.textBox14.Name = "textBox14";
 			this.textBox14.ReadOnly = true;
 			this.textBox14.Size = new System.Drawing.Size(211, 44);
 			this.textBox14.TabIndex = 3;
 			this.textBox14.TabStop = false;
-			this.textBox14.Text = "Отобразить правильные ответы по окончании теста?";
+			this.textBox14.Text = "Формат вывода результатов";
 			// 
 			// textBox2
 			// 
@@ -733,6 +741,26 @@
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Вопрос:";
 			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -830,6 +858,10 @@
 		private System.Windows.Forms.RadioButton radioButton3;
 		private System.Windows.Forms.RadioButton radioButton4;
 		private System.Windows.Forms.TextBox textBox14;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 	}
 }
 

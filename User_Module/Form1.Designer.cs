@@ -31,7 +31,6 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.tabs = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.button3 = new System.Windows.Forms.Button();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
@@ -60,7 +59,6 @@
 			// 
 			// tabPage1
 			// 
-			this.tabPage1.Controls.Add(this.button3);
 			this.tabPage1.Controls.Add(this.label5);
 			this.tabPage1.Controls.Add(this.label4);
 			this.tabPage1.Controls.Add(this.label3);
@@ -74,15 +72,6 @@
 			this.tabPage1.Text = "Окончить тест";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			this.tabPage1.Enter += new System.EventHandler(this.TabPage1_Enter);
-			// 
-			// button3
-			// 
-			this.button3.Location = new System.Drawing.Point(147, 259);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(75, 33);
-			this.button3.TabIndex = 4;
-			this.button3.Text = "button3";
-			this.button3.UseVisualStyleBackColor = true;
 			// 
 			// label5
 			// 
@@ -231,7 +220,6 @@
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Button button3;
 	}
 }
 
