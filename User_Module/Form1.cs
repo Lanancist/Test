@@ -156,12 +156,10 @@ namespace User_Module
 				button1.Enabled = true;
 			}
 		}
-
 		private void PictureBox1_Click(object sender, EventArgs e)
 		{
 			if (pictureBox1.Visible) pictureBox1.Visible = false;
 		}
-
 		private void Label1_Click(object sender, EventArgs e)
 		{
 			switch (GetPassType(textBox2.Text, textBox1.Text))
@@ -187,7 +185,6 @@ namespace User_Module
 						}
 						canWritePass = false;
 					}
-
 					break;
 				case 1:
 					if (canWritePass)
@@ -248,7 +245,6 @@ namespace User_Module
 					break;
 			}
 		}
-
 		public static string EncodeDecrypt(string str, int secretKey)
 		{
 			string newStr = "";
@@ -364,14 +360,8 @@ namespace User_Module
 				else
 					GenerateRandomNumbers(generateCount, 0, n, ref numbers);
 			}
-
 			int key = int.Parse(questm[questm.Length - 2]);
 			Text = EncodeDecrypt(fin.ReadLine(), key);
-			////////////////////
-			textBox1.Text = "123";
-			line = GenCheatPasswordMain(textBox1.Text);
-			Text = line.Substring(0, 4) + "     " + line.Substring(4);
-			////////////////////
 			TabPage tabPages;
 			SplitContainer splitter;
 			Label labelLocal;
@@ -470,8 +460,6 @@ namespace User_Module
 					}
 				}
 				tabPages.Tag = questm[9].ToString();
-				/////////////////////////////////////////////////////////
-				tabPages.Text = tabPages.Tag.ToString();
 			}
 			tabs.TabPages.Remove(tabPage1);
 			tabs.TabPages.Add(tabPage1);
@@ -546,7 +534,6 @@ namespace User_Module
 								tabs.TabPages[i].Controls[1].BackColor = Color.Green;
 								tabs.TabPages[i].Controls[1].ForeColor = Color.White;
 							}
-
 						}
 						else
 						{
@@ -573,7 +560,6 @@ namespace User_Module
 			{
 				label5.Text = rightCount + " / " + (tabs.TabPages.Count - 1);
 			}
-
 		}
 	}
 }

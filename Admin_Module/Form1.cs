@@ -53,7 +53,6 @@ namespace Admin_Module
 					}
 				});
 			}
-			//FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read);
 			tableCollection = db.Tables;
 			System.Data.DataTable table = tableCollection[Convert.ToString(tableCollection[0].TableName)];
 			dataGridView1.DataSource = table;
