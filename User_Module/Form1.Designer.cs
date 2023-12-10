@@ -59,6 +59,7 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.tabPage1.Controls.Add(this.label5);
 			this.tabPage1.Controls.Add(this.label4);
 			this.tabPage1.Controls.Add(this.label3);
@@ -114,7 +115,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.button2.Location = new System.Drawing.Point(300, 158);
+			this.button2.Location = new System.Drawing.Point(288, 145);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(636, 381);
 			this.button2.TabIndex = 0;
@@ -150,6 +151,7 @@
 			this.label1.Size = new System.Drawing.Size(139, 24);
 			this.label1.TabIndex = 2;
 			this.label1.Text = "Имя студента:";
+			this.label1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Label1_MouseClick);
 			// 
 			// label2
 			// 
@@ -160,7 +162,6 @@
 			this.label2.Size = new System.Drawing.Size(81, 24);
 			this.label2.TabIndex = 3;
 			this.label2.Text = "Пароль:";
-			this.label2.Click += new System.EventHandler(this.Label2_Click);
 			// 
 			// textBox1
 			// 
@@ -212,7 +213,6 @@
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.TabPage tabPage1;
-		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.TextBox textBox1;
@@ -220,6 +220,7 @@
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Button button2;
 	}
 }
 

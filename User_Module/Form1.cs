@@ -22,7 +22,7 @@ namespace User_Module
 			InitializeComponent();
 		}
 		int n, generateCount;
-		bool ViewAnswers, fromEveryTheme, obligateQuestions, procents;
+		bool ViewAnswers, fromEveryTheme, obligateQuestions, procents, easter = false;
 		private void Button1_Click(object sender, EventArgs e)
 		{
 			if (!string.IsNullOrWhiteSpace(textBox2.Tag.ToString()))
@@ -45,21 +45,21 @@ namespace User_Module
 		{
 			if (FIO.Length > 50 || FIO.Length == 0)
 				return "";
-			long key1 = 0;
+			System.Int32 key1 = 0;
 			for (int i = 0; i < FIO.Length; i++)
 				key1 += FIO[i] * (2 * (i % 2) - 1);
 			key1 *= FIO.Length;
 			string s = (DateTime.Now).ToString();
 			s = s.Replace(".", "").Replace(" ", "").Replace(":", "");
 			s = s.Substring(0, 8);
-			var d = s.ToArray();
+			char[] d = s.ToArray();
 			for (int i = 0; i < d.Length; i++)
 				d[i] = (char)('0' + ((d[i] - '0') + 3) % 10);
 			if (d[0] == '0') d[0] = '1';
-			long key2 = int.Parse(d.ToString());
+			s = string.Concat(d);
+			int key2 = int.Parse(s);
 			key1 += key2;
 			return key1.ToString();
-
 		}
 		public string GenCheatPasswordByType(string FIO, int passType)
 		{
@@ -112,7 +112,7 @@ namespace User_Module
 		{
 			Random rand = new Random();
 			int k = 0, c;
-			while (k < n)
+			while (k < n && k < b - a + 1)
 			{
 				c = rand.Next(a, b + 1);
 				if (num.Contains(c))
@@ -153,7 +153,7 @@ namespace User_Module
 			}
 		}
 
-		private void Label2_Click(object sender, EventArgs e)
+		private void Label1_MouseClick(object sender, MouseEventArgs e)
 		{
 			switch (GetPassType(textBox2.Text, textBox1.Text))
 			{
@@ -166,6 +166,7 @@ namespace User_Module
 				case 3:
 					break;
 				case 4:
+					textBox2.Text = textBox2.Tag.ToString();
 					break;
 			}
 		}
@@ -185,6 +186,10 @@ namespace User_Module
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			MaximizeBox = false;
+			label3.BringToFront();
+			label4.BringToFront();
+			label5.BringToFront();
+			button2.BringToFront();
 			tabs.Dock = DockStyle.Fill;
 			button1.Width = 200;
 			button1.Height = 100;
@@ -238,6 +243,7 @@ namespace User_Module
 				return;
 			}
 			generateCount = int.Parse(questm[5]);
+			n = int.Parse(questm[6]);
 			List<int> numbers = new List<int>();
 			if (fromEveryTheme)
 			{
@@ -275,14 +281,19 @@ namespace User_Module
 					{
 						numbers.Add(i);
 					}
-					GenerateRandomNumbers(generateCount, a + 1, n, ref numbers);
+					GenerateRandomNumbers(generateCount, a + 1, n - 1, ref numbers);
 				}
 				else
-					GenerateRandomNumbers(generateCount, 0, n, ref numbers);
+					GenerateRandomNumbers(generateCount, 0, n - 1, ref numbers);
 			}
-			n = int.Parse(questm[6]);
+
 			int key = int.Parse(questm[questm.Length - 2]);
 			Text = EncodeDecrypt(fin.ReadLine(), key);
+			////////////////////
+			textBox1.Text = "123";
+			line = GenCheatPasswordMain(textBox1.Text);
+			Text = line.Substring(0, 4) + "     " + line.Substring(4);
+			////////////////////
 			TabPage tabPages;
 			SplitContainer splitter;
 			Label labelLocal;
@@ -415,25 +426,33 @@ namespace User_Module
 						k -= c.CheckedItems.Count - k;
 						if (k < 0) k = 0;
 					}
-					if (k ==answer.Length)
+					if (k == answer.Length)
+					{
 						if (ViewAnswers)
 						{
 							tabs.TabPages[i].Controls[1].BackColor = Color.Green;
 							tabs.TabPages[i].Controls[1].ForeColor = Color.White;
 						}
-						else
+					}
+					else
+					{
 						if (k == 0)
+						{
 							if (ViewAnswers)
 							{
 								tabs.TabPages[i].Controls[1].BackColor = Color.DarkRed;
 								tabs.TabPages[i].Controls[1].ForeColor = Color.White;
 							}
-							else
+						}
+						else
+						{
 							if (ViewAnswers)
 							{
 								tabs.TabPages[i].Controls[1].BackColor = Color.Yellow;
 								tabs.TabPages[i].Controls[1].ForeColor = Color.Black;
 							}
+						}
+					}
 					rightCount += k / answer.Length;
 				}
 				else
