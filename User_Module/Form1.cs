@@ -157,25 +157,30 @@ namespace User_Module
 		}
 		private void Label1_Click(object sender, EventArgs e)
 		{
+			Random rand = new Random();
 			switch (GetPassType(textBox2.Text, textBox1.Text))
 			{
 				case 0:
 					if (canWritePass)
 					{
+						List<int> numbers = new List<int>();
+						int counta = rand.Next((int)(Math.Ceiling(0.91 * 15)), n+ 1);
+						GenerateRandomNumbers(counta, 0, n, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
-							if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
+							if (numbers.Contains(i))
 							{
-								CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
-								foreach (var item in tabs.TabPages[i].Tag.ToString())
+								if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
 								{
-									c.SetItemCheckState(item - '0' - 1, CheckState.Checked);
+									CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
+									foreach (var item in tabs.TabPages[i].Tag.ToString())
+										c.SetItemCheckState(item - '0' - 1, CheckState.Checked);
 								}
-							}
-							else
-							{
-								if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
-									((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[int.Parse(tabs.TabPages[i].Tag.ToString()) - 1] as System.Windows.Forms.RadioButton).Checked = true;
+								else
+								{
+									if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
+										((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[int.Parse(tabs.TabPages[i].Tag.ToString()) - 1] as System.Windows.Forms.RadioButton).Checked = true;
+								}
 							}
 						}
 						canWritePass = false;
@@ -185,7 +190,8 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						GenerateRandomNumbers((int)(Math.Ceiling(0.76 * 15)), 0, n, ref numbers);
+						int counta = rand.Next((int)(Math.Ceiling(0.76 * 15)), (int)(Math.Ceiling(0.95 * 15)+1));
+						GenerateRandomNumbers(counta, 0, n, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
@@ -210,7 +216,8 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						GenerateRandomNumbers((int)(Math.Ceiling(0.61 * 15)), 0, n, ref numbers);
+						int counta = rand.Next((int)(Math.Ceiling(0.76 * 15)), (int)(Math.Ceiling(0.90 * 15) + 1));
+						GenerateRandomNumbers(counta, 0, n, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
