@@ -27,12 +27,43 @@ namespace Admin_Module
 		{
 			InitializeComponent();
 		}
-		public static string EncodeDecrypt(string str, int secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
+		public static string EncodeDecrypt(string str, int secretKey, ref int k, bool decode) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...,переменная для сохранения целостности)
+		{
+			string newStr = "";
+			foreach (var c in str)
+			{
+				newStr += TopSecret(c, secretKey);
+				int value;
+				if (decode)
+				{
+
+					value = (int)newStr.Last();
+				}
+				else
+				{
+					value = (int)c;
+				}
+				while (value != 0)
+				{
+					if ((value & 1) == 1)
+					{
+						k++;
+						if (k == int.MaxValue)
+							k = 0;
+					}
+					value >>= 1;
+				}
+			}
+			return newStr;
+
+		}
+		public static string EncodeDecrypt(string str, int secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...,переменная для сохранения целостности)
 		{
 			string newStr = "";
 			foreach (var c in str)
 				newStr += TopSecret(c, secretKey);
 			return newStr;
+
 		}
 		public static char TopSecret(char character, int secretKey)
 		{
@@ -116,16 +147,26 @@ namespace Admin_Module
 		}
 		private void OpenTestFile(string filename)
 		{
-			string line;
+
 			string[] questm;
+
 			using (StreamReader reader = new StreamReader(filename))
 			{
-				line = EncodeDecrypt(reader.ReadLine(), 0x123456);
+				int k = 0;
+				string line;
+				line = EncodeDecrypt(reader.ReadLine(), 0x123456, ref k, true);
 				questm = line.Split(new[] { '.' }, StringSplitOptions.None);
-				textBox1.Text = EncodeDecrypt(reader.ReadLine(), int.Parse(questm[questm.Length - 2]));
+				int key = int.Parse(questm[questm.Length - 2]);
+				textBox1.Text = EncodeDecrypt(reader.ReadLine(), key, ref k, true);
+				for (global::System.Int32 i = 0; i < int.Parse(questm[6]); i++)
+					EncodeDecrypt(reader.ReadLine(), key, ref k, true);
+				line = EncodeDecrypt(reader.ReadLine(), key);
 				reader.Close();
+				FileInfo fileInfo = new FileInfo(filename);
+				if (k != int.Parse(line)|| !fileInfo.IsReadOnly)
+									MessageBox.Show("Похоже, кто-то имзменял этот файл вопросов. Во избежание нечестного прохождения теста советуем пересоздать файл заново из таблицы.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
-			label2.Text = "Всего вопросов: " + int.Parse(questm[6]);
+			label2.Text = "Всего вопросов: " + questm[6];
 			label2.Enabled = true;
 			numericUpDown1.Maximum = int.Parse(questm[5]);
 			numericUpDown1.Minimum = int.Parse(questm[5]);
@@ -733,17 +774,20 @@ namespace Admin_Module
 					}
 					int key = GenKey();
 					s += key + "." + textBox2.Text;
-					fout.WriteLine(EncodeDecrypt(s, 0x123456));
-					fout.WriteLine(EncodeDecrypt(textBox1.Text, key));
+					int k = 0;
+					fout.WriteLine(EncodeDecrypt(s, 0x123456, ref k,false));
+					fout.WriteLine(EncodeDecrypt(textBox1.Text, key, ref k,false));
 					s = "";
 					for (int i = 0; i < dataGridView1.RowCount; i++)
 					{
 						for (int j = 0; j < dataGridView1.ColumnCount; j++)
 							s += '\"' + dataGridView1.Rows[i].Cells[j].Value.ToString() + "\";";
-						fout.WriteLine(EncodeDecrypt(s, key));
+						fout.WriteLine(EncodeDecrypt(s, key, ref k,false));
 						s = "";
 					}
+					fout.WriteLine(EncodeDecrypt(k.ToString(), key));
 					fout.Close();
+					File.SetAttributes(filename, FileAttributes.ReadOnly);
 					MessageBox.Show("Файл сохранен", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 				else throw new Exception("Файл не был сохранен!");

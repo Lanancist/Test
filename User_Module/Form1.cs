@@ -240,7 +240,37 @@ namespace User_Module
 					break;
 			}
 		}
-		public static string EncodeDecrypt(string str, int secretKey)
+		public static string EncodeDecrypt(string str, int secretKey, ref int k, bool decode) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...,переменная для сохранения целостности)
+		{
+			string newStr = "";
+			foreach (var c in str)
+			{
+				newStr += TopSecret(c, secretKey);
+				int value;
+				if (decode)
+				{
+
+					value = (int)newStr.Last();
+				}
+				else
+				{
+					value = (int)c;
+				}
+				while (value != 0)
+				{
+					if ((value & 1) == 1)
+					{
+						k++;
+						if (k == int.MaxValue)
+							k = 0;
+					}
+					value >>= 1;
+				}
+			}
+			return newStr;
+
+		}
+		public static string EncodeDecrypt(string str, int secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...,переменная для сохранения целостности)
 		{
 			string newStr = "";
 			foreach (var c in str)
@@ -281,9 +311,8 @@ namespace User_Module
 				return;
 			}
 			StreamReader fin = new StreamReader(path);
-			string lastChanged = File.GetLastWriteTime(path).ToString();
-			lastChanged = lastChanged.Replace(".", "").Replace(" ", "").Replace(":", "");
-			line = EncodeDecrypt(fin.ReadLine(), 0x123456);
+			int ones = 0;
+			line = EncodeDecrypt(fin.ReadLine(), 0x123456,ref ones,true);
 			string[] questm = line.Split(new[] { '.' }, StringSplitOptions.None);
 			textBox2.Tag = "";
 			textBox2.Tag = questm[questm.Length - 1];
@@ -299,18 +328,18 @@ namespace User_Module
 			ViewAnswers = questm[1] == "1";
 			fromEveryTheme = questm[2] == "1";
 			obligateQuestions = questm[3] == "1";
-			lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
+			//lastChanged = lastChanged.Substring(0, lastChanged.Length - 2);
 			/////////////////////////////
 			//delete it for time check
 			//lastChanged = lastChanged.Substring(0, lastChanged.Length - 4);
 			//questm[4] = questm[4].Substring(0, questm[4].Length - 4);
 			//////////////////////////
-			if (questm[4] != lastChanged)
+			/*if (questm[4] != lastChanged)
 			{
 				MessageBox.Show("Похоже, кто-то имзменял файл вопросов. Попросите преподавателя пересоздать его или взять с другого компьютера.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				Close();
 				return;
-			}
+			}*/
 			generateCount = int.Parse(questm[5]);
 			n = int.Parse(questm[6]);
 			List<int> numbers = new List<int>();
@@ -356,7 +385,7 @@ namespace User_Module
 					GenerateRandomNumbers(generateCount, 0, n, ref numbers);
 			}
 			int key = int.Parse(questm[questm.Length - 2]);
-			Text = EncodeDecrypt(fin.ReadLine(), key);
+			Text = EncodeDecrypt(fin.ReadLine(), key,ref ones,true);
 			TabPage tabPages;
 			SplitContainer splitter;
 			Label labelLocal;
@@ -366,7 +395,7 @@ namespace User_Module
 			int questnumb = -1;
 			for (int i = 0; i < n; i++)
 			{
-				line = EncodeDecrypt(fin.ReadLine(), key);
+				line = EncodeDecrypt(fin.ReadLine(), key,ref ones,true);
 				if (!numbers.Contains(i))
 					continue;
 				++questnumb;
@@ -456,6 +485,9 @@ namespace User_Module
 				}
 				tabPages.Tag = questm[9].ToString();
 			}
+			line = EncodeDecrypt(fin.ReadLine(), key);
+			if (ones != int.Parse(line) || !filepath.IsReadOnly)
+				MessageBox.Show("Похоже, кто-то имзменял файл вопросов. Получите изначальную версию файла у преподавателя или возьмите с другого компьютераы.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			tabs.TabPages.Remove(tabPage1);
 			tabs.TabPages.Add(tabPage1);
 			fin.Close();
