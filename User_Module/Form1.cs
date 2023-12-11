@@ -47,8 +47,8 @@ namespace User_Module
 				return "";
 			System.Int32 key1 = 0;
 			for (int i = 0; i < FIO.Length; i++)
-				key1 += FIO[i] * (2 * (i % 2) - 1);
-			key1 *= FIO.Length;
+				key1 += FIO[i];
+			key1 *= FIO.Length * (int)FIO[0];
 			string s = (DateTime.Now).ToString();
 			s = s.Replace(".", "").Replace(" ", "").Replace(":", "");
 			s = s.Substring(0, 8);
@@ -62,23 +62,27 @@ namespace User_Module
 			return key1.ToString();
 		}
 		public string GenCheatPasswordByType(string FIO, int passType)
-		{
-			if (FIO == "") return "";
-			if (passType == 3) return "Easter egg";
-			string s = GenCheatPasswordMain(FIO);
-			switch (passType)
-			{
-				//на 5
-				case 0: return s.Substring(0, 4) + "05" + s.Substring(4);
-				//на 4-5
-				case 1: return s.Substring(0, 4) + "45" + s.Substring(4);
-				//на 3-5
-				case 2: return s.Substring(0, 4) + "35" + s.Substring(4);
-				//войти без пароля
-				case 4: return "0" + string.Concat(s.Substring(0, 4).Reverse()) + string.Concat(s.Substring(4).Reverse()) + "0";
-				default: return "";
-			}
-		}
+{
+	if (FIO == ""||FIO.Length>50) return "";
+	if (passType == 3) return "Easter egg";
+	string s = GenCheatPasswordMain(FIO);
+	switch (passType)
+	{
+		//на 91-100
+		case 0: return s.Substring(0, 4) + "05" + s.Substring(4);
+		//на 76-93
+		case 1: return s.Substring(0, 4) + "45" + s.Substring(4);
+		//на 76-90
+		case 2: return s.Substring(0, 4) + "35" + s.Substring(4);
+		//войти без пароля
+		case 4: return "0" + string.Concat(s.Substring(0, 4).Reverse()) + string.Concat(s.Substring(4).Reverse()) + "0";
+			//на 61-89
+		case 5: return s.Substring(0, 4) + "72" + s.Substring(4);
+			//на 61-75
+		case 6: return s.Substring(0, 4) + "84" + s.Substring(4);
+		default: return "";
+	}
+}
 		public int GetPassType(string Pass, string FIO)
 		{
 			string s = GenCheatPasswordMain(FIO);
@@ -97,6 +101,12 @@ namespace User_Module
 			else
 							if (Pass == "0" + string.Concat(s1.Reverse()) + string.Concat(s2.Reverse()) + "0")
 				return 4;
+			else
+								if (Pass == s1 + "72" + s2)
+				return 5;
+			else
+									if (Pass == s1 + "84" + s2)
+				return 6;
 			else
 				return -1;
 		}
@@ -164,7 +174,7 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.91 * 15)), n+ 1);
+						int counta = rand.Next((int)(Math.Ceiling(0.91 * tabs.TabPages.Count - 1)), n + 1);
 						GenerateRandomNumbers(counta, 0, n, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
@@ -190,7 +200,7 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.76 * 15)), (int)(Math.Ceiling(0.93 * 15)+1));
+						int counta = rand.Next((int)(Math.Ceiling(0.76 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.93 * tabs.TabPages.Count - 1)) + 1);
 						GenerateRandomNumbers(counta, 0, n, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
@@ -216,7 +226,7 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.76 * 15)), (int)(Math.Ceiling(0.90 * 15)));
+						int counta = rand.Next((int)(Math.Ceiling(0.76 * tabs.TabPages.Count-1)), (int)(Math.Ceiling(0.90 * tabs.TabPages.Count - 1))+1);
 						GenerateRandomNumbers(counta, 0, n, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
@@ -244,6 +254,58 @@ namespace User_Module
 					break;
 				case 4:
 					textBox2.Text = textBox2.Tag.ToString();
+					break;
+				case 5:
+					if (canWritePass)
+					{
+						List<int> numbers = new List<int>();
+						int counta = rand.Next((int)(Math.Ceiling(0.61 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.89 * tabs.TabPages.Count - 1))+1);
+						GenerateRandomNumbers(counta, 0, n, ref numbers);
+						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
+						{
+							if (numbers.Contains(i))
+							{
+								if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
+								{
+									CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
+									foreach (var item in tabs.TabPages[i].Tag.ToString())
+										c.SetItemCheckState(item - '0' - 1, CheckState.Checked);
+								}
+								else
+								{
+									if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
+										((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[int.Parse(tabs.TabPages[i].Tag.ToString()) - 1] as System.Windows.Forms.RadioButton).Checked = true;
+								}
+							}
+						}
+						canWritePass = false;
+					}
+					break;
+				case 6:
+					if (canWritePass)
+					{
+						List<int> numbers = new List<int>();
+						int counta = rand.Next((int)(Math.Ceiling(0.61 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.75 * tabs.TabPages.Count - 1)) + 1);
+						GenerateRandomNumbers(counta, 0, n, ref numbers);
+						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
+						{
+							if (numbers.Contains(i))
+							{
+								if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is CheckedListBox)
+								{
+									CheckedListBox c = (tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] as CheckedListBox;
+									foreach (var item in tabs.TabPages[i].Tag.ToString())
+										c.SetItemCheckState(item - '0' - 1, CheckState.Checked);
+								}
+								else
+								{
+									if ((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[0] is System.Windows.Forms.RadioButton)
+										((tabs.TabPages[i].Controls[0] as SplitContainer).Panel2.Controls[int.Parse(tabs.TabPages[i].Tag.ToString()) - 1] as System.Windows.Forms.RadioButton).Checked = true;
+								}
+							}
+						}
+						canWritePass = false;
+					}
 					break;
 			}
 		}
@@ -319,7 +381,7 @@ namespace User_Module
 			}
 			StreamReader fin = new StreamReader(path);
 			int ones = 0;
-			line = EncodeDecrypt(fin.ReadLine(), 0x123456,ref ones,true);
+			line = EncodeDecrypt(fin.ReadLine(), 0x123456, ref ones, true);
 			string[] questm = line.Split(new[] { '.' }, StringSplitOptions.None);
 			textBox2.Tag = "";
 			textBox2.Tag = questm[questm.Length - 1];
@@ -392,7 +454,7 @@ namespace User_Module
 					GenerateRandomNumbers(generateCount, 0, n, ref numbers);
 			}
 			int key = int.Parse(questm[questm.Length - 2]);
-			Text = EncodeDecrypt(fin.ReadLine(), key,ref ones,true);
+			Text = EncodeDecrypt(fin.ReadLine(), key, ref ones, true);
 			TabPage tabPages;
 			SplitContainer splitter;
 			Label labelLocal;
@@ -402,7 +464,7 @@ namespace User_Module
 			int questnumb = -1;
 			for (int i = 0; i < n; i++)
 			{
-				line = EncodeDecrypt(fin.ReadLine(), key,ref ones,true);
+				line = EncodeDecrypt(fin.ReadLine(), key, ref ones, true);
 				if (!numbers.Contains(i))
 					continue;
 				++questnumb;
@@ -588,11 +650,11 @@ namespace User_Module
 			{
 				int result = (int)((rightCount / (tabs.TabPages.Count - 1)) * 100);
 				if (result == 60 || result == 75 || result == 90) { result++; }
-				label5.Text = result.ToString() + "/100";
+				label5.Text = result.ToString() + "/100%";
 			}
 			else
 			{
-				label5.Text = rightCount + " / " + (tabs.TabPages.Count - 1);
+				label5.Text = rightCount + " / " + (tabs.TabPages.Count - 1)+" баллов";
 			}
 		}
 	}

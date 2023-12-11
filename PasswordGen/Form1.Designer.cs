@@ -46,6 +46,8 @@
 			this.label9 = new System.Windows.Forms.Label();
 			this.textBox4 = new System.Windows.Forms.TextBox();
 			this.textBox3 = new System.Windows.Forms.TextBox();
+			this.label10 = new System.Windows.Forms.Label();
+			this.label11 = new System.Windows.Forms.Label();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -58,6 +60,7 @@
 			this.textBox1.Name = "textBox1";
 			this.textBox1.Size = new System.Drawing.Size(398, 29);
 			this.textBox1.TabIndex = 0;
+			this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
 			// 
 			// label1
 			// 
@@ -125,7 +128,7 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(54, 245);
+			this.label7.Location = new System.Drawing.Point(54, 241);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(96, 24);
 			this.label7.TabIndex = 8;
@@ -134,7 +137,7 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(54, 279);
+			this.label8.Location = new System.Drawing.Point(54, 277);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(96, 24);
 			this.label8.TabIndex = 9;
@@ -163,6 +166,8 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.label11);
+			this.tabPage1.Controls.Add(this.label10);
 			this.tabPage1.Controls.Add(this.textBox1);
 			this.tabPage1.Controls.Add(this.label8);
 			this.tabPage1.Controls.Add(this.label7);
@@ -181,6 +186,7 @@
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Пароль";
 			this.tabPage1.UseVisualStyleBackColor = true;
+			this.tabPage1.Enter += new System.EventHandler(this.tabPage1_Enter);
 			// 
 			// tabPage2
 			// 
@@ -234,6 +240,24 @@
 			this.textBox3.TabIndex = 0;
 			this.textBox3.TextChanged += new System.EventHandler(this.TextBox3_TextChanged);
 			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(54, 315);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(96, 24);
+			this.label10.TabIndex = 11;
+			this.label10.Text = "ддммгггг";
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(54, 348);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(96, 24);
+			this.label11.TabIndex = 12;
+			this.label11.Text = "ддммгггг";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -278,6 +302,8 @@
 		private System.Windows.Forms.TextBox textBox4;
 		private System.Windows.Forms.TextBox textBox3;
 		private System.Windows.Forms.TextBox textBox5;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.Label label10;
 	}
 }
 
