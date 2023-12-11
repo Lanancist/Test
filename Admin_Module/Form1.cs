@@ -21,7 +21,8 @@ namespace Admin_Module
 {
 	public partial class Form1 : Form
 	{
-		private string filename = string.Empty;
+		//private string filename = string.Empty;
+		bool isSaved = true;
 		private DataTableCollection tableCollection = null;
 		public Form1()
 		{
@@ -298,7 +299,7 @@ namespace Admin_Module
 		}
 		private void ToolStripButton1_Click(object sender, EventArgs e)
 		{
-			if (btn_newquestion.Enabled)
+			if (!isSaved)
 			{
 				if (!(MessageBox.Show("Если вы изменяли файл и не хотите потерять эти изменения, нажмите на кнопку \"" + button2.Text + "\" и следуйте инструкциям. \nВы уверены, что хотите загрузить новый файл? ", "Загрузка файла", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes))
 				{
@@ -321,7 +322,7 @@ namespace Admin_Module
 			{
 				if (openFileDialog1.ShowDialog() == DialogResult.OK)
 				{
-					filename = openFileDialog1.FileName;
+					string filename = openFileDialog1.FileName;
 					if (filename.EndsWith(".xls"))
 						OpenExcelFile(filename);
 					else
@@ -335,6 +336,7 @@ namespace Admin_Module
 				MessageBox.Show(ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Text = "Программа тестирования. Мастер";
 			}
+			isSaved = true;
 		}
 		private void Form1_Load(object sender, EventArgs e)
 		{
@@ -425,7 +427,7 @@ namespace Admin_Module
 				{
 					dataGridView1.Rows.RemoveAt(e.RowIndex);
 					label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
-					MessageBox.Show("Вопрос удален", "Удаление вопроса", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					//MessageBox.Show("Вопрос удален", "Удаление вопроса", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 			}
 		}
@@ -643,6 +645,7 @@ namespace Admin_Module
 			else
 			{
 				tableCollection[0].Rows.Add(numericUpDown2.Value.ToString(), textBox4.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, textBox9.Text, textBox10.Text, numericUpDown3.Value.ToString());
+				isSaved = false;
 				MessageBox.Show("Вопрос добавлен", "Добавление вопроса", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
@@ -720,6 +723,7 @@ namespace Admin_Module
 			{
 				MessageBox.Show(ex.Message, "Ошибка сохранения таблицы", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
+			isSaved = true;
 		}
 		private void Button1_Click(object sender, EventArgs e)
 		{
@@ -799,6 +803,23 @@ namespace Admin_Module
 			{
 				MessageBox.Show(ex.Message, "Ошибка сохранения файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
+		}
+
+		private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (!isSaved)
+				if (MessageBox.Show("Если вы изменяли файл и не хотите потерять эти изменения, нажмите на кнопку \"" + button2.Text + "\" и следуйте инструкциям. \nВы уверены, что хотите закрыть программу? ", "Загрузка файла", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+					e.Cancel = true;
+		}
+
+		private void DataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+		{
+			isSaved = false;
+		}
+
+		private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+		{
+			isSaved = false;
 		}
 	}
 }
