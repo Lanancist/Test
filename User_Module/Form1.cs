@@ -556,7 +556,11 @@ namespace User_Module
 			}
 			line = EncodeDecrypt(fin.ReadLine(), key);
 			if (ones != int.Parse(line) || !filepath.IsReadOnly)
+			{
 				MessageBox.Show("Похоже, кто-то имзменял файл вопросов. Получите изначальную версию файла у преподавателя или возьмите с другого компьютераы.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				Close();
+				return;
+			}
 			tabs.TabPages.Remove(tabPage1);
 			tabs.TabPages.Add(tabPage1);
 			fin.Close();

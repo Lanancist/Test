@@ -734,7 +734,6 @@ namespace Admin_Module
 					FileInfo filepath = new FileInfo(filename);
 					if (filepath.Exists)
 						File.SetAttributes(filename, FileAttributes.Normal);
-						
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 					StreamWriter fout = new StreamWriter(filename, false);
 					string s = "", current, previous;
@@ -791,8 +790,7 @@ namespace Admin_Module
 					}
 					fout.WriteLine(EncodeDecrypt(k.ToString(), key));
 					fout.Close();
-
-
+					File.SetAttributes(filename, FileAttributes.ReadOnly);
 					MessageBox.Show("Файл сохранен", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 				else throw new Exception("Файл не был сохранен!");
