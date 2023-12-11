@@ -56,33 +56,34 @@ namespace User_Module
 			for (int i = 0; i < d.Length; i++)
 				d[i] = (char)('0' + ((d[i] - '0') + 3) % 10);
 			if (d[0] == '0') d[0] = '1';
-			s = string.Concat(d);
-			int key2 = int.Parse(s);
+			int key2 = int.Parse(string.Concat(d));
 			key1 += key2;
 			return key1.ToString();
 		}
 		public string GenCheatPasswordByType(string FIO, int passType)
-{
-	if (FIO == ""||FIO.Length>50) return "";
-	if (passType == 3) return "Easter egg";
-	string s = GenCheatPasswordMain(FIO);
-	switch (passType)
-	{
-		//на 91-100
-		case 0: return s.Substring(0, 4) + "05" + s.Substring(4);
-		//на 76-93
-		case 1: return s.Substring(0, 4) + "45" + s.Substring(4);
-		//на 76-90
-		case 2: return s.Substring(0, 4) + "35" + s.Substring(4);
-		//войти без пароля
-		case 4: return "0" + string.Concat(s.Substring(0, 4).Reverse()) + string.Concat(s.Substring(4).Reverse()) + "0";
-			//на 61-89
-		case 5: return s.Substring(0, 4) + "72" + s.Substring(4);
-			//на 61-75
-		case 6: return s.Substring(0, 4) + "84" + s.Substring(4);
-		default: return "";
-	}
-}
+		{
+			if (FIO == "") return "";
+			if (passType == 3) return "Easter egg";
+			string s = GenCheatPasswordMain(FIO);
+			if (s.Length == 0)
+				return "";
+			switch (passType)
+			{
+				//на 91-100
+				case 0: return s.Substring(0, 4) + "05" + s.Substring(4);
+				//на 76-93
+				case 1: return s.Substring(0, 4) + "45" + s.Substring(4);
+				//на 76-90
+				case 2: return s.Substring(0, 4) + "35" + s.Substring(4);
+				//войти без пароля
+				case 4: return "0" + string.Concat(s.Substring(0, 4).Reverse()) + string.Concat(s.Substring(4).Reverse()) + "0";
+				//на 61-89
+				case 5: return s.Substring(0, 4) + "72" + s.Substring(4);
+				//на 61-75
+				case 6: return s.Substring(0, 4) + "84" + s.Substring(4);
+				default: return "";
+			}
+		}
 		public int GetPassType(string Pass, string FIO)
 		{
 			string s = GenCheatPasswordMain(FIO);
@@ -226,7 +227,7 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.76 * tabs.TabPages.Count-1)), (int)(Math.Ceiling(0.90 * tabs.TabPages.Count - 1))+1);
+						int counta = rand.Next((int)(Math.Ceiling(0.76 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.90 * tabs.TabPages.Count - 1)) + 1);
 						GenerateRandomNumbers(counta, 0, n, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
@@ -259,7 +260,7 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.61 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.89 * tabs.TabPages.Count - 1))+1);
+						int counta = rand.Next((int)(Math.Ceiling(0.61 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.89 * tabs.TabPages.Count - 1)) + 1);
 						GenerateRandomNumbers(counta, 0, n, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
@@ -557,7 +558,7 @@ namespace User_Module
 			line = EncodeDecrypt(fin.ReadLine(), key);
 			if (ones != int.Parse(line) || !filepath.IsReadOnly)
 			{
-				MessageBox.Show("Похоже, кто-то имзменял файл вопросов. Получите изначальную версию файла у преподавателя или возьмите с другого компьютераы.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Похоже, кто-то изменял файл вопросов. Получите изначальную версию файла у преподавателя или возьмите с другого компьютера.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				Close();
 				return;
 			}
@@ -658,7 +659,7 @@ namespace User_Module
 			}
 			else
 			{
-				label5.Text = rightCount + " / " + (tabs.TabPages.Count - 1)+" баллов";
+				label5.Text = rightCount + " / " + (tabs.TabPages.Count - 1) + " баллов";
 			}
 		}
 	}

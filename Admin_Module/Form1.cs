@@ -164,7 +164,7 @@ namespace Admin_Module
 				reader.Close();
 				FileInfo fileInfo = new FileInfo(filename);
 				if (k != int.Parse(line) || !fileInfo.IsReadOnly)
-					MessageBox.Show("Похоже, кто-то имзменял этот файл вопросов. Во избежание нечестного прохождения теста советуем пересоздать файл заново из таблицы.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					MessageBox.Show("Похоже, кто-то изменял этот файл вопросов. Во избежание нечестного прохождения теста или некорректной работы программы советуем пересоздать файл заново из таблицы.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 			label2.Text = "Всего вопросов: " + questm[6];
 			label2.Enabled = true;
@@ -300,7 +300,7 @@ namespace Admin_Module
 		{
 			if (btn_newquestion.Enabled)
 			{
-				if (!(MessageBox.Show("Если вы изменяли файл и не хотите потерять эти изменения, нажмите на кнопку \"" + button2.Text + "\" и следуйте инструкциям. Вы уверены, что хотите загрузить новый файл? ", "Загрузка файла", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes))
+				if (!(MessageBox.Show("Если вы изменяли файл и не хотите потерять эти изменения, нажмите на кнопку \"" + button2.Text + "\" и следуйте инструкциям. \nВы уверены, что хотите загрузить новый файл? ", "Загрузка файла", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes))
 				{
 					return;
 				}
@@ -360,7 +360,7 @@ namespace Admin_Module
 			}
 			catch (Exception)
 			{
-				throw new Exception("Не удается найти Excel!Установите его или редактируйте таблицу в другом редакторе.");
+				throw new Exception("Не удается найти Excel! Установите его или редактируйте таблицу в другом редакторе.");
 			}
 			if (xlApp == null)
 			{
@@ -419,7 +419,7 @@ namespace Admin_Module
 		}
 		private void DataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right && dataGridView1.ReadOnly == false)
+			if (e.Button == MouseButtons.Left && dataGridView1.ReadOnly == false)
 			{
 				if (MessageBox.Show("Вы действительно хотите удалить этот вопрос?", "Удаление вопроса", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
 				{
