@@ -163,8 +163,8 @@ namespace Admin_Module
 				line = EncodeDecrypt(reader.ReadLine(), key);
 				reader.Close();
 				FileInfo fileInfo = new FileInfo(filename);
-				if (k != int.Parse(line)|| !fileInfo.IsReadOnly)
-									MessageBox.Show("Похоже, кто-то имзменял этот файл вопросов. Во избежание нечестного прохождения теста советуем пересоздать файл заново из таблицы.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				if (k != int.Parse(line) || !fileInfo.IsReadOnly)
+					MessageBox.Show("Похоже, кто-то имзменял этот файл вопросов. Во избежание нечестного прохождения теста советуем пересоздать файл заново из таблицы.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 			label2.Text = "Всего вопросов: " + questm[6];
 			label2.Enabled = true;
@@ -731,7 +731,10 @@ namespace Admin_Module
 				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = folderBrowserDialog1.SelectedPath + "\\test.data";
-					File.SetAttributes(filename, FileAttributes.Normal);
+					FileInfo filepath = new FileInfo(filename);
+					if (filepath.Exists)
+						File.SetAttributes(filename, FileAttributes.Normal);
+						
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 					StreamWriter fout = new StreamWriter(filename, false);
 					string s = "", current, previous;
@@ -776,19 +779,19 @@ namespace Admin_Module
 					int key = GenKey();
 					s += key + "." + textBox2.Text;
 					int k = 0;
-					fout.WriteLine(EncodeDecrypt(s, 0x123456, ref k,false));
-					fout.WriteLine(EncodeDecrypt(textBox1.Text, key, ref k,false));
+					fout.WriteLine(EncodeDecrypt(s, 0x123456, ref k, false));
+					fout.WriteLine(EncodeDecrypt(textBox1.Text, key, ref k, false));
 					s = "";
 					for (int i = 0; i < dataGridView1.RowCount; i++)
 					{
 						for (int j = 0; j < dataGridView1.ColumnCount; j++)
 							s += '\"' + dataGridView1.Rows[i].Cells[j].Value.ToString() + "\";";
-						fout.WriteLine(EncodeDecrypt(s, key, ref k,false));
+						fout.WriteLine(EncodeDecrypt(s, key, ref k, false));
 						s = "";
 					}
 					fout.WriteLine(EncodeDecrypt(k.ToString(), key));
 					fout.Close();
-					
+
 
 					MessageBox.Show("Файл сохранен", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
