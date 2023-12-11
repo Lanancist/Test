@@ -27,12 +27,43 @@ namespace Admin_Module
 		{
 			InitializeComponent();
 		}
-		public static string EncodeDecrypt(string str, int secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...)
+		public static string EncodeDecrypt(string str, int secretKey, ref int k, bool decode) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...,переменная для сохранения целостности)
+		{
+			string newStr = "";
+			foreach (var c in str)
+			{
+				newStr += TopSecret(c, secretKey);
+				int value;
+				if (decode)
+				{
+
+					value = (int)newStr.Last();
+				}
+				else
+				{
+					value = (int)c;
+				}
+				while (value != 0)
+				{
+					if ((value & 1) == 1)
+					{
+						k++;
+						if (k == int.MaxValue)
+							k = 0;
+					}
+					value >>= 1;
+				}
+			}
+			return newStr;
+
+		}
+		public static string EncodeDecrypt(string str, int secretKey) // Использовать EncodeDecrypt("Cтрока", (ключ) 0x12345...,переменная для сохранения целостности)
 		{
 			string newStr = "";
 			foreach (var c in str)
 				newStr += TopSecret(c, secretKey);
 			return newStr;
+
 		}
 		public static char TopSecret(char character, int secretKey)
 		{
@@ -53,7 +84,6 @@ namespace Admin_Module
 					}
 				});
 			}
-			//FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read);
 			tableCollection = db.Tables;
 			System.Data.DataTable table = tableCollection[Convert.ToString(tableCollection[0].TableName)];
 			dataGridView1.DataSource = table;
@@ -117,16 +147,26 @@ namespace Admin_Module
 		}
 		private void OpenTestFile(string filename)
 		{
-			string line;
+
 			string[] questm;
+
 			using (StreamReader reader = new StreamReader(filename))
 			{
-				line = EncodeDecrypt(reader.ReadLine(), 0x123456);
+				int k = 0;
+				string line;
+				line = EncodeDecrypt(reader.ReadLine(), 0x123456, ref k, true);
 				questm = line.Split(new[] { '.' }, StringSplitOptions.None);
-				textBox1.Text = EncodeDecrypt(reader.ReadLine(), int.Parse(questm[questm.Length - 2]));
+				int key = int.Parse(questm[questm.Length - 2]);
+				textBox1.Text = EncodeDecrypt(reader.ReadLine(), key, ref k, true);
+				for (global::System.Int32 i = 0; i < int.Parse(questm[6]); i++)
+					EncodeDecrypt(reader.ReadLine(), key, ref k, true);
+				line = EncodeDecrypt(reader.ReadLine(), key);
 				reader.Close();
+				FileInfo fileInfo = new FileInfo(filename);
+				if (k != int.Parse(line) || !fileInfo.IsReadOnly)
+					MessageBox.Show("Похоже, кто-то изменял этот файл вопросов. Во избежание нечестного прохождения теста или некорректной работы программы советуем пересоздать файл заново из таблицы.", "Программа предполагает обман", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
-			label2.Text = "Всего вопросов: " + int.Parse(questm[6]);
+			label2.Text = "Всего вопросов: " + questm[6];
 			label2.Enabled = true;
 			numericUpDown1.Maximum = int.Parse(questm[5]);
 			numericUpDown1.Minimum = int.Parse(questm[5]);
@@ -260,7 +300,7 @@ namespace Admin_Module
 		{
 			if (btn_newquestion.Enabled)
 			{
-				if (!(MessageBox.Show("Если вы изменяли файл и не хотите потерять эти изменения, нажмите на кнопку \"" + button2.Text + "\" и следуйте инструкциям. Вы уверены, что хотите загрузить новый файл? ", "Загрузка файла", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes))
+				if (!(MessageBox.Show("Если вы изменяли файл и не хотите потерять эти изменения, нажмите на кнопку \"" + button2.Text + "\" и следуйте инструкциям. \nВы уверены, что хотите загрузить новый файл? ", "Загрузка файла", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes))
 				{
 					return;
 				}
@@ -320,7 +360,7 @@ namespace Admin_Module
 			}
 			catch (Exception)
 			{
-				throw new Exception("Не удается найти Excel!Установите его или редактируйте таблицу в другом редакторе.");
+				throw new Exception("Не удается найти Excel! Установите его или редактируйте таблицу в другом редакторе.");
 			}
 			if (xlApp == null)
 			{
@@ -379,7 +419,7 @@ namespace Admin_Module
 		}
 		private void DataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right && dataGridView1.ReadOnly == false)
+			if (e.Button == MouseButtons.Left && dataGridView1.ReadOnly == false)
 			{
 				if (MessageBox.Show("Вы действительно хотите удалить этот вопрос?", "Удаление вопроса", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
 				{
@@ -691,6 +731,9 @@ namespace Admin_Module
 				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = folderBrowserDialog1.SelectedPath + "\\test.data";
+					FileInfo filepath = new FileInfo(filename);
+					if (filepath.Exists)
+						File.SetAttributes(filename, FileAttributes.Normal);
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 					StreamWriter fout = new StreamWriter(filename, false);
 					string s = "", current, previous;
@@ -734,17 +777,20 @@ namespace Admin_Module
 					}
 					int key = GenKey();
 					s += key + "." + textBox2.Text;
-					fout.WriteLine(EncodeDecrypt(s, 0x123456));
-					fout.WriteLine(EncodeDecrypt(textBox1.Text, key));
+					int k = 0;
+					fout.WriteLine(EncodeDecrypt(s, 0x123456, ref k, false));
+					fout.WriteLine(EncodeDecrypt(textBox1.Text, key, ref k, false));
 					s = "";
 					for (int i = 0; i < dataGridView1.RowCount; i++)
 					{
 						for (int j = 0; j < dataGridView1.ColumnCount; j++)
 							s += '\"' + dataGridView1.Rows[i].Cells[j].Value.ToString() + "\";";
-						fout.WriteLine(EncodeDecrypt(s, key));
+						fout.WriteLine(EncodeDecrypt(s, key, ref k, false));
 						s = "";
 					}
+					fout.WriteLine(EncodeDecrypt(k.ToString(), key));
 					fout.Close();
+					File.SetAttributes(filename, FileAttributes.ReadOnly);
 					MessageBox.Show("Файл сохранен", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 				else throw new Exception("Файл не был сохранен!");
