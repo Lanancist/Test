@@ -32,8 +32,12 @@
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.btn_load = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.btn_main = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.btn_editor = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.btn_newquestion = new System.Windows.Forms.ToolStripButton();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.button1 = new System.Windows.Forms.Button();
@@ -85,10 +89,6 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -134,6 +134,16 @@
 			this.btn_load.Text = "Загрузить файл";
 			this.btn_load.Click += new System.EventHandler(this.ToolStripButton1_Click);
 			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+			// 
 			// btn_main
 			// 
 			this.btn_main.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -144,6 +154,11 @@
 			this.btn_main.Text = "Главная";
 			this.btn_main.Click += new System.EventHandler(this.Btn_main_Click);
 			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			// 
 			// btn_editor
 			// 
 			this.btn_editor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -153,6 +168,11 @@
 			this.btn_editor.Size = new System.Drawing.Size(112, 22);
 			this.btn_editor.Text = "Редактор таблицы";
 			this.btn_editor.Click += new System.EventHandler(this.Btn_editor_Click);
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
 			// 
 			// btn_newquestion
 			// 
@@ -391,14 +411,16 @@
 			this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
 			this.dataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
 			this.dataGridView1.ColumnHeadersHeight = 29;
-			this.dataGridView1.Location = new System.Drawing.Point(613, 24);
+			this.dataGridView1.Location = new System.Drawing.Point(611, 24);
 			this.dataGridView1.MultiSelect = false;
 			this.dataGridView1.Name = "dataGridView1";
 			this.dataGridView1.RowHeadersWidth = 51;
-			this.dataGridView1.Size = new System.Drawing.Size(125, 76);
+			this.dataGridView1.Size = new System.Drawing.Size(127, 70);
 			this.dataGridView1.TabIndex = 10;
 			this.dataGridView1.Tag = "0";
+			this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellValueChanged);
 			this.dataGridView1.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridView1_RowHeaderMouseClick);
+			this.dataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.DataGridView1_RowsRemoved);
 			// 
 			// button2
 			// 
@@ -741,26 +763,6 @@
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Вопрос:";
 			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-			// 
-			// toolStripSeparator3
-			// 
-			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-			// 
-			// toolStripSeparator4
-			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -781,6 +783,7 @@
 			this.MaximizeBox = false;
 			this.Name = "Form1";
 			this.Text = "Программа тестирования. Мастер";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
