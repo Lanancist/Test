@@ -65,52 +65,93 @@ namespace PasswordGen
 			if (s.Length == 0)
 				return "";
 			switch (passType)
-				{
-					//на 91-100
-					case 0: return s.Substring(0, 4) + "05" + s.Substring(4);
-					//на 76-93
-					case 1: return s.Substring(0, 4) + "45" + s.Substring(4);
-					//на 76-90
-					case 2: return s.Substring(0, 4) + "35" + s.Substring(4);
-					//войти без пароля
-					case 4: return "0" + string.Concat(s.Substring(0, 4).Reverse()) + string.Concat(s.Substring(4).Reverse()) + "0";
-					//на 61-89
-					case 5: return s.Substring(0, 4) + "72" + s.Substring(4);
-					//на 61-75
-					case 6: return s.Substring(0, 4) + "84" + s.Substring(4);
-					default: return "";
-				}
-			}
-			private void TextBox3_TextChanged(object sender, EventArgs e)
 			{
-				textBox4.Text = "";
-				foreach (var c in textBox3.Text)
-					textBox4.Text += (char)(c ^ int.Parse(textBox5.Text));
-			}
-
-			private void TextBox5_TextChanged(object sender, EventArgs e)
-			{
-				if (textBox5.Text == "")
-					textBox5.Text = "1193046";
-				else
-					TextBox3_TextChanged(sender, e);
-			}
-
-			private void tabPage2_Enter(object sender, EventArgs e)
-			{
-				textBox5.Text = "1193046";
-			}
-
-			private void textBox1_TextChanged(object sender, EventArgs e)
-			{
-				if (textBox1.Text.Length > 50)
-					textBox1.BackColor = Color.Red;
-				else
-					textBox1.BackColor = Color.White;
-			}
-			private void tabPage1_Enter(object sender, EventArgs e)
-			{
-				textBox2.Text = (DateTime.Now).ToString().Replace(".", "").Replace(" ", "").Replace(":", "").Substring(0, 8);
+				//на 91-100
+				case 0: return s.Substring(0, 4) + "05" + s.Substring(4);
+				//на 76-93
+				case 1: return s.Substring(0, 4) + "45" + s.Substring(4);
+				//на 76-90
+				case 2: return s.Substring(0, 4) + "35" + s.Substring(4);
+				//войти без пароля
+				case 4: return "0" + string.Concat(s.Substring(0, 4).Reverse()) + string.Concat(s.Substring(4).Reverse()) + "0";
+				//на 61-89
+				case 5: return s.Substring(0, 4) + "72" + s.Substring(4);
+				//на 61-75
+				case 6: return s.Substring(0, 4) + "84" + s.Substring(4);
+				default: return "";
 			}
 		}
+		private void TextBox3_TextChanged(object sender, EventArgs e)
+		{
+			textBox4.Text = "";
+			foreach (var c in textBox3.Text)
+				textBox4.Text += (char)(c ^ int.Parse(textBox5.Text));
+		}
+
+		private void TextBox5_TextChanged(object sender, EventArgs e)
+		{
+			if (textBox5.Text == "")
+				textBox5.Text = "1193046";
+			else
+				TextBox3_TextChanged(sender, e);
+		}
+
+		private void tabPage2_Enter(object sender, EventArgs e)
+		{
+			textBox5.Text = "1193046";
+		}
+
+		private void textBox1_TextChanged(object sender, EventArgs e)
+		{
+			if (textBox1.Text.Length > 50)
+				textBox1.BackColor = Color.Red;
+			else
+				textBox1.BackColor = Color.White;
+		}
+		private void tabPage1_Enter(object sender, EventArgs e)
+		{
+			textBox2.Text = (DateTime.Now).ToString().Replace(".", "").Replace(" ", "").Replace(":", "").Substring(0, 8);
+		}
+
+		private void label4_Click(object sender, EventArgs e)
+		{
+			if (label4.Text.Length > 9)
+				Clipboard.SetText(label4.Text.Substring(9));
+		}
+
+		private void label5_Click(object sender, EventArgs e)
+		{
+			if (label5.Text.Length > 8)
+				Clipboard.SetText(label5.Text.Substring(8));
+		}
+
+		private void label6_Click(object sender, EventArgs e)
+		{
+			if (label6.Text.Length > 8)
+				Clipboard.SetText(label6.Text.Substring(8));
+		}
+
+		private void label7_Click(object sender, EventArgs e)
+		{
+				Clipboard.SetText("Easter egg");
+		}
+
+		private void label8_Click(object sender, EventArgs e)
+		{
+			if (label8.Text.Length > 17)
+				Clipboard.SetText(label8.Text.Substring(17));
+		}
+
+		private void label10_Click(object sender, EventArgs e)
+		{
+			if (label10.Text.Length > 8)
+				Clipboard.SetText(label10.Text.Substring(8));
+		}
+
+		private void label11_Click(object sender, EventArgs e)
+		{
+			if (label11.Text.Length > 8)
+				Clipboard.SetText(label11.Text.Substring(8));
+		}
 	}
+}
