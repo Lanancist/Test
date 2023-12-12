@@ -425,6 +425,7 @@ namespace Admin_Module
 			{
 				if (MessageBox.Show("Вы действительно хотите удалить этот вопрос?", "Удаление вопроса", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
 				{
+					isSaved = false;
 					dataGridView1.Rows.RemoveAt(e.RowIndex);
 					label2.Text = "Всего вопросов: " + dataGridView1.RowCount;
 					//MessageBox.Show("Вопрос удален", "Удаление вопроса", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -808,18 +809,20 @@ namespace Admin_Module
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (!isSaved)
-				if (MessageBox.Show("Если вы изменяли файл и не хотите потерять эти изменения, нажмите на кнопку \"" + button2.Text + "\" и следуйте инструкциям. \nВы уверены, что хотите закрыть программу? ", "Загрузка файла", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+				if (!(MessageBox.Show("Если вы изменяли файл и не хотите потерять эти изменения, нажмите на кнопку \"" + button2.Text + "\" и следуйте инструкциям. \nВы уверены, что хотите закрыть программу? ", "Загрузка файла", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes))
 					e.Cancel = true;
 		}
 
 		private void DataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
 		{
+			if (btn_newquestion.Visible)
 			isSaved = false;
 		}
 
 		private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
-			isSaved = false;
+			if (btn_newquestion.Visible)
+				isSaved = false;
 		}
 	}
 }
