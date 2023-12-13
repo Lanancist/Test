@@ -227,7 +227,7 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.76 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.90 * tabs.TabPages.Count - 1)) + 1);
+						int counta = rand.Next((int)(Math.Ceiling(0.76 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.89 * tabs.TabPages.Count - 1)) + 1);
 						GenerateRandomNumbers(counta, 0, n, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{

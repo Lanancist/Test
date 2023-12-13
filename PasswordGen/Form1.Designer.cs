@@ -41,13 +41,13 @@
 			this.button1 = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.label11 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.textBox5 = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.textBox4 = new System.Windows.Forms.TextBox();
 			this.textBox3 = new System.Windows.Forms.TextBox();
-			this.label10 = new System.Windows.Forms.Label();
-			this.label11 = new System.Windows.Forms.Label();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -106,6 +106,7 @@
 			this.label4.Size = new System.Drawing.Size(96, 24);
 			this.label4.TabIndex = 5;
 			this.label4.Text = "ддммгггг";
+			this.label4.Click += new System.EventHandler(this.label4_Click);
 			// 
 			// label5
 			// 
@@ -115,6 +116,7 @@
 			this.label5.Size = new System.Drawing.Size(96, 24);
 			this.label5.TabIndex = 6;
 			this.label5.Text = "ддммгггг";
+			this.label5.Click += new System.EventHandler(this.label5_Click);
 			// 
 			// label6
 			// 
@@ -124,6 +126,7 @@
 			this.label6.Size = new System.Drawing.Size(96, 24);
 			this.label6.TabIndex = 7;
 			this.label6.Text = "ддммгггг";
+			this.label6.Click += new System.EventHandler(this.label6_Click);
 			// 
 			// label7
 			// 
@@ -133,6 +136,7 @@
 			this.label7.Size = new System.Drawing.Size(96, 24);
 			this.label7.TabIndex = 8;
 			this.label7.Text = "ддммгггг";
+			this.label7.Click += new System.EventHandler(this.label7_Click);
 			// 
 			// label8
 			// 
@@ -142,6 +146,7 @@
 			this.label8.Size = new System.Drawing.Size(96, 24);
 			this.label8.TabIndex = 9;
 			this.label8.Text = "ддммгггг";
+			this.label8.Click += new System.EventHandler(this.label8_Click);
 			// 
 			// button1
 			// 
@@ -187,6 +192,26 @@
 			this.tabPage1.Text = "Пароль";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			this.tabPage1.Enter += new System.EventHandler(this.tabPage1_Enter);
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(54, 348);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(96, 24);
+			this.label11.TabIndex = 12;
+			this.label11.Text = "ддммгггг";
+			this.label11.Click += new System.EventHandler(this.label11_Click);
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(54, 315);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(96, 24);
+			this.label10.TabIndex = 11;
+			this.label10.Text = "ддммгггг";
+			this.label10.Click += new System.EventHandler(this.label10_Click);
 			// 
 			// tabPage2
 			// 
@@ -240,24 +265,6 @@
 			this.textBox3.TabIndex = 0;
 			this.textBox3.TextChanged += new System.EventHandler(this.TextBox3_TextChanged);
 			// 
-			// label10
-			// 
-			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(54, 315);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(96, 24);
-			this.label10.TabIndex = 11;
-			this.label10.Text = "ддммгггг";
-			// 
-			// label11
-			// 
-			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(54, 348);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(96, 24);
-			this.label11.TabIndex = 12;
-			this.label11.Text = "ддммгггг";
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -268,7 +275,6 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Margin = new System.Windows.Forms.Padding(6);
 			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "Form1";
 			this.ShowIcon = false;
 			this.Text = "Панелька для админов";
