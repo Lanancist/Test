@@ -645,7 +645,7 @@ namespace Admin_Module
 			}
 			else
 			{
-				tableCollection[0].Rows.Add(numericUpDown2.Value.ToString(), textBox4.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, textBox9.Text, textBox10.Text, numericUpDown3.Value.ToString());
+				tableCollection[0].Rows.Add(numericUpDown2.Value.ToString(), textBox4.Text, textBox3.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, textBox9.Text, textBox10.Text, numericUpDown3.Value.ToString());
 				isSaved = false;
 				MessageBox.Show("Вопрос добавлен", "Добавление вопроса", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
