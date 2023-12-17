@@ -306,22 +306,22 @@ namespace Admin_Module
 					return;
 				}
 			}
-			dataGridView1.Visible = false;
-			WindowState = FormWindowState.Normal;
-			btn_editor.Enabled = false;
-			btn_newquestion.Enabled = false;
-			button1.Enabled = false;
-			button2.Enabled = false;
-			textBox1.Enabled = false;
-			textBox1.ReadOnly = true;
-			groupBox1.Enabled = false;
-			groupBox2.Enabled = false;
-			label2.Enabled = false;
-			label2.Text = "Всего вопросов:____";
 			try
 			{
 				if (openFileDialog1.ShowDialog() == DialogResult.OK)
 				{
+					dataGridView1.Visible = false;
+					WindowState = FormWindowState.Normal;
+					btn_editor.Enabled = false;
+					btn_newquestion.Enabled = false;
+					button1.Enabled = false;
+					button2.Enabled = false;
+					textBox1.Enabled = false;
+					textBox1.ReadOnly = true;
+					groupBox1.Enabled = false;
+					groupBox2.Enabled = false;
+					label2.Enabled = false;
+					label2.Text = "Всего вопросов:____";
 					string filename = openFileDialog1.FileName;
 					if (filename.EndsWith(".xls"))
 						OpenExcelFile(filename);
@@ -398,7 +398,7 @@ namespace Admin_Module
 				}
 				xlWorkSheet.Columns.AutoFit();
 				xlWorkBook.SaveAs(filename, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue,
-				misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+				misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, false, misValue, misValue, misValue);
 				xlWorkBook.Close(0);
 				Marshal.ReleaseComObject(xlWorkSheet);
 				Marshal.ReleaseComObject(xlWorkBook);
@@ -716,6 +716,9 @@ namespace Admin_Module
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = saveFileDialog1.FileName;
+					FileInfo filepath = new FileInfo(filename);
+					if (filepath.Exists)
+						File.Delete(filename);
 					ExportExcelInterop(filename);
 				}
 				else throw new Exception("Файл не был сохранен!");
@@ -816,13 +819,18 @@ namespace Admin_Module
 		private void DataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
 		{
 			if (btn_newquestion.Visible)
-			isSaved = false;
+				isSaved = false;
 		}
 
 		private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
 			if (btn_newquestion.Visible)
 				isSaved = false;
+		}
+
+		private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
+		{
+
 		}
 	}
 }
