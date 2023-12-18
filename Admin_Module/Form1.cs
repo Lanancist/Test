@@ -306,24 +306,24 @@ namespace Admin_Module
 					return;
 				}
 			}
-			dataGridView1.Visible = false;
-			WindowState = FormWindowState.Normal;
-			btn_editor.Enabled = false;
-			btn_newquestion.Enabled = false;
-			button1.Enabled = false;
-			button2.Enabled = false;
-			textBox1.Enabled = false;
-			textBox1.ReadOnly = true;
-			groupBox1.Enabled = false;
-			groupBox2.Enabled = false;
-			label2.Enabled = false;
-			label2.Text = "Всего вопросов:____";
 			try
 			{
 				if (openFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = openFileDialog1.FileName;
 					Cursor.Current = Cursors.WaitCursor;
+					dataGridView1.Visible = false;
+					WindowState = FormWindowState.Normal;
+					btn_editor.Enabled = false;
+					btn_newquestion.Enabled = false;
+					button1.Enabled = false;
+					button2.Enabled = false;
+					textBox1.Enabled = false;
+					textBox1.ReadOnly = true;
+					groupBox1.Enabled = false;
+					groupBox2.Enabled = false;
+					label2.Enabled = false;
+					label2.Text = "Всего вопросов:____";
 					if (filename.EndsWith(".xls"))
 						OpenExcelFile(filename);
 					else
