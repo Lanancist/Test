@@ -718,6 +718,9 @@ namespace Admin_Module
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = saveFileDialog1.FileName;
+					FileInfo filepath = new FileInfo(filename);
+					if (filepath.Exists)
+						File.Delete(filename);
 					ExportExcelInterop(filename);
 				}
 				else throw new Exception("Файл не был сохранен!");
