@@ -438,7 +438,6 @@
 			// saveFileDialog1
 			// 
 			this.saveFileDialog1.Filter = "Excel|*.xls";
-			this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
 			// 
 			// panel1
 			// 
