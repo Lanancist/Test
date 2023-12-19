@@ -330,7 +330,6 @@ namespace Admin_Module
 						OpenTestFile(filename);
 					Text = "Программа тестирования. Мастер | " + filename;
 				}
-				else throw new Exception("Файл не был загружен");
 			}
 			catch (Exception ex)
 			{

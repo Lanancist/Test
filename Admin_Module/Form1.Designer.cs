@@ -101,7 +101,7 @@
 			// 
 			// openFileDialog1
 			// 
-			this.openFileDialog1.Filter = "Тест|*.xls; test.data|Таблица|*.xls|Файл| test.data";
+			this.openFileDialog1.Filter = "Тест|*.xls; *.testdata|Таблица|*.xls|Файл| *.testdata";
 			// 
 			// toolStrip1
 			// 
