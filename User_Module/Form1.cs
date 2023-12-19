@@ -21,7 +21,7 @@ namespace User_Module
 		{
 			InitializeComponent();
 		}
-		int n, generateCount;
+		int generateCount;
 		bool ViewAnswers, fromEveryTheme, obligateQuestions, procents, easter = false, canWritePass = true;
 		private void Button1_Click(object sender, EventArgs e)
 		{
@@ -175,8 +175,8 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.91 * tabs.TabPages.Count - 1)), n + 1);
-						GenerateRandomNumbers(counta, 0, n, ref numbers);
+						int counta = rand.Next((int)(Math.Ceiling(0.91 * (tabs.TabPages.Count - 1))), tabs.TabPages.Count);
+						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
@@ -201,8 +201,8 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.76 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.93 * tabs.TabPages.Count - 1)) + 1);
-						GenerateRandomNumbers(counta, 0, n, ref numbers);
+						int counta = rand.Next((int)(Math.Ceiling(0.76 * (tabs.TabPages.Count - 1))), (int)(Math.Ceiling(0.93 * (tabs.TabPages.Count - 1))) + 1);
+						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
@@ -227,8 +227,8 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.76 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.89 * tabs.TabPages.Count - 1)) + 1);
-						GenerateRandomNumbers(counta, 0, n, ref numbers);
+						int counta = rand.Next((int)(Math.Ceiling(0.76 * (tabs.TabPages.Count - 1))), (int)(Math.Ceiling(0.89 * (tabs.TabPages.Count - 1))) + 1);
+						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
@@ -260,8 +260,8 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.61 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.89 * tabs.TabPages.Count - 1)) + 1);
-						GenerateRandomNumbers(counta, 0, n, ref numbers);
+						int counta = rand.Next((int)(Math.Ceiling(0.61 * (tabs.TabPages.Count - 1))), (int)(Math.Ceiling(0.89 * (tabs.TabPages.Count - 1))) + 1);
+						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
@@ -286,8 +286,8 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.61 * tabs.TabPages.Count - 1)), (int)(Math.Ceiling(0.75 * tabs.TabPages.Count - 1)) + 1);
-						GenerateRandomNumbers(counta, 0, n, ref numbers);
+						int counta = rand.Next((int)(Math.Ceiling(0.61 * (tabs.TabPages.Count - 1))), (int)(Math.Ceiling(0.75 * (tabs.TabPages.Count - 1))) + 1);
+						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
@@ -419,7 +419,7 @@ namespace User_Module
 				return;
 			}*/
 			generateCount = int.Parse(questm[5]);
-			n = int.Parse(questm[6]);
+			int n = int.Parse(questm[6]);
 			List<int> numbers = new List<int>();
 			if (fromEveryTheme)
 			{
