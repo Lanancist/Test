@@ -376,7 +376,6 @@ namespace User_Module
 			openFileDialog1.InitialDirectory= System.Windows.Forms.Application.StartupPath;
 			if (openFileDialog1.ShowDialog()!=DialogResult.OK)
 			{
-				MessageBox.Show("Файл  не выбран!", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Close();
 				return;
 			}
