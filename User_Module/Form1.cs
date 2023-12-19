@@ -147,7 +147,7 @@ namespace User_Module
 			MaximizeBox = false;
 			WindowState = FormWindowState.Normal;
 		}
-		readonly string path = "test.data";
+		
 		private void CheckBox1_CheckedChanged(object sender, EventArgs e)
 		{
 		}
@@ -373,6 +373,14 @@ namespace User_Module
 			tabs.BringToFront();
 			tabs.Visible = false;
 			string line;
+			openFileDialog1.InitialDirectory= System.Windows.Forms.Application.StartupPath;
+			if (openFileDialog1.ShowDialog()!=DialogResult.OK)
+			{
+				MessageBox.Show("Файл  не выбран!", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				Close();
+				return;
+			}
+			string path = openFileDialog1.FileName;
 			FileInfo filepath = new FileInfo(path);
 			if (!filepath.Exists)
 			{
