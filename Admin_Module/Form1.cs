@@ -718,18 +718,19 @@ namespace Admin_Module
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = saveFileDialog1.FileName;
+					Cursor.Current = Cursors.WaitCursor;
 					FileInfo filepath = new FileInfo(filename);
 					if (filepath.Exists)
 						File.Delete(filename);
 					ExportExcelInterop(filename);
 				}
-				else throw new Exception("Файл не был сохранен!");
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message, "Ошибка сохранения таблицы", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			isSaved = true;
+			Cursor.Current = Cursors.Default;
 		}
 		private void Button1_Click(object sender, EventArgs e)
 		{
@@ -737,17 +738,22 @@ namespace Admin_Module
 				return;
 			try
 			{
-				folderBrowserDialog1.SelectedPath = System.Windows.Forms.Application.StartupPath;
-				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+				//\, /, : *, ? ", < >, | ., ..
+				saveFileDialog1.Filter = "Тест|*.testdata";
+				string s = textBox1.Text;
+				s.Replace("/", "").Replace("\\", "").Replace(":", "").Replace("*", "").Replace("?", "").Replace("\"", "").Replace("<", "").Replace(">", "").Replace("|", "");
+				saveFileDialog1.FileName = s;
+				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					Cursor.Current = Cursors.WaitCursor;
-					string filename = folderBrowserDialog1.SelectedPath + "\\test.data";
+					string filename = saveFileDialog1.FileName;
 					FileInfo filepath = new FileInfo(filename);
 					if (filepath.Exists)
 						File.SetAttributes(filename, FileAttributes.Normal);
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 					StreamWriter fout = new StreamWriter(filename, false);
-					string s = "", current, previous;
+					s = "";
+					string current, previous;
 					if (radioButton4.Checked)
 						s += "1.";
 					else
@@ -802,9 +808,8 @@ namespace Admin_Module
 					fout.WriteLine(EncodeDecrypt(k.ToString(), key));
 					fout.Close();
 					File.SetAttributes(filename, FileAttributes.ReadOnly);
-					MessageBox.Show("Файл сохранен", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("Файл сохранен по адресу \""+filename+"\"", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
-				else throw new Exception("Файл не был сохранен!");
 			}
 			catch (Exception ex)
 			{
