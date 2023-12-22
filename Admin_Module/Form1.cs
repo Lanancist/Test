@@ -451,6 +451,7 @@ namespace Admin_Module
 		private void Btn_newquestion_Click(object sender, EventArgs e)
 		{
 			WindowState = FormWindowState.Normal;
+			radioButton6.Checked = true;
 			panel1.BringToFront();
 			NumericUpDown3_ValueChanged(sender, e);
 			TextBox3_TextChanged(sender, e);
@@ -465,12 +466,12 @@ namespace Admin_Module
 			if (radioButton6.Checked == true)
 			{
 				numericUpDown2.Minimum = 1;
-				label6.Visible = true;
+				label6.Text="Номер темы:";
 				numericUpDown2.Visible = true;
 			}
 			else
 			{
-				label6.Visible = false;
+				label6.Text = "Для обязательных вопросов номер темы - ноль.";
 				numericUpDown2.Visible = false;
 				numericUpDown2.Minimum = 0;
 				numericUpDown2.Value = 0;
@@ -696,9 +697,9 @@ namespace Admin_Module
 						}
 						else
 						{
-							if (dataGridView1.Rows[i].Cells[1].Value.ToString() != textBox4.Text)
+							if (dataGridView1.Rows[i].Cells[1].Value.ToString() != textBox4.Text&&numericUpDown2.Value!=0)
 							{
-								textBox12.Text = "Темы с введенным номером имеют разные названия! Это допустимо, но не желательно.";
+								textBox12.Text = "Предупреждение: Темы с введенным номером имеют разные названия!";
 								textBox12.Visible = true;
 							}
 						}
@@ -834,6 +835,11 @@ namespace Admin_Module
 		{
 			if (btn_newquestion.Visible)
 				isSaved = false;
+		}
+
+		private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+		{
+
 		}
 	}
 }
