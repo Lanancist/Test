@@ -680,12 +680,15 @@ namespace Admin_Module
 		}
 		private void NumericUpDown2_ValueChanged(object sender, EventArgs e)
 		{
-			dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
+			if (numericUpDown2.Value != 0)
+				dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 			textBox12.Visible = false;
 			int k = 0;
 			for (int i = 0; i < dataGridView1.RowCount; i++)
 			{
 				dataGridView1.Rows[i].Selected = false;
+				if (numericUpDown2.Value == 0)
+					continue;
 				if (dataGridView1.Rows[i].Cells[0].Value != null)
 					if (dataGridView1.Rows[i].Cells[0].Value.ToString() == numericUpDown2.Value.ToString())
 					{
@@ -697,7 +700,7 @@ namespace Admin_Module
 						}
 						else
 						{
-							if (dataGridView1.Rows[i].Cells[1].Value.ToString() != textBox4.Text&&numericUpDown2.Value!=0)
+							if (dataGridView1.Rows[i].Cells[1].Value.ToString() != textBox4.Text)
 							{
 								textBox12.Text = "Предупреждение: Темы с введенным номером имеют разные названия!";
 								textBox12.Visible = true;
