@@ -92,7 +92,6 @@ namespace Admin_Module
 			{
 				throw new Exception("Загружаемая таблица имеет неверный формат!"); ;
 			}
-			dataGridView1.Rows.RemoveAt(0);
 			dataGridView1.Columns[0].HeaderText = "Номер темы";
 			dataGridView1.Columns[0].ValueType = typeof(string);
 			dataGridView1.Columns[1].HeaderText = "Название темы";
@@ -113,6 +112,8 @@ namespace Admin_Module
 			dataGridView1.Columns[8].ValueType = typeof(string);
 			dataGridView1.Columns[9].HeaderText = "Ответ";
 			dataGridView1.Columns[9].ValueType = typeof(string);
+			if (dataGridView1.Rows.Count>0)
+				dataGridView1.Rows.RemoveAt(0);
 			btn_editor.Enabled = true;
 			button1.Enabled = true;
 			textBox1.Enabled = true;
