@@ -92,7 +92,6 @@ namespace Admin_Module
 			{
 				throw new Exception("Загружаемая таблица имеет неверный формат!"); ;
 			}
-			dataGridView1.Rows.RemoveAt(0);
 			dataGridView1.Columns[0].HeaderText = "Номер темы";
 			dataGridView1.Columns[0].ValueType = typeof(string);
 			dataGridView1.Columns[1].HeaderText = "Название темы";
@@ -113,6 +112,8 @@ namespace Admin_Module
 			dataGridView1.Columns[8].ValueType = typeof(string);
 			dataGridView1.Columns[9].HeaderText = "Ответ";
 			dataGridView1.Columns[9].ValueType = typeof(string);
+			if (dataGridView1.Rows.Count>0)
+				dataGridView1.Rows.RemoveAt(0);
 			btn_editor.Enabled = true;
 			button1.Enabled = true;
 			textBox1.Enabled = true;
@@ -306,31 +307,30 @@ namespace Admin_Module
 					return;
 				}
 			}
-			dataGridView1.Visible = false;
-			WindowState = FormWindowState.Normal;
-			btn_editor.Enabled = false;
-			btn_newquestion.Enabled = false;
-			button1.Enabled = false;
-			button2.Enabled = false;
-			textBox1.Enabled = false;
-			textBox1.ReadOnly = true;
-			groupBox1.Enabled = false;
-			groupBox2.Enabled = false;
-			label2.Enabled = false;
-			label2.Text = "Всего вопросов:____";
 			try
 			{
 				if (openFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = openFileDialog1.FileName;
 					Cursor.Current = Cursors.WaitCursor;
+					dataGridView1.Visible = false;
+					WindowState = FormWindowState.Normal;
+					btn_editor.Enabled = false;
+					btn_newquestion.Enabled = false;
+					button1.Enabled = false;
+					button2.Enabled = false;
+					textBox1.Enabled = false;
+					textBox1.ReadOnly = true;
+					groupBox1.Enabled = false;
+					groupBox2.Enabled = false;
+					label2.Enabled = false;
+					label2.Text = "Всего вопросов:____";
 					if (filename.EndsWith(".xls"))
 						OpenExcelFile(filename);
 					else
 						OpenTestFile(filename);
 					Text = "Программа тестирования. Мастер | " + filename;
 				}
-				else throw new Exception("Файл не был загружен");
 			}
 			catch (Exception ex)
 			{
@@ -452,6 +452,7 @@ namespace Admin_Module
 		private void Btn_newquestion_Click(object sender, EventArgs e)
 		{
 			WindowState = FormWindowState.Normal;
+			radioButton6.Checked = true;
 			panel1.BringToFront();
 			NumericUpDown3_ValueChanged(sender, e);
 			TextBox3_TextChanged(sender, e);
@@ -466,12 +467,12 @@ namespace Admin_Module
 			if (radioButton6.Checked == true)
 			{
 				numericUpDown2.Minimum = 1;
-				label6.Visible = true;
+				label6.Text="Номер темы:";
 				numericUpDown2.Visible = true;
 			}
 			else
 			{
-				label6.Visible = false;
+				label6.Text = "Для обязательных вопросов номер темы - ноль.";
 				numericUpDown2.Visible = false;
 				numericUpDown2.Minimum = 0;
 				numericUpDown2.Value = 0;
@@ -680,12 +681,15 @@ namespace Admin_Module
 		}
 		private void NumericUpDown2_ValueChanged(object sender, EventArgs e)
 		{
-			dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
+			if (numericUpDown2.Value != 0)
+				dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 			textBox12.Visible = false;
 			int k = 0;
 			for (int i = 0; i < dataGridView1.RowCount; i++)
 			{
 				dataGridView1.Rows[i].Selected = false;
+				if (numericUpDown2.Value == 0)
+					continue;
 				if (dataGridView1.Rows[i].Cells[0].Value != null)
 					if (dataGridView1.Rows[i].Cells[0].Value.ToString() == numericUpDown2.Value.ToString())
 					{
@@ -699,7 +703,7 @@ namespace Admin_Module
 						{
 							if (dataGridView1.Rows[i].Cells[1].Value.ToString() != textBox4.Text)
 							{
-								textBox12.Text = "Темы с введенным номером имеют разные названия! Это допустимо, но не желательно.";
+								textBox12.Text = "Предупреждение: Темы с введенным номером имеют разные названия!";
 								textBox12.Visible = true;
 							}
 						}
@@ -718,15 +722,19 @@ namespace Admin_Module
 				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					string filename = saveFileDialog1.FileName;
+					Cursor.Current = Cursors.WaitCursor;
+					FileInfo filepath = new FileInfo(filename);
+					if (filepath.Exists)
+						File.Delete(filename);
 					ExportExcelInterop(filename);
 				}
-				else throw new Exception("Файл не был сохранен!");
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message, "Ошибка сохранения таблицы", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			isSaved = true;
+			Cursor.Current = Cursors.Default;
 		}
 		private void Button1_Click(object sender, EventArgs e)
 		{
@@ -734,17 +742,22 @@ namespace Admin_Module
 				return;
 			try
 			{
-				folderBrowserDialog1.SelectedPath = System.Windows.Forms.Application.StartupPath;
-				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+				//\, /, : *, ? ", < >, | ., ..
+				saveFileDialog1.Filter = "Тест|*.testdata";
+				string s = textBox1.Text;
+				s.Replace("/", "").Replace("\\", "").Replace(":", "").Replace("*", "").Replace("?", "").Replace("\"", "").Replace("<", "").Replace(">", "").Replace("|", "");
+				saveFileDialog1.FileName = s;
+				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 				{
 					Cursor.Current = Cursors.WaitCursor;
-					string filename = folderBrowserDialog1.SelectedPath + "\\test.data";
+					string filename = saveFileDialog1.FileName;
 					FileInfo filepath = new FileInfo(filename);
 					if (filepath.Exists)
 						File.SetAttributes(filename, FileAttributes.Normal);
 					dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Ascending);
 					StreamWriter fout = new StreamWriter(filename, false);
-					string s = "", current, previous;
+					s = "";
+					string current, previous;
 					if (radioButton4.Checked)
 						s += "1.";
 					else
@@ -799,9 +812,8 @@ namespace Admin_Module
 					fout.WriteLine(EncodeDecrypt(k.ToString(), key));
 					fout.Close();
 					File.SetAttributes(filename, FileAttributes.ReadOnly);
-					MessageBox.Show("Файл сохранен", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("Файл сохранен по адресу \""+filename+"\"", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
-				else throw new Exception("Файл не был сохранен!");
 			}
 			catch (Exception ex)
 			{
@@ -827,6 +839,11 @@ namespace Admin_Module
 		{
 			if (btn_newquestion.Visible)
 				isSaved = false;
+		}
+
+		private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+		{
+
 		}
 	}
 }
