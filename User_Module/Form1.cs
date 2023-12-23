@@ -87,6 +87,8 @@ namespace User_Module
 		public int GetPassType(string Pass, string FIO)
 		{
 			string s = GenCheatPasswordMain(FIO);
+			if (s.Length <= 0)
+				return -1;
 			string s1 = s.Substring(0, 4), s2 = s.Substring(4);
 			if (Pass == s1 + "05" + s2)
 				return 0;
@@ -147,7 +149,7 @@ namespace User_Module
 			MaximizeBox = false;
 			WindowState = FormWindowState.Normal;
 		}
-		
+
 		private void CheckBox1_CheckedChanged(object sender, EventArgs e)
 		{
 		}
@@ -175,8 +177,8 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.91 * (tabs.TabPages.Count - 1))), tabs.TabPages.Count);
-						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count, ref numbers);
+						int counta = rand.Next((int)(Math.Ceiling(0.91 * (tabs.TabPages.Count-1))), tabs.TabPages.Count);
+						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count-1, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
@@ -201,8 +203,8 @@ namespace User_Module
 					if (canWritePass)
 					{
 						List<int> numbers = new List<int>();
-						int counta = rand.Next((int)(Math.Ceiling(0.76 * (tabs.TabPages.Count - 1))), (int)(Math.Ceiling(0.93 * (tabs.TabPages.Count - 1))) + 1);
-						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count, ref numbers);
+						int counta = rand.Next((int)(Math.Ceiling(0.76 * (tabs.TabPages.Count-1))), (int)(Math.Ceiling(0.93 * (tabs.TabPages.Count - 1))) + 1);
+						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count-1, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
@@ -228,7 +230,7 @@ namespace User_Module
 					{
 						List<int> numbers = new List<int>();
 						int counta = rand.Next((int)(Math.Ceiling(0.76 * (tabs.TabPages.Count - 1))), (int)(Math.Ceiling(0.89 * (tabs.TabPages.Count - 1))) + 1);
-						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count, ref numbers);
+						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count - 1, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
@@ -251,7 +253,6 @@ namespace User_Module
 					break;
 				case 3:
 					easter = !easter;
-					textBox2.Text = "";
 					break;
 				case 4:
 					textBox2.Text = textBox2.Tag.ToString();
@@ -261,7 +262,7 @@ namespace User_Module
 					{
 						List<int> numbers = new List<int>();
 						int counta = rand.Next((int)(Math.Ceiling(0.61 * (tabs.TabPages.Count - 1))), (int)(Math.Ceiling(0.89 * (tabs.TabPages.Count - 1))) + 1);
-						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count, ref numbers);
+						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count-1, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
@@ -287,7 +288,7 @@ namespace User_Module
 					{
 						List<int> numbers = new List<int>();
 						int counta = rand.Next((int)(Math.Ceiling(0.61 * (tabs.TabPages.Count - 1))), (int)(Math.Ceiling(0.75 * (tabs.TabPages.Count - 1))) + 1);
-						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count, ref numbers);
+						GenerateRandomNumbers(counta, 0, tabs.TabPages.Count - 1, ref numbers);
 						for (int i = 0; i < tabs.TabPages.Count - 1; i++)
 						{
 							if (numbers.Contains(i))
@@ -355,6 +356,7 @@ namespace User_Module
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			MaximizeBox = false;
+			pictureBox1.Dock = DockStyle.Fill;
 			label3.BringToFront();
 			label4.BringToFront();
 			label5.BringToFront();
@@ -373,8 +375,9 @@ namespace User_Module
 			tabs.BringToFront();
 			tabs.Visible = false;
 			string line;
-			openFileDialog1.InitialDirectory= System.Windows.Forms.Application.StartupPath;
-			if (openFileDialog1.ShowDialog()!=DialogResult.OK)
+			openFileDialog1.FileName = "";
+			openFileDialog1.InitialDirectory = System.Windows.Forms.Application.StartupPath;
+			if (openFileDialog1.ShowDialog() != DialogResult.OK)
 			{
 				Close();
 				return;
