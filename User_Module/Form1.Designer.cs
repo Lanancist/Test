@@ -70,7 +70,7 @@
 			this.tabPage1.Font = new System.Drawing.Font("Microsoft Sans Serif", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.tabPage1.Location = new System.Drawing.Point(4, 29);
 			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage1.Size = new System.Drawing.Size(920, 526);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Окончить тест";
@@ -79,12 +79,11 @@
 			// 
 			// pictureBox1
 			// 
-			this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
 			this.pictureBox1.InitialImage = null;
-			this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+			this.pictureBox1.Location = new System.Drawing.Point(-171, 3);
 			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(914, 520);
+			this.pictureBox1.Size = new System.Drawing.Size(999, 714);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
 			this.pictureBox1.TabIndex = 4;
 			this.pictureBox1.TabStop = false;
@@ -165,9 +164,9 @@
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.label1.Location = new System.Drawing.Point(271, 149);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(139, 24);
+			this.label1.Size = new System.Drawing.Size(91, 24);
 			this.label1.TabIndex = 2;
-			this.label1.Text = "Имя студента:";
+			this.label1.Text = "Студент:";
 			this.label1.Click += new System.EventHandler(this.Label1_Click);
 			// 
 			// label2
