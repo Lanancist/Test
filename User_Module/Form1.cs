@@ -375,6 +375,7 @@ namespace User_Module
 			tabs.BringToFront();
 			tabs.Visible = false;
 			string line;
+			openFileDialog1.FileName = "";
 			openFileDialog1.InitialDirectory = System.Windows.Forms.Application.StartupPath;
 			if (openFileDialog1.ShowDialog() != DialogResult.OK)
 			{
